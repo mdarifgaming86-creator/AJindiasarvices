@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta name="theme-color" content="#1e3a8a">
+    <title>AJ INDIA SARVICES - Premium Portal</title>
+    <link rel="icon" type="image/png" href="logo.png" class="dynamic-app-logo">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        #navbar-iframe, #b-navbar { display: none !important; } body { margin-top: 0 !important; }
+        :root { --primary-color: #3b82f6; --secondary-color: #2563eb; --accent: #f59e0b; --bg-color: #f4f7f9; --white: #ffffff; --text-dark: #0f172a; --text-gray: #64748b; --border-color: #e2e8f0; --success: #10b981; --danger: #ef4444; --card-bg: #ffffff; --input-bg: #f8fafc; }
+        body.dark-theme { --bg-color: #0f172a; --white: #1e293b; --text-dark: #f8fafc; --text-gray: #94a3b8; --border-color: #334155; --card-bg: #1e293b; --input-bg: #0f172a; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); padding-bottom: 75px; color: var(--text-dark); transition: 0.3s; display: flex; flex-direction: column; min-height: 100vh;}
+        
+        #breaking-news { background: var(--danger); color: #fff; font-weight: 700; font-size: 0.85rem; padding: 8px 15px; display: none; align-items:center; gap:10px; overflow:hidden; border-bottom: 2px solid #b91c1c; white-space: nowrap;}
+        .marquee-wrapper { display: inline-block; padding-left: 100%; animation: scroll-left 25s linear infinite; }
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        /* --- Header & Layout Fixes --- */
+        header { background: var(--card-bg); padding: 15px 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.05); transition: 0.3s;}
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .logo { display: flex; align-items: center; }
+        .logo img { height: 45px; max-height: 80px; width: auto; max-width: 200px; object-fit: contain; transition: 0.3s;}
+        
+        .header-icons { display: flex; gap: 15px; align-items: center; }
+        .header-icons i { font-size: 1.3rem; color: var(--text-dark); cursor: pointer;}
+        
+        .header-wallet-pill { display: none; align-items: center; background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 6px 12px; border-radius: 20px; font-weight: 800; font-size: 0.85rem; border: 1px solid rgba(16, 185, 129, 0.3); cursor: pointer; transition: 0.2s; }
+        .header-wallet-pill:active { transform: scale(0.95); }
+
+        .noti-badge { position: absolute; top: -5px; right: -5px; background: var(--danger); color: white; font-size: 0.6rem; padding: 2px 5px; border-radius: 50%; font-weight: bold;}
+        .theme-toggle { font-size: 1.3rem; color: var(--text-dark); background: var(--input-bg); padding: 8px; border-radius: 50%; cursor: pointer;}
+        
+        .user-profile-header { display: flex; align-items: center; gap: 8px; cursor: pointer; background: var(--input-bg); padding: 4px 10px 4px 4px; border-radius: 25px; border: 1px solid var(--border-color);}
+        .user-profile-header img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover;}
+        .user-profile-header span { font-size: 0.8rem; font-weight: 700; max-width: 80px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        
+        /* --- Search Box Perfect Size Fix --- */
+        .search-box { 
+            display: flex; 
+            background: var(--input-bg); 
+            border-radius: 12px; 
+            padding: 0 15px; 
+            align-items: center; 
+            border: 1px solid var(--border-color);
+            height: 48px; /* Fixed perfect height */
+            width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        .search-box input { 
+            border: none !important; 
+            background: transparent !important; 
+            width: 100% !important; 
+            height: 100% !important;
+            outline: none !important; 
+            margin: 0 0 0 10px !important; /* Override global margin */
+            padding: 0 !important; /* Override global padding */
+            font-size: 0.95rem; 
+            color: var(--text-dark);
+        }
+        
+        .app-screen { display: none; width: 100%; max-width: 1200px; margin: 0 auto; animation: fadeIn 0.3s; flex: 1;}
+        .app-screen.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .slider-container { width: 100%; aspect-ratio: 21/9; overflow: hidden; background: var(--border-color); border-radius: 0 0 20px 20px;}
+        .slider { display: flex; transition: 0.5s; width: 100%; height: 100%; }
+        .slide { min-width: 100%; background-size: cover; background-position: center;}
+        
+        .categories-wrapper { padding: 15px 20px; }
+        .categories-title { font-size: 1.1rem; margin-bottom: 15px; font-weight: 800; display: flex; justify-content: space-between; }
+        .categories-list { display: flex; overflow-x: auto; gap: 15px; padding-bottom: 10px; scrollbar-width: none; }
+        .category-item { display: flex; flex-direction: column; align-items: center; min-width: 70px; cursor: pointer; }
+        .category-icon { width: 60px; height: 60px; border-radius: 16px; background: var(--card-bg); display: flex; justify-content: center; align-items: center; margin-bottom: 8px; border: 2px solid transparent; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
+        .category-item.active .category-icon { border-color: var(--primary-color); background: rgba(59,130,246,0.1); }
+        .category-icon img { width: 100%; height: 100%; object-fit: contain; }
+        .category-item span { font-size: 0.8rem; font-weight: 600; text-align: center; }
+
+        .products-section { padding: 10px 20px 20px 20px; }
+        .products-header h2 { font-size: 1.25rem; font-weight: 900; margin-bottom: 15px; }
+        .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        @media (min-width: 640px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 1024px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
+
+        .product-card { background: var(--card-bg); border-radius: 16px; padding: 12px; border: 1px solid var(--border-color); cursor: pointer; display: flex; flex-direction: column; position: relative; transition: 0.2s;}
+        .product-card:active { transform: scale(0.98); }
+        .product-image-box { width: 100%; aspect-ratio: 16 / 9; height: auto; background: var(--input-bg); border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 0; margin-bottom: 12px; overflow: hidden;}
+        .product-image-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px;}
+        .discount-badge { position: absolute; top: 15px; left: 0; background: var(--danger); color: #fff; font-size: 0.65rem; font-weight: 800; padding: 4px 10px; border-radius: 0 6px 6px 0; z-index: 10;}
+        .product-title { font-size: 0.95rem; font-weight: 800; margin-bottom: 8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height: 1.3;}
+        .product-price { font-size: 1.2rem; font-weight: 900; color: var(--secondary-color); margin-top: auto;}
+
+        .app-form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; text-align: left; margin-bottom: 20px;}
+        @media (max-width: 900px) { .app-form-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 500px) { .app-form-grid { grid-template-columns: 1fr; } }
+        .app-form-grid > div { display: flex; flex-direction: column; justify-content: flex-end; }
+        .app-form-grid label { margin-bottom: 6px; font-size: 0.85rem; font-weight: 700; color: var(--text-dark); }
+        
+        /* Global input styles */
+        input, select, textarea { width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--input-bg); color: var(--text-dark); font-family: inherit; font-size:0.95rem; outline:none; box-sizing: border-box;}
+        input:focus, select:focus, textarea:focus { border-color: var(--secondary-color); }
+        .app-form-grid input, .app-form-grid select { margin-bottom: 0; }
+        .full-width-field { grid-column: 1 / -1 !important; }
+
+        .btn { width: 100%; padding: 14px; background: var(--secondary-color); color: var(--white); border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 1rem; display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.2s;}
+        .btn:active { transform: scale(0.97); }
+        .btn-outline { background: transparent; color: var(--text-dark); border: 2px solid var(--border-color); }
+        
+        .profile-header-premium { background: var(--secondary-color); padding: 40px 25px 70px; color: white; border-radius: 0 0 25px 25px; position: relative; margin-bottom: 20px;}
+        .profile-avatar-wrapper img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.9); object-fit: cover; background: #fff;}
+        .status-badge-profile { background: var(--success); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; display: inline-block; margin-top:5px; border: 1px solid #fff;}
+        
+        .quick-action-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 0 20px; margin-top: -50px; position: relative; z-index: 10; margin-bottom: 25px;}
+        .action-card { background: var(--card-bg); padding: 20px 10px; border-radius: 12px; text-align: center; border: 1px solid var(--border-color); cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.05);}
+        .action-card i { font-size: 1.6rem; margin-bottom: 8px; color: var(--secondary-color); }
+
+        .btn-logout { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 15px; border-radius: 8px; font-weight: bold; width: calc(100% - 40px); margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.2s;}
+        
+        .profile-menu { list-style: none; background: var(--card-bg); margin: 0 20px 20px 20px; border-radius: 12px; border: 1px solid var(--border-color);}
+        .profile-menu li { padding: 16px 20px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-weight: 600; color: var(--text-dark);}
+        .profile-menu li:last-child { border-bottom: none; }
+
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: var(--card-bg); display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid var(--border-color); z-index: 1000; padding-bottom: calc(15px + env(safe-area-inset-bottom));}
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-gray); font-size: 0.75rem; font-weight: 600; cursor: pointer; gap: 4px; width: 25%;}
+        .nav-item.active { color: var(--secondary-color); }
+        
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 2000; padding: 15px;}
+        .modal-box { background: var(--card-bg); border-radius: 20px; width: 100%; max-width: 800px; padding: 25px; max-height: 90vh; overflow-y: auto; position:relative;}
+        .close-btn { position: absolute; top: 15px; right: 15px; font-size: 1.2rem; color: var(--text-dark); cursor: pointer; background: var(--input-bg); border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; z-index: 100;}
+        
+        .order-card { background: var(--card-bg); margin: 0 0 15px 0; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; flex-direction: column; }
+        .status-badge { padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; display: inline-block; }
+        .req-star { color: var(--danger); margin-left: 3px; }
+        
+        #toast-container { position: fixed; top: 25px; left: 50%; transform: translateX(-50%); z-index: 999999; display: flex; flex-direction: column; gap: 12px; pointer-events:none;}
+        .toast { background: var(--text-dark); color: #fff; padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
+
+        .file-upload-box { border: 1px dashed #94a3b8; background: var(--input-bg); padding: 15px 10px; border-radius: 8px; text-align: center; position: relative;}
+        .file-upload-box input[type="file"] { width: 100%; font-size: 0.8rem; border:none; background:transparent;}
+
+        .reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media (max-width: 600px) { .reg-grid { grid-template-columns: 1fr; } }
+        .pricing-grid { display: flex; gap: 10px; margin-bottom: 20px; justify-content:center;}
+        .price-card { display:flex; align-items:center; gap:5px; cursor: pointer; color: var(--text-gray); font-size:0.9rem; font-weight:600;}
+        .price-card input { width:auto; margin:0; accent-color:var(--secondary-color);}
+
+        .wa-float-btn { position: fixed; bottom: 85px; right: 20px; background: #25D366; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1000; text-decoration: none; transition: 0.3s; }
+        .wa-float-btn:active { transform: scale(0.9); }
+        
+        #maintenance-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 9999999; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
+
+        .app-footer { background: var(--card-bg); border-top: 1px solid var(--border-color); padding: 30px 20px; text-align: center; font-size: 0.85rem; color: var(--text-gray); margin-top: auto; }
+        .footer-links { display: flex; justify-content: center; gap: 15px; margin-bottom: 10px; flex-wrap: wrap;}
+        .footer-links span { cursor: pointer; font-weight: 600; color: var(--secondary-color); text-decoration: underline;}
+    </style>
+</head>
+<body>
+
+    <div id="maintenance-overlay">
+        <i class="fa-solid fa-person-digging" style="font-size: 5rem; color: var(--accent); margin-bottom: 20px;"></i>
+        <h1 style="font-weight: 900; color: var(--text-dark);">We'll be back soon!</h1>
+        <p style="color: var(--text-gray); margin-top: 10px; font-size: 1.1rem;">AJ INDIA SARVICES portal is currently under maintenance. Please check back later.</p>
+    </div>
+
+    <a href="https://wa.me/919239369213" target="_blank" class="wa-float-btn">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <div id="hidden-invoice-content" style="display:none; padding:30px; background:#fff; color:#000; font-family:sans-serif;"></div>
+
+    <div id="toast-container"></div>
+    <div id="breaking-news">
+        <i class="fa-solid fa-bolt" style="color:#fde047;"></i> 
+        <div class="marquee-wrapper" id="marquee-text-display"></div>
+    </div>
+
+    <header>
+        <div class="header-top">
+            <div class="logo"><img src="logo.png" alt="AJ INDIA SARVICES" class="dynamic-app-logo"></div>
+            <div class="header-icons">
+                <div id="header-wallet-pill" class="header-wallet-pill" onclick="document.querySelectorAll('.nav-item')[3].click()">
+                    <i class="fa-solid fa-wallet" style="margin-right: 5px;"></i> ₹<span id="header-wallet-bal">0</span>
+                </div>
+                <i class="fa-solid fa-moon theme-toggle" onclick="toggleTheme()"></i>
+                <div style="position:relative;" onclick="openNotifications()">
+                    <i class="fa-solid fa-bell"></i><span class="noti-badge" id="noti-count" style="display:none;">0</span>
+                </div>
+                <div class="user-profile-header" onclick="document.querySelectorAll('.nav-item')[3].click()">
+                    <img id="header-user-pic" src="logo.png"><span id="header-user-name">Login</span>
+                </div>
+            </div>
+        </div>
+        <div class="search-box"><i class="fa-solid fa-magnifying-glass" style="color:#94a3b8"></i><input type="text" id="search-input" placeholder="Search Services..." oninput="liveSearch(this.value)"></div>
+    </header>
+
+    <div id="home-screen" class="app-screen active">
+        <div class="slider-container"><div class="slider" id="slider"></div></div>
+        <div class="categories-wrapper"><div class="categories-list" id="dynamic-categories-list"></div></div>
+        
+        <div class="products-section" id="ai-tools-section" style="display:none;">
+            <div class="products-header"><h2><i class="fa-solid fa-microchip" style="color: var(--accent);"></i> <span id="ui-title-aitools">AI Tools & Links</span></h2></div>
+            <div class="products-grid" id="dynamic-aitools-grid"></div>
+        </div>
+        
+        <div class="products-section" id="trending-section">
+            <div class="products-header"><h2><i class="fa-solid fa-fire" style="color: var(--accent);"></i> <span id="ui-title-top">Top Services</span></h2></div>
+            <div class="products-grid" id="trending-products-grid"></div>
+        </div>
+
+        <div id="dynamic-headlines-container"></div>
+
+        <div class="products-section" id="all-services-section">
+            <div class="products-header"><h2><span id="ui-title-all">All Online Services</span></h2></div>
+            <div class="products-grid" id="dynamic-products-grid"></div>
+        </div>
+    </div>
+
+    <div id="orders-screen" class="app-screen">
+        <div style="padding:25px 20px; font-size:1.4rem; font-weight:900; background:var(--card-bg);">My Applications</div>
+        <div id="orders-list" style="padding:20px;"></div>
+    </div>
+
+    <div id="earnings-screen" class="app-screen">
+        <div style="padding:25px 20px; font-size:1.4rem; font-weight:900; background:var(--card-bg);">My Earnings</div>
+        <div style="padding: 20px;">
+            <div style="background: var(--card-bg); padding:20px; border-radius:12px; border:1px solid var(--border-color); text-align:center; margin-bottom:20px;">
+                <p style="color:var(--text-gray); font-weight:700; font-size:0.9rem; margin-bottom:5px;">Total Commission Earned</p>
+                <h2 style="color:var(--success); font-size:2.5rem; margin:0;">₹<span id="total-earnings-display">0</span></h2>
+            </div>
+            <div style="background: var(--card-bg); padding:15px; border-radius:12px; border:1px solid var(--border-color); margin-bottom:20px; height:250px;">
+                <canvas id="earningsChart"></canvas>
+            </div>
+            <h3 style="margin-bottom:10px; font-size:1.1rem;">Recent Transactions</h3>
+            <div id="transactions-list"></div>
+        </div>
+    </div>
+    
+    <div id="profile-screen" class="app-screen">
+        <div class="profile-header-premium">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="profile-avatar-wrapper" onclick="openEditProfile()"><img id="profile-pic" src="logo.png"></div>
+                <div>
+                    <h2 id="profile-name" style="margin:0 0 5px 0; font-size:1.4rem; font-weight:800;">Guest User</h2>
+                    <p id="profile-email" style="margin:0; font-size:0.85rem; font-weight:500;">Login to access portal</p>
+                </div>
+            </div>
+            
+            <div id="profile-action-btns" style="display:flex; gap:10px; margin-top:20px; width: 100%;">
+                <button class="btn" onclick="openAuthModal(false)" style="flex:1; background:var(--white); color:var(--text-dark);">Login</button>
+                <button class="btn btn-outline" onclick="openAuthModal(true)" style="flex:1; color:var(--white); border-color:var(--white);">Register</button>
+            </div>
+        </div>
+
+        <div class="quick-action-grid">
+            <div class="action-card" onclick="switchAppScreen('orders-screen', 1)"><i class="fa-solid fa-file-signature"></i><p style="margin:0; font-size:0.85rem; font-weight:800;">Status</p></div>
+            <div class="action-card" onclick="openModal('helpdesk-modal')"><i class="fa-solid fa-headset"></i><p style="margin:0; font-size:0.85rem; font-weight:800;">Tickets</p></div>
+            <div class="action-card" onclick="window.open(`https://wa.me/919239369213`, '_blank')"><i class="fa-brands fa-whatsapp" style="color:#10b981;"></i><p style="margin:0; font-size:0.85rem; font-weight:800;">Support</p></div>
+        </div>
+
+        <ul class="profile-menu" id="edit-profile-menu" style="display:none; margin: 0 20px 25px 20px;">
+            <li onclick="openEditProfile()"><div><i class="fa-solid fa-user-pen icon" style="margin-right:10px;"></i> Edit Profile</div><i class="fa-solid fa-chevron-right"></i></li>
+            <li id="li-certificate" onclick="generateAndShowCertificate()"><div><i class="fa-solid fa-award icon" style="color:var(--accent); margin-right:10px;"></i> Auth Certificate</div><i class="fa-solid fa-chevron-right"></i></li>
+        </ul>
+
+        <div class="wallet-card" id="wallet-section" style="display:none; margin-top:25px; background: linear-gradient(135deg, #10b981, #059669); color: white; border-radius: 16px; padding: 20px; margin: 0 20px 20px 20px; justify-content: space-between; align-items: center; box-shadow: 0 8px 20px rgba(16,185,129,0.3);">
+            <div><p style="margin:0; font-size:0.9rem; font-weight:600;">Wallet Balance</p><p class="wallet-bal" id="wallet-balance" style="font-size: 1.8rem; font-weight: 900; margin: 5px 0;">₹0.00</p></div>
+            <button class="add-money-btn" onclick="openModal('add-money-modal')" style="background: rgba(255,255,255,0.2); border: 1px solid white; padding: 8px 12px; border-radius: 8px; color: white; font-weight: bold; cursor: pointer;"><i class="fa-solid fa-plus"></i> Add Money</button>
+        </div>
+
+        <div class="refer-box" id="referral-section" style="display:none; background: var(--card-bg); margin: 0 20px 20px 20px; padding: 15px; border-radius: 16px; border: 1px dashed var(--accent); flex-direction: column; align-items: center; text-align: center;">
+            <h3 style="margin:0 0 5px 0; color:var(--text-dark);"><i class="fa-solid fa-gift" style="color:var(--accent);"></i> Refer & Earn</h3>
+            <p style="font-size:0.85rem; color:var(--text-gray); margin:0;">Share code for <b id="ui-ref-bonus">₹50</b> bonus & <b id="ui-form-comm">₹10</b> on forms!</p>
+            
+            <div style="display:flex; flex-direction:column; width:100%; max-width:300px; margin: 15px auto 10px auto;">
+                <label style="font-size:0.75rem; font-weight:bold; color:var(--text-gray); text-align:left; margin-bottom:5px;">Your Promo Code (Editable)</label>
+                <input type="text" id="edit-my-promo" style="margin:0; text-transform:uppercase; font-weight:900; color:var(--accent); border:2px solid var(--accent); text-align:center; letter-spacing:1px;" onchange="updateMyPromoCode(this.value)">
+            </div>
+            
+            <div style="display:flex; gap:10px; width:100%; max-width:300px; margin:0 auto;">
+                <button class="btn btn-outline" style="padding:10px; font-size:0.9rem; flex:1;" onclick="copyReferral()"><i class="fa-regular fa-copy"></i> Copy</button>
+                <button class="btn" style="padding:10px; font-size:0.9rem; flex:1; background:var(--primary-color);" onclick="shareReferral()"><i class="fa-solid fa-share-nodes"></i> Share</button>
+            </div>
+        </div>
+
+        <button id="profile-logout-btn" class="btn-logout" onclick="logoutApp()" style="display:none; margin-bottom:20px;"><i class="fa-solid fa-power-off"></i> Secure Logout</button>
+    </div>
+
+    <footer class="app-footer">
+        <div class="footer-links">
+            <span onclick="openLegalModal('Terms & Conditions', legalData.terms)">Terms & Conditions</span>
+            <span onclick="openLegalModal('Privacy Policy', legalData.privacy)">Privacy Policy</span>
+            <span onclick="openLegalModal('Refund Policy', legalData.refund)">Refund Policy</span>
+        </div>
+        <p style="margin:0;">&copy; <span id="current-year"></span> AJ INDIA SARVICES. All rights reserved.</p>
+    </footer>
+
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="switchAppScreen('home-screen', 0)"><i class="fa-solid fa-house"></i>Home</div>
+        <div class="nav-item" onclick="switchAppScreen('orders-screen', 1)"><i class="fa-solid fa-file-signature"></i>Status</div>
+        <div class="nav-item" onclick="switchAppScreen('earnings-screen', 2)"><i class="fa-solid fa-chart-line"></i>Earnings</div>
+        <div class="nav-item" onclick="switchAppScreen('profile-screen', 3)"><i class="fa-solid fa-user"></i>Profile</div>
+    </nav>
+
+    <div id="add-money-modal" class="modal-overlay"><div class="modal-box" style="text-align:center;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('add-money-modal')"></i><h2 style="margin-bottom:15px;">Add Money</h2><img id="wallet-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SARVICES%26am=0%26cu=INR" style="width:150px; height:150px; border:2px solid var(--border-color); padding:5px; border-radius:12px; object-fit:contain;"><br><b style="color:var(--secondary-color);">ajsarvices@ptyes</b><input type="number" id="wallet-add-amt" placeholder="Amount (₹)" style="margin-top:15px;" oninput="document.getElementById('wallet-qr').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SARVICES%26am=${this.value}%26cu=INR&size=200`"><input type="text" id="wallet-utr" placeholder="12-Digit UTR Number"><button class="btn" onclick="requestWalletRecharge()">Submit Request</button></div></div>
+    <div id="helpdesk-modal" class="modal-overlay"><div class="modal-box"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('helpdesk-modal')"></i><h2 style="margin-bottom:15px;">Helpdesk</h2><textarea id="ticket-msg" rows="3" placeholder="Describe issue..."></textarea><button class="btn" onclick="submitTicket()">Create Ticket</button><h4 style="margin-top:20px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">My Tickets</h4><div id="my-tickets" style="margin-top:10px; max-height:250px; overflow-y:auto;"></div></div></div>
+    <div id="noti-modal" class="modal-overlay"><div class="modal-box"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('noti-modal')"></i><h2 style="margin-bottom:15px;">Notifications</h2><div id="noti-list" style="max-height:350px; overflow-y:auto;"></div></div></div>
+    <div id="embed-modal" class="modal-overlay"><div class="modal-box" style="max-width:900px; padding:30px 15px;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('embed-modal')"></i><h2 id="embed-title" style="margin-bottom:15px; text-align:center;"></h2><div id="embed-container" style="width:100%; overflow:hidden; min-height:400px; background:#f8fafc; border-radius:10px;"></div></div></div>
+
+    <div id="legal-modal" class="modal-overlay">
+        <div class="modal-box">
+            <i class="fa-solid fa-xmark close-btn" onclick="closeModal('legal-modal')"></i>
+            <h2 id="legal-title" style="margin-bottom:15px; color:var(--primary-color);"></h2>
+            <div id="legal-content" style="white-space: pre-wrap; font-size:0.9rem; line-height:1.5; color:var(--text-gray);"></div>
+        </div>
+    </div>
+
+    <div id="auth-modal" class="modal-overlay">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <i class="fa-solid fa-xmark close-btn" onclick="closeModal('auth-modal')"></i>
+            <div style="text-align:center;"><h2 id="auth-title" style="margin-bottom:15px;">Login</h2></div>
+            
+            <div id="login-fields-container">
+                <input type="email" id="auth-email" placeholder="E-Mail Address">
+                <input type="password" id="auth-password" placeholder="Password">
+                <div style="text-align:right; margin-bottom:15px;"><span style="color:var(--secondary-color); font-size:0.8rem; font-weight:bold; cursor:pointer;" onclick="resetPasswordUI()">Forgot Password?</span></div>
+                <button class="btn" id="auth-login-btn" onclick="executeLogin()">Login Securely</button>
+            </div>
+
+            <div id="reset-pass-container" style="display:none; text-align:center;">
+                <p style="font-size:0.9rem; color:var(--text-gray); margin-bottom:15px;">Enter your registered email to receive a password reset link.</p>
+                <input type="email" id="reset-email" placeholder="Registered E-Mail">
+                <button class="btn" onclick="sendResetEmail()" style="margin-bottom:10px;">Send Reset Link</button>
+                <span style="color:var(--text-gray); font-size:0.8rem; font-weight:bold; cursor:pointer;" onclick="switchAuthMode(false, false)">Back to Login</span>
+            </div>
+
+            <div id="reg-fields-container" style="display: none;">
+                <div class="pricing-grid">
+                    <label class="price-card"><input type="radio" name="rRole" value="59" checked onclick="selectRegRole('Retailer', 59)"> Retailer (₹59)</label>
+                    <label class="price-card"><input type="radio" name="rRole" value="109" onclick="selectRegRole('Distributor', 109)"> Distributor (₹109)</label>
+                    <label class="price-card"><input type="radio" name="rRole" value="199" onclick="selectRegRole('AJ Officer', 199)"> AJ Officer (₹199)</label>
+                </div>
+                <div class="reg-grid">
+                    <div><label class="form-label">Shop Name<span class="req-star">*</span></label><input type="text" id="auth-shop-name" placeholder="Shop Name"></div>
+                    <div><label class="form-label">Owner Name<span class="req-star">*</span></label><input type="text" id="auth-name" placeholder="Owner Name" oninput="autoFillReferral(this.value)"></div>
+                    <div><label class="form-label">E-Mail Address<span class="req-star">*</span></label><input type="email" id="auth-reg-email" placeholder="E-Mail Address"></div>
+                    <div><label class="form-label">Create Password<span class="req-star">*</span></label><input type="password" id="auth-reg-password" placeholder="Password"></div>
+                </div>
+                <input type="text" id="auth-referral" placeholder="Got a Referral Code? (Optional)" style="border-color:var(--accent); margin-top: 15px;">
+                <button class="btn" id="auth-reg-btn" onclick="executeRegistrationValidation()" style="margin-top: 10px;">Pay ₹59 & Register</button>
+            </div>
+            
+            <div id="reg-payment-container" style="display: none; text-align: center; margin-top: 10px;">
+                <h3 style="margin-bottom:8px;">Registration Payment</h3><p>Pay Fee: <b id="reg-pay-amt" style="color:var(--secondary-color);">₹59</b></p>
+                <img id="reg-upi-qr" src="" style="width:180px; height:180px; border:2px solid var(--border-color); border-radius:12px; padding:5px; object-fit:contain;"><br><b style="color:var(--secondary-color);">ajsarvices@ptyes</b>
+                <input type="text" id="reg-utr" placeholder="12-Digit UTR Number" style="margin-top:15px;" maxlength="12">
+                <button type="button" class="btn" onclick="finalizeRegistration()" id="reg-confirm-btn" style="background:var(--success);">Verify Payment & Register</button>
+                <button type="button" class="btn btn-outline" onclick="backToRegForm()" style="margin-top:10px;">Back to Details</button>
+            </div>
+            
+            <p id="auth-toggle-text" style="text-align:center; margin-top:15px; color:var(--secondary-color); font-weight:bold; cursor:pointer;" onclick="switchAuthMode()">New Registration? Click Here</p>
+        </div>
+    </div>
+
+    <div id="product-details-modal" class="modal-overlay">
+        <div class="modal-box" style="padding:0;">
+            <i class="fa-solid fa-xmark close-btn" onclick="closeModal('product-details-modal')"></i>
+            <img id="pd-img" style="width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--bg-color); padding:0; border-radius: 20px 20px 0 0;">
+            <div style="padding:20px;">
+                <h2 id="pd-title"></h2>
+                <h3 id="pd-price" style="color:var(--primary-color);"></h3>
+                <p id="pd-desc" style="font-size:0.9rem;"></p>
+                
+                <a id="pd-yt-link" href="#" target="_blank" style="display:none; align-items:center; gap:8px; color:#ef4444; font-weight:bold; margin-top:10px; text-decoration:none; background:#fee2e2; padding:8px 12px; border-radius:8px; width: fit-content;">
+                    <i class="fa-brands fa-youtube" style="font-size:1.2rem;"></i> Watch Video Tutorial
+                </a>
+                
+                <div style="display:flex; gap:10px; margin-top:20px;" id="pd-action-buttons">
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="application-form-modal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 900px;">
+            <i class="fa-solid fa-xmark close-btn" onclick="closeModal('application-form-modal')"></i>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img id="app-form-logo" src="" style="width: 80px; height: 80px; object-fit: contain; border-radius: 12px; background: var(--input-bg); padding: 5px; border: 1px solid var(--border-color); display: inline-block; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                <h2 style="margin: 0 0 5px 0; font-weight: 900;">Fill Application Details</h2>
+                <p id="app-service-name" style="font-weight: 700; color: var(--primary-color); margin: 0; font-size: 1rem;"></p>
+            </div>
+            <div id="dynamic-custom-form-container" class="app-form-grid"></div>
+            <button class="btn" id="apply-proceed-btn" onclick="proceedToServiceCheckout()" style="background: var(--success);"><i class="fa-solid fa-wallet"></i> Proceed to Payment</button>
+        </div>
+    </div>
+    
+    <div id="checkout-modal" class="modal-overlay"><div class="modal-box" style="text-align:center;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('checkout-modal')"></i><h2>Checkout</h2><p id="checkout-item-price" style="font-size:1.5rem; font-weight:bold; color:var(--primary-color);"></p><button class="btn" onclick="payWithWallet()" id="wallet-pay-btn" style="background:var(--success); margin-bottom:15px;"><i class="fa-solid fa-wallet"></i> Pay from Wallet (Bal: ₹<span id="ck-wallet-bal">0</span>)</button><p>--- OR PAY VIA UPI ---</p><img id="upi-qr-img" style="width:180px; height:180px; object-fit:contain; margin:10px auto;"><br><b>ajsarvices@ptyes</b><input type="text" id="utr-number" placeholder="Enter 12-Digit UTR" maxlength="12"><button class="btn" id="checkout-final-btn" onclick="verifyAndPlaceOrder()">Submit Order</button></div></div>
+    
+    <div id="certificate-modal" class="modal-overlay">
+        <div class="modal-box" style="text-align:center; background: #001b5e; border: 2px solid #4da6ff; padding:35px; max-width:800px;">
+            <i class="fa-solid fa-xmark close-btn" onclick="closeModal('certificate-modal')" style="background:#ffffff; color:#001b5e;"></i>
+            <h3 style="color:#ffffff; margin-bottom:20px; font-size:1.5rem;"><i class="fa-solid fa-award" style="color:#f59e0b;"></i> Authorization Certificate</h3>
+            <img id="cert-view-img" style="width:100%; margin-bottom:20px; border-radius:8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <button class="btn" onclick="downloadCertificate()" style="background: #10b981; font-size:1.1rem;"><i class="fa-solid fa-download"></i> Download High-Res</button>
+        </div>
+    </div>
+    
+    <div id="edit-profile-modal" class="modal-overlay">
+        <div class="modal-box" style="text-align:center;">
+            <i class="fa-solid fa-xmark close-btn" onclick="closeModal('edit-profile-modal')"></i>
+            <h2 style="margin-bottom: 20px;">Edit Details</h2>
+            <div class="file-upload-box" style="margin-bottom:15px; text-align:left;">
+                <label style="font-size:0.8rem; font-weight:bold; color:var(--text-gray); display:block; margin-bottom:8px;">Upload New Logo / Profile Pic</label>
+                <input type="file" id="ep-logo" onchange="uploadProfileLogo(this)" accept="image/*">
+            </div>
+            <input type="text" id="ep-name" placeholder="Full Name">
+            <input type="text" id="ep-shop" placeholder="Shop Name">
+            <button class="btn" id="ep-save-btn" onclick="saveUserProfile()" style="background: var(--success); margin-top:15px;">Save Details</button>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSyAw_-3KzAyG_i8vBb43xqD6gHUsDKupmxk", authDomain: "aj-sarvices-a8554.firebaseapp.com", databaseURL: "https://aj-sarvices-a8554-default-rtdb.firebaseio.com", projectId: "aj-sarvices-a8554", storageBucket: "aj-sarvices-a8554.firebasestorage.app", messagingSenderId: "109804150730", appId: "1:109804150730:web:e75006f44ef5e120d43933" };
+        firebase.initializeApp(firebaseConfig); const db = firebase.database(), auth = firebase.auth(); const IMGBB_API_KEY = "122cc16740d69ce4f60b53f0effed6c1";
+
+        let allProductsData = []; let selectedProductDetails = null; let currentCheckoutState = {}; let uploadedDocsArray = []; let tempRegData = {}; let isSignUpMode = false;
+        let currentUserStatus = "Pending", userWallet = 0, uShopName = "", uRole = "", uName = "", uJoined = "", uReferredBy = "", appLogoUrl="logo.png", compCertUrl="", invSettings={name:"AJ INDIA SARVICES", address:"India"};
+        let uProfilePic = "logo.png"; let tempProfileLogoUrl = ""; 
+        let earningsChartInstance = null; let myOrdersData={}; let isRegisteringProcess = false; let allAIToolsData = {};
+        let refBonusAmt = 50; let formCommAmt = 10; let myGenReferCode = "";
+        let selectedRegRole = "Retailer", selectedRegPrice = 59;
+        let allHeadlinesData = {}; let legalData = {terms:"", privacy:"", refund:""};
+
+        const utrRegex = /^[a-zA-Z0-9]{12}$/; // Strict 12 alphanumeric digits for Indian UTR/TxnID
+
+        document.getElementById('current-year').innerText = new Date().getFullYear();
+
+        if(localStorage.getItem('ajTheme') === 'dark') { document.body.classList.add('dark-theme'); document.querySelector('.theme-toggle').classList.remove('fa-moon'); document.querySelector('.theme-toggle').classList.add('fa-sun'); }
+        
+        auth.onAuthStateChanged((user) => { 
+            if(isRegisteringProcess) return; 
+            if(user && (!user.email || !user.email.toLowerCase().includes('ajsarvices@'))) { 
+                localStorage.setItem('ajUserLogged', 'true');
+                setupUserUI(user); 
+            } else { 
+                resetToGuestUI(); 
+            } 
+        });
+
+        function toggleTheme() { document.body.classList.toggle('dark-theme'); const icon = document.querySelector('.theme-toggle'); icon.classList.toggle('fa-moon'); icon.classList.toggle('fa-sun'); localStorage.setItem('ajTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light'); }
+        function showToast(m, success=true) { const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'toast'; t.style.background = success?'var(--success)':'var(--danger)'; t.innerHTML = m; c.appendChild(t); setTimeout(() => t.remove(), 4000); }
+        function switchAppScreen(id, navIndex) { document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active')); document.querySelectorAll('.nav-item')[navIndex].classList.add('active'); if(id==='earnings-screen') loadEarningsData(); window.scrollTo(0,0); }
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; } function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>'"]/g, function(tag) {
+                const charsToReplace = { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' };
+                return charsToReplace[tag] || tag;
+            });
+        }
+
+        // --- SEARCH FIX: Reset layouts on search ---
+        function liveSearch(query) {
+            query = query.toLowerCase(); 
+            const grid = document.getElementById('dynamic-products-grid'); 
+            grid.innerHTML = '';
+            
+            if (query) {
+                document.getElementById('trending-section').style.display = 'none';
+                document.getElementById('dynamic-headlines-container').style.display = 'none';
+            } else {
+                document.getElementById('trending-section').style.display = 'block';
+                document.getElementById('dynamic-headlines-container').style.display = 'block';
+            }
+            
+            const filtered = allProductsData.filter(p => p.title.toLowerCase().includes(query));
+            filtered.forEach(p => { let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; grid.innerHTML+=`<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${p.imageUrl}" onerror="this.src='logo.png'"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`; });
+            
+            if (!query) renderProducts(); // Reset fully if search is cleared
+        }
+
+        db.ref('legal_policies').on('value', s => { if(s.exists()) { legalData = s.val(); } });
+
+        function openLegalModal(title, content) {
+            document.getElementById('legal-title').innerText = escapeHTML(title);
+            document.getElementById('legal-content').innerText = content || "Content not available.";
+            openModal('legal-modal');
+        }
+
+        db.ref('app_settings').on('value', s => { 
+            if(s.exists()){ 
+                const d=s.val(); 
+                if(d.maintenance_mode) { document.getElementById('maintenance-overlay').style.display = 'flex'; } else { document.getElementById('maintenance-overlay').style.display = 'none'; }
+                
+                if(d.marquee && d.marquee.active){ document.getElementById('breaking-news').style.display='flex'; document.getElementById('marquee-text-display').innerText=d.marquee.text; } else { document.getElementById('breaking-news').style.display='none'; } 
+                if(d.refer_earn) { refBonusAmt=d.refer_earn.signupBonus||50; formCommAmt=d.refer_earn.formCommission||10; if(document.getElementById('ui-ref-bonus')) document.getElementById('ui-ref-bonus').innerText = "₹" + refBonusAmt; if(document.getElementById('ui-form-comm')) document.getElementById('ui-form-comm').innerText = "₹" + formCommAmt; } 
+                if(d.section_titles) { if(document.getElementById('ui-title-aitools')) document.getElementById('ui-title-aitools').innerText = escapeHTML(d.section_titles.aitools) || "AI Tools & Links"; if(document.getElementById('ui-title-top')) document.getElementById('ui-title-top').innerText = escapeHTML(d.section_titles.top) || "Top Services"; if(document.getElementById('ui-title-all')) document.getElementById('ui-title-all').innerText = escapeHTML(d.section_titles.all) || "All Online Services"; }
+                
+                if(d.main_logo) { 
+                    appLogoUrl = d.main_logo; 
+                    document.querySelectorAll('.dynamic-app-logo').forEach(el => {
+                        if(el.tagName.toLowerCase() === 'link') el.href = appLogoUrl;
+                        else el.src = appLogoUrl;
+                    }); 
+                }
+                
+                if(d.logo_size) {
+                    document.querySelectorAll('.dynamic-app-logo').forEach(el => {
+                        if(el.tagName.toLowerCase() === 'img') {
+                            let safeSize = Math.min(d.logo_size, 80); 
+                            el.style.height = safeSize + 'px';
+                            el.style.width = 'auto';
+                        }
+                    });
+                }
+                
+                if(d.certificate_url) { compCertUrl = d.certificate_url; }
+                if(d.invoice_details && document.getElementById('inv-c-name')) { const inv = d.invoice_details; document.getElementById('inv-c-name').value=inv.name||''; document.getElementById('inv-c-address').value=inv.address||''; document.getElementById('inv-c-email').value=inv.email||''; document.getElementById('inv-c-phone').value=inv.phone||''; document.getElementById('inv-c-gst').value=inv.gst||''; }
+            }
+        }); 
+        
+        db.ref('categories').on('value', s => { const list = document.getElementById('dynamic-categories-list'); list.innerHTML = ''; s.forEach(c => { const cat = c.val(); list.innerHTML += `<div class="category-item"><div class="category-icon"><img src="${cat.imageUrl}" onerror="this.src='logo.png'"></div><span>${escapeHTML(cat.title)}</span></div>`; }); });
+        db.ref('banners').on('value', s => { const slider = document.getElementById('slider'); slider.innerHTML = ''; s.forEach(c => { const b = c.val(); slider.innerHTML += `<div class="slide" style="background-image: url('${b.imageUrl}')" onclick="${b.link ? `window.open('${b.link}','_blank')` : ''}"></div>`; }); });
+        
+        db.ref('service_headlines').on('value', s => {
+            const container = document.getElementById('dynamic-headlines-container');
+            container.innerHTML = ''; allHeadlinesData = {};
+            if(s.exists()){ s.forEach(c => { const h = c.val(); allHeadlinesData[c.key] = h; let iconHtml = h.imageUrl ? `<img src="${h.imageUrl}" style="width:24px; height:24px; object-fit:contain; vertical-align:middle; margin-right:8px; border-radius:4px;">` : `<i class="fa-solid fa-layer-group" style="color: var(--accent); margin-right:8px;"></i>`; container.innerHTML += `<div class="products-section"><div class="products-header"><h2 style="display:flex; align-items:center;">${iconHtml} ${escapeHTML(h.title)}</h2></div><div class="products-grid" id="grid-head-${c.key}"></div></div>`; }); }
+            if(allProductsData.length > 0) renderProducts();
+        });
+
+        db.ref('products').on('value', s => { allProductsData = []; s.forEach(c => { const p = c.val(); p.key = c.key; allProductsData.push(p); }); renderProducts(); });
+
+        // --- RENDER PRODUCTS RE-WRITE FOR TOP SERVICES FIX ---
+        function renderProducts() {
+            const mainGrid = document.getElementById('dynamic-products-grid'); 
+            const trendingGrid = document.getElementById('trending-products-grid');
+            
+            if(mainGrid) mainGrid.innerHTML=''; 
+            if(trendingGrid) trendingGrid.innerHTML='';
+            
+            Object.keys(allHeadlinesData).forEach(k => { const g = document.getElementById('grid-head-'+k); if(g) g.innerHTML = ''; });
+            
+            // Populate All Services & Custom Headlines
+            allProductsData.forEach(p => { 
+                let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
+                let cardHtml = `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${p.imageUrl}" onerror="this.src='logo.png'"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
+                
+                if(mainGrid) mainGrid.innerHTML += cardHtml; 
+                if(p.headline) { 
+                    let hKey = Object.keys(allHeadlinesData).find(k => allHeadlinesData[k].title === p.headline); 
+                    if(hKey) { let dynGrid = document.getElementById('grid-head-'+hKey); if(dynGrid) dynGrid.innerHTML += cardHtml; } 
+                }
+            });
+
+            // Populate Top Services (Sort by clicks, limit top 8)
+            let topProducts = [...allProductsData].sort((a, b) => (b.clicks || 0) - (a.clicks || 0)).slice(0, 8);
+            if(topProducts.length > 0) {
+                topProducts.forEach(p => {
+                    let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
+                    let cardHtml = `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${p.imageUrl}" onerror="this.src='logo.png'"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
+                    if(trendingGrid) trendingGrid.innerHTML += cardHtml;
+                });
+                document.getElementById('trending-section').style.display = 'block';
+            } else {
+                document.getElementById('trending-section').style.display = 'none';
+            }
+        }
+
+        db.ref('ai_tools').on('value', s => { const grid = document.getElementById('dynamic-aitools-grid'); grid.innerHTML = ''; allAIToolsData = {}; if(s.exists()) { document.getElementById('ai-tools-section').style.display = 'block'; s.forEach(c => { const t = c.val(); allAIToolsData[c.key] = t; let imgUrl = t.imageUrl || 'logo.png'; grid.innerHTML += `<div class="product-card" style="padding:15px; cursor:pointer;" onclick="handleAIToolClick('${c.key}')"><div class="product-image-box" style="height:90px; background:transparent;"><img src="${imgUrl}" onerror="this.src='logo.png'" style="object-fit:contain;"></div><div class="product-title" style="text-align:center; font-size:1.05rem;">${escapeHTML(t.title)}</div><p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:0;">${escapeHTML(t.description||'')}</p></div>`; }); } else { document.getElementById('ai-tools-section').style.display = 'none'; } });
+        function handleAIToolClick(k) { if(!auth.currentUser || currentUserStatus!=='Active') { showToast("Register / Login to use AI Tools!", false); openAuthModal(false); return; } const t = allAIToolsData[k]; if(t) { if(t.embed) { document.getElementById('embed-title').innerText = escapeHTML(t.title); document.getElementById('embed-container').innerHTML = t.embed; openModal('embed-modal'); } else if(t.link) { window.open(t.link, '_blank'); } } }
+
+        function openAuthModal(forceReg = false){ 
+            openModal('auth-modal'); isSignUpMode = forceReg;
+            document.getElementById('reset-pass-container').style.display = 'none';
+            document.getElementById('login-fields-container').style.display = isSignUpMode ? 'none' : 'block'; 
+            document.getElementById('reg-fields-container').style.display = isSignUpMode ? 'block' : 'none'; 
+            document.getElementById('auth-title').innerText = isSignUpMode ? 'Registration' : 'Login'; 
+            document.getElementById('auth-toggle-text').innerText = isSignUpMode ? 'Already have an account? Login Here' : 'New Registration? Click Here';
+            document.getElementById('auth-toggle-text').style.display = 'block';
+        }
+
+        function switchAuthMode(forceReg = null, hideToggle = false) {
+            isSignUpMode = forceReg !== null ? forceReg : !isSignUpMode;
+            document.getElementById('reset-pass-container').style.display = 'none';
+            document.getElementById('login-fields-container').style.display = isSignUpMode ? 'none' : 'block'; 
+            document.getElementById('reg-fields-container').style.display = isSignUpMode ? 'block' : 'none'; 
+            document.getElementById('auth-title').innerText = isSignUpMode ? 'Registration' : 'Login'; 
+            document.getElementById('auth-toggle-text').innerText = isSignUpMode ? 'Already have an account? Login Here' : 'New Registration? Click Here';
+            document.getElementById('auth-toggle-text').style.display = hideToggle ? 'none' : 'block';
+        }
+
+        function resetPasswordUI() {
+            document.getElementById('login-fields-container').style.display = 'none';
+            document.getElementById('reg-fields-container').style.display = 'none';
+            document.getElementById('auth-toggle-text').style.display = 'none';
+            document.getElementById('reset-pass-container').style.display = 'block';
+            document.getElementById('auth-title').innerText = 'Reset Password';
+        }
+
+        function sendResetEmail() {
+            const e = document.getElementById('reset-email').value.trim();
+            if(!e) return showToast("Enter your email first!", false);
+            auth.sendPasswordResetEmail(e).then(() => {
+                showToast("Reset link sent to email!", true);
+                switchAuthMode(false);
+            }).catch(err => showToast(err.message, false));
+        }
+
+        function selectRegRole(role, price) { selectedRegRole = role; selectedRegPrice = price; document.querySelectorAll('.price-card').forEach(c => c.classList.remove('active')); event.currentTarget.classList.add('active'); document.getElementById('auth-reg-btn').innerText = `Pay ₹${price} & Register`; }
+        
+        function executeLogin() { 
+            const em = document.getElementById('auth-email').value.trim(); 
+            const ps = document.getElementById('auth-password').value.trim(); 
+            if(!em || !ps) return showToast("Enter email and password", false); 
+            
+            const btn=document.getElementById('auth-login-btn'); 
+            btn.innerText="Logging in..."; 
+            btn.disabled=true; 
+            
+            auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
+                return auth.signInWithEmailAndPassword(em, ps);
+            }).then(() => { 
+                localStorage.setItem('ajUserLogged', 'true');
+                closeModal('auth-modal'); 
+                showToast("Logged In Successfully!", true); 
+                btn.innerText="Login Securely"; 
+                btn.disabled=false;
+            }).catch(e => { 
+                showToast("Wrong Email or Password!", false); 
+                btn.innerText="Login Securely"; 
+                btn.disabled=false;
+            }); 
+        }
+
+        function executeRegistrationValidation() { 
+            const e = document.getElementById('auth-reg-email').value.trim(); const ps = document.getElementById('auth-reg-password').value; const shop = document.getElementById('auth-shop-name').value.trim(); const name = document.getElementById('auth-name').value.trim(); 
+            if(!e || !ps || !shop || !name) return showToast("Please fill all required fields (*)", false); 
+            
+            let n = name.replace(/[^a-zA-Z]/g, ''); let prefix = n.length > 0 ? n.substring(0,4).toUpperCase() : "USR";
+            myGenReferCode = "AJ-" + prefix + Math.floor(100 + Math.random() * 900);
+
+            tempRegData = { shopName: shop, name: name, email: e, pass: ps, role: selectedRegRole, fee: selectedRegPrice, referCode: document.getElementById('auth-referral').value.trim(), myReferralId: myGenReferCode }; 
+            document.getElementById('login-fields-container').style.display='none'; document.getElementById('reg-fields-container').style.display='none'; document.getElementById('reg-pay-amt').innerText=`₹${selectedRegPrice}`; document.getElementById('reg-upi-qr').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SARVICES%26am=${selectedRegPrice}%26cu=INR&size=250`; document.getElementById('reg-payment-container').style.display='block'; document.getElementById('auth-toggle-text').style.display='none'; 
+        }
+
+        function backToRegForm(){ document.getElementById('reg-payment-container').style.display='none'; document.getElementById('reg-fields-container').style.display='block'; document.getElementById('auth-toggle-text').style.display='block'; }
+        
+        function finalizeRegistration(){ 
+            const utr=document.getElementById('reg-utr').value.trim(); 
+            if(!utrRegex.test(utr)){ showToast("Valid 12-Digit UTR needed!", false); return; } 
+            document.getElementById('reg-confirm-btn').innerText="Processing..."; document.getElementById('reg-confirm-btn').disabled=true; isRegisteringProcess = true; 
+            
+            auth.createUserWithEmailAndPassword(tempRegData.email, tempRegData.pass).then(r=>{ 
+                r.user.updateProfile({displayName:tempRegData.name}); 
+                db.ref('customers/'+r.user.uid).set({ shopName:tempRegData.shopName, name:tempRegData.name, email:tempRegData.email, role:tempRegData.role, registrationUtr:utr, accountStatus:"Pending", walletBalance:0, commission:0, referredBy: tempRegData.referCode, myCode: tempRegData.myReferralId, profilePic: "", joined:new Date().toLocaleDateString() }).then(()=>{ 
+                    if(tempRegData.referCode){ db.ref('customers').orderByChild('myCode').equalTo(tempRegData.referCode).once('value').then(s=>{ if(s.exists()){ const parentKey = Object.keys(s.val())[0]; let w=s.val()[parentKey].walletBalance||0; let c=s.val()[parentKey].commission||0; db.ref('customers/'+parentKey).update({walletBalance: w+refBonusAmt, commission: c+refBonusAmt}); db.ref('transactions').push({uid: parentKey, type: 'Referral Sign Up Bonus', amount: refBonusAmt, date: new Date().toLocaleDateString(), from: tempRegData.name}); } }); } 
+                    
+                    isRegisteringProcess = false; closeModal('auth-modal'); showToast("Payment Submitted! Account is Pending Approval", true); 
+                    document.getElementById('reg-confirm-btn').innerText="Verify Payment & Register"; document.getElementById('reg-confirm-btn').disabled=false; document.getElementById('auth-toggle-text').style.display='block'; 
+                    setupUserUI(r.user);
+                }); 
+            }).catch(e=>{showToast(e.message, false); isRegisteringProcess = false; document.getElementById('reg-confirm-btn').innerText="Verify Payment & Register"; document.getElementById('reg-confirm-btn').disabled=false;}); 
+        }
+
+        function setupUserUI(u) {
+            document.getElementById('profile-action-btns').style.display = 'none'; document.getElementById('profile-logout-btn').style.display = 'flex'; document.getElementById('wallet-section').style.display = 'flex'; document.getElementById('referral-section').style.display = 'flex'; document.getElementById('edit-profile-menu').style.display = 'block'; document.getElementById('header-wallet-pill').style.display = 'flex';
+            document.getElementById('profile-name').innerText = escapeHTML(u.displayName) || "User"; document.getElementById('header-user-name').innerText = (escapeHTML(u.displayName) || "User").split(' ')[0]; document.getElementById('profile-email').innerHTML=`${escapeHTML(u.email)}<br><span class="status-badge-profile">Pending</span>`; 
+            
+            db.ref('customers/'+u.uid).on('value', s=>{ 
+                if(s.exists()){ 
+                    const d=s.val(); uName=d.name || "User"; uShopName=d.shopName || ""; uRole=d.role || "Retailer"; currentUserStatus=d.accountStatus||"Pending"; userWallet=d.walletBalance||0; uComm=d.commission||0; uReferredBy=d.referredBy||""; uJoined=d.joined||""; uProfilePic = d.profilePic || "logo.png";
+                    document.getElementById('profile-pic').src = uProfilePic; document.getElementById('header-user-pic').src = uProfilePic; 
+                    myGenReferCode = d.myCode || u.uid; document.getElementById('edit-my-promo').value = myGenReferCode; 
+                    document.getElementById('profile-name').innerText=escapeHTML(uName); document.getElementById('header-user-name').innerText=escapeHTML(uName).split(' ')[0]; document.getElementById('wallet-balance').innerText="₹"+userWallet; document.getElementById('header-wallet-bal').innerText=userWallet; document.getElementById('ck-wallet-bal').innerText=userWallet; 
+                    let em = d.email || u.email || ""; document.getElementById('profile-email').innerHTML=`${escapeHTML(em)}<br><span class="status-badge-profile">${escapeHTML(currentUserStatus)}</span>`; 
+                } else { document.getElementById('profile-name').innerText = escapeHTML(u.displayName) || "User"; document.getElementById('profile-email').innerHTML = `${escapeHTML(u.email)}<br><span class="status-badge-profile">Pending</span>`; }
+            });
+            loadMyOrders(); loadNotifications();
+        }
+
+        function resetToGuestUI() {
+            document.getElementById('profile-name').innerText="Guest User"; document.getElementById('header-user-name').innerText="Login"; document.getElementById('profile-email').innerText="Login to access portal"; document.getElementById('profile-pic').src="logo.png"; document.getElementById('header-user-pic').src="logo.png"; 
+            document.getElementById('profile-action-btns').style.display='flex'; document.getElementById('profile-logout-btn').style.display='none'; document.getElementById('wallet-section').style.display='none'; document.getElementById('referral-section').style.display='none'; document.getElementById('edit-profile-menu').style.display='none'; document.getElementById('header-wallet-pill').style.display='none'; currentUserStatus="Pending"; 
+        }
+
+        function logoutApp(){ 
+            localStorage.removeItem('ajUserLogged'); // Clear User Session only
+            auth.signOut(); 
+            switchAppScreen('home-screen', 0); 
+        }
+        
+        function updateMyPromoCode(val) { val = val.trim().toUpperCase(); if(!val.startsWith("AJ-")) { val = "AJ-" + val.replace(/[^A-Z0-9]/g, ''); } document.getElementById('edit-my-promo').value = val; myGenReferCode = val; if(auth.currentUser) { db.ref('customers/'+auth.currentUser.uid).update({myCode: val}).then(()=>{ showToast("Promo Code Saved!", true); }); } }
+        function copyReferral() { navigator.clipboard.writeText(myGenReferCode).then(()=>showToast("Code Copied!", true)); }
+        function shareReferral() { if (navigator.share) { navigator.share({ title: 'Join AJ INDIA SARVICES', text: `Use my referral code ${myGenReferCode} and get ₹${refBonusAmt} bonus!`, url: window.location.href }).catch(err => console.log('Share error:', err)); } else { copyReferral(); } }
+
+        function requestWalletRecharge(){ const amt=document.getElementById('wallet-add-amt').value; const utr=document.getElementById('wallet-utr').value.trim(); if(amt>0 && utrRegex.test(utr)){ db.ref('wallet_requests').push({uid: auth.currentUser.uid, name: uName, amount: Number(amt), utr: utr, status: 'Pending', date: new Date().toLocaleDateString()}).then(()=>{ closeModal('add-money-modal'); showToast("Request Sent!", true); document.getElementById('wallet-add-amt').value=''; document.getElementById('wallet-utr').value=''; }); } else { showToast("Enter Valid Amount & 12-Digit UTR", false); } }
+        function submitTicket(){ const msg=document.getElementById('ticket-msg').value; if(msg) db.ref('tickets').push({uid:auth.currentUser.uid, shop:uShopName, msg:msg, reply:"", date:new Date().toLocaleDateString(), status:"Open"}).then(()=>{ document.getElementById('ticket-msg').value=''; showToast("Ticket Created!", true); }); }
+        function loadNotifications(){ if(!auth.currentUser)return; db.ref('notifications/'+auth.currentUser.uid).on('value', s=>{ const lst=document.getElementById('noti-list'); lst.innerHTML=''; let cnt=0; s.forEach(c=>{ cnt++; lst.innerHTML+=`<div style="padding:10px; border-bottom:1px solid var(--border-color);">${escapeHTML(c.val().msg)}</div>`; }); document.getElementById('noti-count').innerText=cnt; document.getElementById('noti-count').style.display=cnt>0?'block':'none'; }); }
+        function openNotifications(){ openModal('noti-modal'); document.getElementById('noti-count').style.display='none'; }
+        
+        // --- ADDED CLICK TRACKING IN openProductDetails ---
+        function openProductDetails(k){ 
+            if(!auth.currentUser || currentUserStatus!=='Active') { showToast("Register / Login to apply!", false); openAuthModal(false); return; } 
+            
+            // Track Clicks to update "Top Services" correctly
+            db.ref('products/' + k + '/clicks').set(firebase.database.ServerValue.increment(1)).catch(e=>{});
+
+            const p=allProductsData.find(i=>i.key===k); selectedProductDetails=p; 
+            let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
+            selectedProductDetails.parsedPrice = price; 
+            
+            document.getElementById('pd-img').src=p.imageUrl; 
+            document.getElementById('pd-title').innerText=escapeHTML(p.title); 
+            document.getElementById('pd-price').innerText="₹"+price; 
+            document.getElementById('pd-desc').innerText=escapeHTML(p.description); 
+            
+            const ytLinkBtn = document.getElementById('pd-yt-link');
+            if(p.ytLink) {
+                ytLinkBtn.href = p.ytLink;
+                ytLinkBtn.style.display = 'inline-flex';
+            } else {
+                ytLinkBtn.style.display = 'none';
+            }
+
+            const btnContainer = document.getElementById('pd-action-buttons');
+            btnContainer.innerHTML = '';
+            
+            let b1Text = p.btn1Text || "Apply Now";
+            let b1Type = p.btn1Type || "form";
+            let b1Link = p.btn1Link || "";
+            
+            let b2Show = p.btn2Show !== undefined ? p.btn2Show : (p.serviceLink ? true : false);
+            let b2Text = p.btn2Text || "Open Link";
+            let b2Type = p.btn2Type || "link";
+            let b2Link = p.btn2Link || p.serviceLink || "";
+
+            let btn1Action = (b1Type === 'form') ? 'openApplicationForm()' : `window.open('${escapeHTML(b1Link)}', '_blank')`;
+            btnContainer.innerHTML += `<button class="btn" onclick="${btn1Action}" style="flex:1;">${escapeHTML(b1Text)}</button>`;
+
+            if(b2Show) {
+                let btn2Action = (b2Type === 'form') ? 'openApplicationForm()' : `window.open('${escapeHTML(b2Link)}', '_blank')`;
+                btnContainer.innerHTML += `<button class="btn btn-outline" onclick="${btn2Action}" style="flex:1;">${escapeHTML(b2Text)}</button>`;
+            }
+
+            openModal('product-details-modal');
+        }
+        
+        function openApplicationForm(){ closeModal('product-details-modal'); uploadedDocsArray=[]; document.getElementById('app-form-logo').src = selectedProductDetails.imageUrl || 'logo.png'; document.getElementById('app-service-name').innerText = escapeHTML(selectedProductDetails.title); const c=document.getElementById('dynamic-custom-form-container'); c.innerHTML=''; if(selectedProductDetails.customForm){ selectedProductDetails.customForm.forEach((f,i)=>{ if(f.type==='select'){ let o=''; f.options.split(',').forEach(x=>o+=`<option>${escapeHTML(x)}</option>`); c.innerHTML+=`<div><label class="form-label">${escapeHTML(f.label)}</label><select class="dyn-input" data-label="${escapeHTML(f.label)}">${o}</select></div>`; } else if(f.type==='file'){ c.innerHTML+=`<div><label class="form-label">${escapeHTML(f.label)}</label><div class="file-upload-box"><input type="file" onchange="uploadDynamicFile(this,'hf_${i}')"><input type="hidden" class="dyn-input" id="hf_${i}" data-label="${escapeHTML(f.label)}"></div></div>`; } else if (f.type === 'dynamic_doc') { let o='<option value="">Select Document...</option>'; f.options.split(',').forEach(x=>o+=`<option>${escapeHTML(x)}</option>`); c.innerHTML+=`<div class="full-width-field" style="background:var(--bg-color); padding:10px; border-radius:10px; border:1px dashed var(--secondary-color); margin-bottom:10px;"><label class="form-label" style="color:var(--primary-color);">${escapeHTML(f.label)}</label><select class="doc-select dyn-input" data-base-label="${escapeHTML(f.label)}" id="hf_${i}_select" onchange="toggleDynamicUpload(this, 'hf_${i}')">${o}</select><div id="hf_${i}_upload_area" style="display:none; margin-top:10px;"><label class="form-label">Upload <span id="hf_${i}_name"></span></label><div class="file-upload-box"><input type="file" onchange="uploadDynamicFile(this, 'hf_${i}')"><input type="hidden" class="dyn-input" data-label="${escapeHTML(f.label)}" id="hf_${i}"></div></div></div>`; } else { c.innerHTML+=`<div><label class="form-label">${escapeHTML(f.label)}</label><input type="${f.type}" class="dyn-input" placeholder="Enter ${escapeHTML(f.label)}" data-label="${escapeHTML(f.label)}"></div>`; } }); } else { c.innerHTML+=`<div class="full-width-field"><label class="form-label">Full Name</label><input type="text" class="dyn-input" data-label="Name" placeholder="Enter Name"></div><div class="full-width-field" style="background:var(--bg-color); padding:15px; border-radius:10px; border:1px dashed var(--secondary-color); text-align:center;"><p style="font-size:0.9rem; font-weight:bold; margin-bottom:10px;">Upload Documents</p><input type="file" multiple onchange="handleMultipleUploads(this)" style="background:transparent; border:none; margin:0 auto; display:block;"><div id="upload-preview-grid" style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; justify-content:center;"></div></div>`; } openModal('application-form-modal'); }
+        
+        function toggleDynamicUpload(sel, fid){ const upArea=document.getElementById(fid+'_upload_area'), name=document.getElementById(fid+'_name'), hid=document.getElementById(fid); if(sel.value){ upArea.style.display='block'; name.innerText=sel.value; hid.setAttribute('data-label', sel.getAttribute('data-base-label')+' ('+sel.value+')'); } else { upArea.style.display='none'; hid.value=''; } }
+        
+        function handleMultipleUploads(inp) { 
+            Array.from(inp.files).forEach(f => { 
+                const fd = new FormData(); fd.append('image', f); 
+                fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {method: 'POST', body: fd})
+                .then(r => r.json()).then(d => { 
+                    uploadedDocsArray.push(d.data.url); 
+                    renderPreviewGrid();
+                }); 
+            }); 
+        }
+        function renderPreviewGrid() {
+            const grid = document.getElementById('upload-preview-grid'); grid.innerHTML = '';
+            uploadedDocsArray.forEach((url, i) => {
+                grid.innerHTML += `<div style="position:relative; display:inline-block;"><img src="${url}" width="50" height="50" style="border-radius:5px; object-fit:cover; border:1px solid #ccc;"><i class="fa-solid fa-circle-xmark" style="position:absolute; top:-5px; right:-5px; color:red; cursor:pointer; background:#fff; border-radius:50%;" onclick="removePreviewFile(${i})"></i></div>`;
+            });
+        }
+        function removePreviewFile(index) { uploadedDocsArray.splice(index, 1); renderPreviewGrid(); }
+
+        function uploadDynamicFile(inp,hid){ const f=inp.files[0]; const fd=new FormData(); fd.append('image',f); fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {method:'POST',body:fd}).then(r=>r.json()).then(d=>{ document.getElementById(hid).value=d.data.url; uploadedDocsArray.push(d.data.url); showToast("File Uploaded", true); }); }
+
+        function proceedToServiceCheckout(){ let ex=""; document.querySelectorAll('.dyn-input').forEach(i=>{ if(i.classList.contains('doc-select'))return; if(i.value) ex+=`${i.getAttribute('data-label')}: ${escapeHTML(i.value)}<br>`; }); currentCheckoutState={total:Number(selectedProductDetails.parsedPrice), title:selectedProductDetails.title, img:selectedProductDetails.imageUrl, docs:uploadedDocsArray, extra:ex}; closeModal('application-form-modal'); document.getElementById('checkout-item-price').innerText="₹"+currentCheckoutState.total; document.getElementById('upi-qr-img').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SARVICES%26am=${currentCheckoutState.total}%26cu=INR&size=200`; openModal('checkout-modal'); }
+
+        function payWithWallet(){ 
+            if(userWallet >= currentCheckoutState.total) { 
+                const btn = document.getElementById('wallet-pay-btn');
+                btn.innerText = "Verifying..."; btn.disabled = true;
+
+                db.ref('customers/'+auth.currentUser.uid).once('value').then(snap => {
+                    const currentServerWallet = snap.val().walletBalance || 0;
+                    if(currentServerWallet >= currentCheckoutState.total) {
+                        db.ref('customers/'+auth.currentUser.uid).update({walletBalance: currentServerWallet - currentCheckoutState.total}).then(() => {
+                            placeOrder("WALLET-PAY");
+                        });
+                    } else {
+                        showToast("Insufficient Server Balance.", false);
+                        btn.innerHTML = `<i class="fa-solid fa-wallet"></i> Pay from Wallet`; btn.disabled = false;
+                    }
+                });
+            } else { 
+                showToast("Insufficient Wallet Balance!", false); 
+            } 
+        }
+        
+        function verifyAndPlaceOrder(){ const utr=document.getElementById('utr-number').value.trim(); if(utrRegex.test(utr)) placeOrder(utr); else showToast("Enter Valid 12-Digit UTR", false); }
+        
+        function placeOrder(utr){ const btn=document.getElementById('checkout-final-btn'); if(btn){btn.innerText="Processing..."; btn.disabled=true;} db.ref('orders').push({ title:currentCheckoutState.title, price:currentCheckoutState.total, img:currentCheckoutState.img, utr:utr, userName:uShopName+" ("+uName+")", userId:auth.currentUser.uid, status:"Pending", date:new Date().toLocaleDateString(), uploadedDocs:currentCheckoutState.docs, extraDetails:currentCheckoutState.extra }).then(()=>{ if(uReferredBy){ db.ref('customers').orderByChild('myCode').equalTo(uReferredBy).once('value').then(s=>{ if(s.exists()){ const parentKey = Object.keys(s.val())[0]; let w=s.val()[parentKey].walletBalance||0; let c=s.val()[parentKey].commission||0; db.ref('customers/'+parentKey).update({walletBalance: w+refBonusAmt, commission: c+refBonusAmt}); db.ref('transactions').push({uid: parentKey, type: 'Commission', amount: formCommAmt, date: new Date().toLocaleDateString(), from: uName, service: currentCheckoutState.title}); } }); } closeModal('checkout-modal'); showToast("Applied Successfully!", true); switchAppScreen('orders-screen',1); if(btn){btn.innerText="Submit Order"; btn.disabled=false;} }); }
+
+        function cancelMyOrder(key) { if(confirm("Are you sure you want to cancel this order?")) { db.ref('orders/'+key).update({status: 'Cancelled'}).then(() => { showToast("Order Cancelled Successfully", true); }); } }
+
+        function loadMyOrders(){ if(!auth.currentUser) return; db.ref('orders').orderByChild('userId').equalTo(auth.currentUser.uid).on('value', s=>{ const lst=document.getElementById('orders-list'); lst.innerHTML=''; myOrdersData={}; let seq=1; s.forEach(c=>{ const o=c.val(); o.key=c.key; o.sequentialId=seq++; myOrdersData[o.key]=o; let statCls=o.status==="Pending"?"var(--accent)":o.status==="Delivered"?"var(--success)":"var(--secondary-color)"; let btns=`<div style="display:flex; gap:10px; margin-top:10px;"><button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem; flex:1;" onclick="printReceipt('${c.key}')"><i class="fa-solid fa-print"></i> Print</button>`; if(o.status === "Delivered") { btns += `<button class="btn" style="padding:6px 12px; font-size:0.8rem; flex:1; background:#ef4444; color:#fff;" onclick="downloadPDFInvoice('${c.key}')"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>`; } if(o.status === "Pending") { btns += `<button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem; flex:1; color:var(--danger); border-color:var(--danger);" onclick="cancelMyOrder('${c.key}')"><i class="fa-solid fa-xmark"></i> Cancel</button>`; } btns += `</div>`; if(o.resultUrl) btns+=`<button class="btn" style="padding:6px 12px; font-size:0.8rem; margin-top:8px; width:100%; background:var(--success);" onclick="window.open('${escapeHTML(o.resultUrl)}','_blank')"><i class="fa-solid fa-download"></i> Result Doc</button>`; lst.innerHTML+=`<div class="order-card"><div style="display:flex; align-items:center;"><img src="${escapeHTML(o.img)}" style="width:65px; height:65px; border-radius:12px; margin-right:15px; object-fit:cover; border:1px solid var(--border-color);"><div style="flex:1;"><p style="font-weight:800; font-size:1rem; margin-bottom:4px;">${escapeHTML(o.title)}</p><p style="font-size:0.85rem; color:var(--text-gray); margin:0;">Status: <span class="status-badge" style="background:${statCls}; color:#fff; padding:2px 8px; border-radius:12px; font-size:0.7rem;">${escapeHTML(o.status)}</span></p></div><div style="font-weight:900; font-size:1.2rem; color:var(--primary-color);">₹${o.price}</div></div><div>${btns}</div></div>`; }); }); }
+
+        function printReceipt(key){ const o=myOrdersData[key]; const prt=window.open('','_blank'); prt.document.write(`<html><body style="font-family:sans-serif; text-align:center; padding:20px;"><h2>${escapeHTML(invSettings.name)}</h2><p>${escapeHTML(invSettings.address)}</p><hr><h3>Customer Receipt</h3><p><b>Order ID:</b> AJ-ORD-${o.sequentialId}</p><p><b>Service:</b> ${escapeHTML(o.title)}</p><p><b>Status:</b> ${escapeHTML(o.status)}</p><p><b>Amount:</b> ₹${o.price}</p><p><b>Date:</b> ${escapeHTML(o.date)}</p><hr><p>Shop: ${escapeHTML(o.userName)}</p><button onclick="window.print()" style="padding:10px 20px; background:#1e40af; color:#fff; border:none; border-radius:5px; cursor:pointer;">Print</button></body></html>`); prt.document.close(); }
+
+        function downloadPDFInvoice(key) { const o = myOrdersData[key]; const content = document.getElementById('hidden-invoice-content'); content.style.display = 'block'; content.innerHTML = `<div style="border:2px solid #000; padding:40px; border-radius:10px;"><h1 style="color:#1e40af; text-align:center; margin:0;">${escapeHTML(invSettings.name)}</h1><p style="text-align:center; margin-top:5px;">${escapeHTML(invSettings.address)}</p><hr style="border-top:2px solid #e2e8f0; margin:20px 0;"><h2 style="text-align:center; background:#1e40af; color:#fff; padding:10px;">TAX INVOICE</h2><table style="width:100%; text-align:left; margin-top:20px;"><tr><td style="padding:8px;"><b>Invoice No:</b> AJ-INV-${o.sequentialId}</td><td style="padding:8px; text-align:right;"><b>Date:</b> ${escapeHTML(o.date)}</td></tr><tr><td style="padding:8px;"><b>Billed To:</b><br>${escapeHTML(o.userName)}</td><td style="padding:8px; text-align:right;"><b>Status:</b> ${escapeHTML(o.status)}</td></tr></table><hr style="margin:20px 0;"><table style="width:100%; border-collapse:collapse; margin-top:20px;"><tr style="background:#f1f5f9; border-bottom:2px solid #000;"><th style="padding:12px; text-align:left;">Description</th><th style="padding:12px; text-align:right;">Amount (INR)</th></tr><tr><td style="padding:15px; border-bottom:1px solid #e2e8f0;">${escapeHTML(o.title)} (Application Fee)</td><td style="padding:15px; text-align:right; border-bottom:1px solid #e2e8f0;">₹${o.price}</td></tr><tr><td style="padding:15px; font-weight:bold; font-size:1.2rem; text-align:right;">Total Paid:</td><td style="padding:15px; font-weight:bold; font-size:1.2rem; text-align:right; color:#10b981;">₹${o.price}</td></tr></table><p style="text-align:center; margin-top:50px; font-style:italic; color:#64748b;">Thank you for your business!</p></div>`; showToast("Generating PDF Invoice...", true); let opt = { margin: 0.5, filename: `AJ_Invoice_${o.sequentialId}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } }; html2pdf().set(opt).from(content).save().then(() => { content.style.display = 'none'; }); }
+
+        function loadEarningsData(){ if(!auth.currentUser) return; document.getElementById('total-earnings-display').innerText = uComm; db.ref('transactions').orderByChild('uid').equalTo(auth.currentUser.uid).once('value').then(s=>{ const lst=document.getElementById('transactions-list'); lst.innerHTML=''; let chartMap={}; s.forEach(c=>{ const t=c.val(); chartMap[t.date]=(chartMap[t.date]||0)+t.amount; lst.innerHTML+=`<div style="background:var(--card-bg); padding:12px; border-radius:12px; border:1px solid var(--border-color); margin-bottom:10px; display:flex; justify-content:space-between;"><div><b>${escapeHTML(t.type)}</b><br><small>${escapeHTML(t.from)} ${t.service?'- '+escapeHTML(t.service):''}</small></div><b style="color:var(--success);">+₹${t.amount}</b></div>`; }); try { if(typeof Chart==='undefined')return; const ctx=document.getElementById('earningsChart').getContext('2d'); if(earningsChartInstance){ earningsChartInstance.data.labels=Object.keys(chartMap); earningsChartInstance.data.datasets[0].data=Object.values(chartMap); earningsChartInstance.update(); return; } earningsChartInstance=new Chart(ctx, {type:'bar', data:{labels:Object.keys(chartMap), datasets:[{label:'Earnings (₹)', data:Object.values(chartMap), backgroundColor:'#10b981'}]}, options:{responsive:true, maintainAspectRatio:false}}); }catch(e){} }); }
+
+        function generateAndShowCertificate() { if (currentUserStatus !== 'Active') return showToast("Account must be active!", false); const canvas = document.createElement('canvas'); canvas.width = 1600; canvas.height = 1000; const ctx = canvas.getContext('2d'); const grd = ctx.createLinearGradient(0, 0, 0, 1000); grd.addColorStop(0, "#0148c4"); grd.addColorStop(1, "#001b5e"); ctx.fillStyle = grd; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 10; ctx.strokeRect(30, 30, 1540, 940); ctx.strokeStyle = "#4da6ff"; ctx.lineWidth = 4; ctx.strokeRect(45, 45, 1510, 910); const logoImg = new Image(); logoImg.crossOrigin = "Anonymous"; logoImg.src = appLogoUrl; logoImg.onload = () => { ctx.fillStyle = "#ffffff"; ctx.fillRect(600, 80, 400, 120); ctx.drawImage(logoImg, 650, 90, 300, 100); drawText(); finalize(); }; logoImg.onerror = () => { drawText(); finalize(); }; function drawText() { ctx.fillStyle = "#ffffff"; ctx.textAlign = "center"; ctx.font = "bold 65px 'Inter', sans-serif"; ctx.fillText("Certificate of Authorization", 800, 320); ctx.font = "bold 26px 'Inter', sans-serif"; ctx.textAlign = "left"; ctx.fillStyle = "#ffffff"; ctx.fillText(`User Id: AJ-USR-${String(Date.now()).slice(-4)}`, 150, 450); ctx.textAlign = "right"; ctx.fillText(`Issued Date: ${uJoined}`, 1450, 450); ctx.textAlign = "left"; ctx.fillStyle = "#ffffff"; ctx.font = "34px 'Inter', sans-serif"; ctx.fillText(`This is to certify that `, 150, 580); ctx.font = "bold 34px 'Inter', sans-serif"; ctx.fillText(`${uName.toUpperCase()} (${uShopName.toUpperCase()})`, 480, 580); ctx.font = "34px 'Inter', sans-serif"; ctx.fillText(` is an authorized `, 150, 640); ctx.font = "bold 34px 'Inter', sans-serif"; ctx.fillText(`${uRole.toUpperCase()}`, 430, 640); ctx.font = "34px 'Inter', sans-serif"; ctx.fillText(` of `, 150, 700); ctx.font = "bold 34px 'Inter', sans-serif"; ctx.fillText(`${invSettings.name}`, 210, 700); ctx.font = "34px 'Inter', sans-serif"; ctx.fillText(` and is hereby authorized to conduct the business and on its`, 150, 760); ctx.fillText(`behalf and effect from the date of Issued.`, 150, 820); ctx.textAlign = "right"; ctx.font = "24px 'Inter', sans-serif"; ctx.fillStyle = "#ffffff"; ctx.fillText("Certificate Issued By", 1450, 880); ctx.fillText(`(${invSettings.name})`, 1450, 920); } function finalize() { document.getElementById('cert-view-img').src = canvas.toDataURL("image/jpeg", 0.9); openModal('certificate-modal'); } }
+        function downloadCertificate() { const a = document.createElement('a'); a.href = document.getElementById('cert-view-img').src; a.download = "AJ_Certificate.jpg"; a.click(); }
+        function uploadProfileLogo(inp) { const f = inp.files[0]; if(!f) return; document.getElementById('ep-save-btn').innerText = "Uploading..."; document.getElementById('ep-save-btn').disabled = true; const fd = new FormData(); fd.append('image', f); fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {method:'POST', body:fd}).then(r=>r.json()).then(d=>{ tempProfileLogoUrl = d.data.url; showToast("Logo Uploaded! Ready to Save.", true); document.getElementById('ep-save-btn').innerText = "Save Details"; document.getElementById('ep-save-btn').disabled = false; }); }
+        function openEditProfile() { document.getElementById('ep-name').value = uName; document.getElementById('ep-shop').value = uShopName; tempProfileLogoUrl = uProfilePic; document.getElementById('ep-logo').value = ""; openModal('edit-profile-modal'); }
+        function saveUserProfile() { const newName = document.getElementById('ep-name').value; const newShop = document.getElementById('ep-shop').value; auth.currentUser.updateProfile({displayName: newName}).then(()=>{ db.ref('customers/'+auth.currentUser.uid).update({ name: newName, shopName: newShop, profilePic: tempProfileLogoUrl }).then(()=>{ showToast("Profile Updated Successfully!", true); closeModal('edit-profile-modal'); }); }); }
+    </script>
+</body>
+</html>
