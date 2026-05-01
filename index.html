@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="google-site-verification" content="61Ap3eH96NAaOIpm76Bd7-VmquzJnsLPYmJfh_DLa10" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta name="theme-color" content="#1e3a8a">
-    <title>AJ INDIA SARVICES</title>
+    <title>AJ INDIA SARVICES - Premium Portal</title>
     <link rel="icon" type="image/png" href="logo.png" class="dynamic-app-logo">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -215,6 +214,7 @@
         
         <div class="products-section" id="trending-section">
             <div class="products-header"><h2><i class="fa-solid fa-fire" style="color: var(--accent);"></i> <span id="ui-title-top">Top Services</span></h2></div>
+            <!-- TRENDING GRID -->
             <div class="products-grid" id="trending-products-grid"></div>
         </div>
 
@@ -222,6 +222,7 @@
 
         <div class="products-section" id="all-services-section">
             <div class="products-header"><h2><span id="ui-title-all">All Online Services</span></h2></div>
+            <!-- ALL SERVICES GRID -->
             <div class="products-grid" id="dynamic-products-grid"></div>
         </div>
     </div>
@@ -315,7 +316,8 @@
     <div id="add-money-modal" class="modal-overlay"><div class="modal-box" style="text-align:center;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('add-money-modal')"></i><h2 style="margin-bottom:15px;">Add Money</h2><img id="wallet-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SARVICES%26am=0%26cu=INR" style="width:150px; height:150px; border:2px solid var(--border-color); padding:5px; border-radius:12px; object-fit:contain;"><br><b style="color:var(--secondary-color);">ajsarvices@ptyes</b><input type="number" id="wallet-add-amt" placeholder="Amount (₹)" style="margin-top:15px;" oninput="document.getElementById('wallet-qr').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SARVICES%26am=${this.value}%26cu=INR&size=200`"><input type="text" id="wallet-utr" placeholder="12-Digit UTR Number"><button class="btn" onclick="requestWalletRecharge()">Submit Request</button></div></div>
     <div id="helpdesk-modal" class="modal-overlay"><div class="modal-box"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('helpdesk-modal')"></i><h2 style="margin-bottom:15px;">Helpdesk</h2><textarea id="ticket-msg" rows="3" placeholder="Describe issue..."></textarea><button class="btn" onclick="submitTicket()">Create Ticket</button><h4 style="margin-top:20px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">My Tickets</h4><div id="my-tickets" style="margin-top:10px; max-height:250px; overflow-y:auto;"></div></div></div>
     <div id="noti-modal" class="modal-overlay"><div class="modal-box"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('noti-modal')"></i><h2 style="margin-bottom:15px;">Notifications</h2><div id="noti-list" style="max-height:350px; overflow-y:auto;"></div></div></div>
-    <div id="embed-modal" class="modal-overlay"><div class="modal-box" style="max-width:900px; padding:30px 15px;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('embed-modal')"></i><h2 id="embed-title" style="margin-bottom:15px; text-align:center;"></h2><div id="embed-container" style="width:100%; overflow:hidden; min-height:400px; background:#f8fafc; border-radius:10px;"></div></div></div>
+    
+    <!-- EMBED MODAL REMOVED - AI TOOLS NOW OPEN IN NEW TAB -->
 
     <div id="legal-modal" class="modal-overlay">
         <div class="modal-box">
@@ -372,6 +374,7 @@
         </div>
     </div>
 
+    <!-- UPDATED PRODUCT DETAILS MODAL -->
     <div id="product-details-modal" class="modal-overlay">
         <div class="modal-box" style="padding:0;">
             <i class="fa-solid fa-xmark close-btn" onclick="closeModal('product-details-modal')"></i>
@@ -386,7 +389,8 @@
                 </a>
                 
                 <div style="display:flex; gap:10px; margin-top:20px;" id="pd-action-buttons">
-                    </div>
+                    <!-- Buttons are dynamically injected here based on custom settings -->
+                </div>
             </div>
         </div>
     </div>
@@ -431,7 +435,12 @@
 
     <script>
         const firebaseConfig = { apiKey: "AIzaSyAw_-3KzAyG_i8vBb43xqD6gHUsDKupmxk", authDomain: "aj-sarvices-a8554.firebaseapp.com", databaseURL: "https://aj-sarvices-a8554-default-rtdb.firebaseio.com", projectId: "aj-sarvices-a8554", storageBucket: "aj-sarvices-a8554.firebasestorage.app", messagingSenderId: "109804150730", appId: "1:109804150730:web:e75006f44ef5e120d43933" };
-        firebase.initializeApp(firebaseConfig); const db = firebase.database(), auth = firebase.auth(); const IMGBB_API_KEY = "122cc16740d69ce4f60b53f0effed6c1";
+        
+        // UNIQUE APP INITIALIZATION FOR USER PORTAL (ISOLATED SESSION)
+        const userApp = firebase.initializeApp(firebaseConfig, "USER_PORTAL");
+        const db = userApp.database();
+        const auth = userApp.auth(); 
+        const IMGBB_API_KEY = "122cc16740d69ce4f60b53f0effed6c1";
 
         let allProductsData = []; let selectedProductDetails = null; let currentCheckoutState = {}; let uploadedDocsArray = []; let tempRegData = {}; let isSignUpMode = false;
         let currentUserStatus = "Pending", userWallet = 0, uShopName = "", uRole = "", uName = "", uJoined = "", uReferredBy = "", appLogoUrl="logo.png", compCertUrl="", invSettings={name:"AJ INDIA SARVICES", address:"India"};
@@ -470,7 +479,6 @@
             });
         }
 
-        // --- SEARCH FIX: Reset layouts on search ---
         function liveSearch(query) {
             query = query.toLowerCase(); 
             const grid = document.getElementById('dynamic-products-grid'); 
@@ -542,7 +550,6 @@
 
         db.ref('products').on('value', s => { allProductsData = []; s.forEach(c => { const p = c.val(); p.key = c.key; allProductsData.push(p); }); renderProducts(); });
 
-        // --- RENDER PRODUCTS RE-WRITE FOR TOP SERVICES FIX ---
         function renderProducts() {
             const mainGrid = document.getElementById('dynamic-products-grid'); 
             const trendingGrid = document.getElementById('trending-products-grid');
@@ -579,7 +586,24 @@
         }
 
         db.ref('ai_tools').on('value', s => { const grid = document.getElementById('dynamic-aitools-grid'); grid.innerHTML = ''; allAIToolsData = {}; if(s.exists()) { document.getElementById('ai-tools-section').style.display = 'block'; s.forEach(c => { const t = c.val(); allAIToolsData[c.key] = t; let imgUrl = t.imageUrl || 'logo.png'; grid.innerHTML += `<div class="product-card" style="padding:15px; cursor:pointer;" onclick="handleAIToolClick('${c.key}')"><div class="product-image-box" style="height:90px; background:transparent;"><img src="${imgUrl}" onerror="this.src='logo.png'" style="object-fit:contain;"></div><div class="product-title" style="text-align:center; font-size:1.05rem;">${escapeHTML(t.title)}</div><p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:0;">${escapeHTML(t.description||'')}</p></div>`; }); } else { document.getElementById('ai-tools-section').style.display = 'none'; } });
-        function handleAIToolClick(k) { if(!auth.currentUser || currentUserStatus!=='Active') { showToast("Register / Login to use AI Tools!", false); openAuthModal(false); return; } const t = allAIToolsData[k]; if(t) { if(t.embed) { document.getElementById('embed-title').innerText = escapeHTML(t.title); document.getElementById('embed-container').innerHTML = t.embed; openModal('embed-modal'); } else if(t.link) { window.open(t.link, '_blank'); } } }
+        
+        // --- ADDED NEW WINDOW LOGIC FOR AI TOOLS ---
+        function handleAIToolClick(k) { 
+            if(!auth.currentUser || currentUserStatus!=='Active') { 
+                showToast("Register / Login to use AI Tools!", false); openAuthModal(false); return; 
+            } 
+            const t = allAIToolsData[k]; 
+            if(t) { 
+                if(t.embed) { 
+                    const newWin = window.open('', '_blank');
+                    newWin.document.open();
+                    newWin.document.write(t.embed);
+                    newWin.document.close();
+                } else if(t.link) { 
+                    window.open(t.link, '_blank'); 
+                } 
+            } 
+        }
 
         function openAuthModal(forceReg = false){ 
             openModal('auth-modal'); isSignUpMode = forceReg;
@@ -710,7 +734,6 @@
         function loadNotifications(){ if(!auth.currentUser)return; db.ref('notifications/'+auth.currentUser.uid).on('value', s=>{ const lst=document.getElementById('noti-list'); lst.innerHTML=''; let cnt=0; s.forEach(c=>{ cnt++; lst.innerHTML+=`<div style="padding:10px; border-bottom:1px solid var(--border-color);">${escapeHTML(c.val().msg)}</div>`; }); document.getElementById('noti-count').innerText=cnt; document.getElementById('noti-count').style.display=cnt>0?'block':'none'; }); }
         function openNotifications(){ openModal('noti-modal'); document.getElementById('noti-count').style.display='none'; }
         
-        // --- ADDED CLICK TRACKING IN openProductDetails ---
         function openProductDetails(k){ 
             if(!auth.currentUser || currentUserStatus!=='Active') { showToast("Register / Login to apply!", false); openAuthModal(false); return; } 
             
