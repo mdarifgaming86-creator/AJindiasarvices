@@ -9,9 +9,10 @@
     <link rel="icon" type="image/png" href="logo.png" class="dynamic-app-logo">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
@@ -45,29 +46,8 @@
         .user-profile-header span { font-size: 0.8rem; font-weight: 700; max-width: 80px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
         
         /* --- Search Box Perfect Size Fix --- */
-        .search-box { 
-            display: flex; 
-            background: var(--input-bg); 
-            border-radius: 12px; 
-            padding: 0 15px; 
-            align-items: center; 
-            border: 1px solid var(--border-color);
-            height: 48px; /* Fixed perfect height */
-            width: 100%;
-            box-sizing: border-box;
-            overflow: hidden;
-        }
-        .search-box input { 
-            border: none !important; 
-            background: transparent !important; 
-            width: 100% !important; 
-            height: 100% !important;
-            outline: none !important; 
-            margin: 0 0 0 10px !important; /* Override global margin */
-            padding: 0 !important; /* Override global padding */
-            font-size: 0.95rem; 
-            color: var(--text-dark);
-        }
+        .search-box { display: flex; background: var(--input-bg); border-radius: 12px; padding: 0 15px; align-items: center; border: 1px solid var(--border-color); height: 48px; width: 100%; box-sizing: border-box; overflow: hidden;}
+        .search-box input { border: none !important; background: transparent !important; width: 100% !important; height: 100% !important; outline: none !important; margin: 0 0 0 10px !important; padding: 0 !important; font-size: 0.95rem; color: var(--text-dark);}
         
         .app-screen { display: none; width: 100%; max-width: 1200px; margin: 0 auto; animation: fadeIn 0.3s; flex: 1;}
         .app-screen.active { display: block; }
@@ -106,7 +86,6 @@
         .app-form-grid > div { display: flex; flex-direction: column; justify-content: flex-end; }
         .app-form-grid label { margin-bottom: 6px; font-size: 0.85rem; font-weight: 700; color: var(--text-dark); }
         
-        /* Global input styles */
         input, select, textarea { width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--input-bg); color: var(--text-dark); font-family: inherit; font-size:0.95rem; outline:none; box-sizing: border-box;}
         input:focus, select:focus, textarea:focus { border-color: var(--secondary-color); }
         .app-form-grid input, .app-form-grid select { margin-bottom: 0; }
@@ -166,282 +145,166 @@
 </head>
 <body>
 
-    <div id="maintenance-overlay">
-        <i class="fa-solid fa-person-digging" style="font-size: 5rem; color: var(--accent); margin-bottom: 20px;"></i>
-        <h1 style="font-weight: 900; color: var(--text-dark);">We'll be back soon!</h1>
-        <p style="color: var(--text-gray); margin-top: 10px; font-size: 1.1rem;">AJ INDIA SARVICES portal is currently under maintenance. Please check back later.</p>
+    <!-- ONLY DISPLAYED FOR EMBED URL INTERCEPTION -->
+    <div id="full-page-loader" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#f4f7f9; z-index:99999999; justify-content:center; align-items:center; font-family:sans-serif;">
+        <h2 style="color:#3b82f6;">Loading Tool...</h2>
     </div>
 
-    <a href="https://wa.me/919239369213" target="_blank" class="wa-float-btn">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
+    <!-- MAIN APP STRUCTURE -->
+    <div id="main-app-container">
+        <div id="maintenance-overlay">
+            <i class="fa-solid fa-person-digging" style="font-size: 5rem; color: var(--accent); margin-bottom: 20px;"></i>
+            <h1 style="font-weight: 900; color: var(--text-dark);">We'll be back soon!</h1>
+            <p style="color: var(--text-gray); margin-top: 10px; font-size: 1.1rem;">Portal is currently under maintenance. Please check back later.</p>
+        </div>
 
-    <div id="hidden-invoice-content" style="display:none; padding:30px; background:#fff; color:#000; font-family:sans-serif;"></div>
+        <a href="https://wa.me/919239369213" target="_blank" class="wa-float-btn"><i class="fa-brands fa-whatsapp"></i></a>
 
-    <div id="toast-container"></div>
-    <div id="breaking-news">
-        <i class="fa-solid fa-bolt" style="color:#fde047;"></i> 
-        <div class="marquee-wrapper" id="marquee-text-display"></div>
-    </div>
+        <div id="hidden-invoice-content" style="display:none; padding:30px; background:#fff; color:#000; font-family:sans-serif;"></div>
 
-    <header>
-        <div class="header-top">
-            <div class="logo"><img src="logo.png" alt="AJ INDIA SARVICES" class="dynamic-app-logo"></div>
-            <div class="header-icons">
-                <div id="header-wallet-pill" class="header-wallet-pill" onclick="document.querySelectorAll('.nav-item')[3].click()">
-                    <i class="fa-solid fa-wallet" style="margin-right: 5px;"></i> ₹<span id="header-wallet-bal">0</span>
-                </div>
-                <i class="fa-solid fa-moon theme-toggle" onclick="toggleTheme()"></i>
-                <div style="position:relative;" onclick="openNotifications()">
-                    <i class="fa-solid fa-bell"></i><span class="noti-badge" id="noti-count" style="display:none;">0</span>
-                </div>
-                <div class="user-profile-header" onclick="document.querySelectorAll('.nav-item')[3].click()">
-                    <img id="header-user-pic" src="logo.png"><span id="header-user-name">Login</span>
+        <div id="toast-container"></div>
+        <div id="breaking-news"><i class="fa-solid fa-bolt" style="color:#fde047;"></i> <div class="marquee-wrapper" id="marquee-text-display"></div></div>
+
+        <header>
+            <div class="header-top">
+                <div class="logo"><img src="logo.png" alt="Portal Logo" class="dynamic-app-logo"></div>
+                <div class="header-icons">
+                    <div id="header-wallet-pill" class="header-wallet-pill" onclick="document.querySelectorAll('.nav-item')[3].click()"><i class="fa-solid fa-wallet" style="margin-right: 5px;"></i> ₹<span id="header-wallet-bal">0</span></div>
+                    <i class="fa-solid fa-moon theme-toggle" onclick="toggleTheme()"></i>
+                    <div style="position:relative;" onclick="openNotifications()"><i class="fa-solid fa-bell"></i><span class="noti-badge" id="noti-count" style="display:none;">0</span></div>
+                    <div class="user-profile-header" onclick="document.querySelectorAll('.nav-item')[3].click()"><img id="header-user-pic" src="logo.png"><span id="header-user-name">Login</span></div>
                 </div>
             </div>
-        </div>
-        <div class="search-box"><i class="fa-solid fa-magnifying-glass" style="color:#94a3b8"></i><input type="text" id="search-input" placeholder="Search Services..." oninput="liveSearch(this.value)"></div>
-    </header>
+            <div class="search-box"><i class="fa-solid fa-magnifying-glass" style="color:#94a3b8"></i><input type="text" id="search-input" placeholder="Search Services..." oninput="liveSearch(this.value)"></div>
+        </header>
 
-    <div id="home-screen" class="app-screen active">
-        <div class="slider-container"><div class="slider" id="slider"></div></div>
-        <div class="categories-wrapper"><div class="categories-list" id="dynamic-categories-list"></div></div>
+        <div id="home-screen" class="app-screen active">
+            <div class="slider-container"><div class="slider" id="slider"></div></div>
+            <div class="categories-wrapper"><div class="categories-list" id="dynamic-categories-list"></div></div>
+            
+            <div class="products-section" id="ai-tools-section" style="display:none;">
+                <div class="products-header"><h2><i class="fa-solid fa-microchip" style="color: var(--accent);"></i> <span id="ui-title-aitools">AI Tools & Links</span></h2></div>
+                <div class="products-grid" id="dynamic-aitools-grid"></div>
+            </div>
+            
+            <div class="products-section" id="trending-section">
+                <div class="products-header"><h2><i class="fa-solid fa-fire" style="color: var(--accent);"></i> <span id="ui-title-top">Top Services</span></h2></div>
+                <div class="products-grid" id="trending-products-grid"></div>
+            </div>
+
+            <div id="dynamic-headlines-container"></div>
+
+            <div class="products-section" id="all-services-section">
+                <div class="products-header"><h2><span id="ui-title-all">All Online Services</span></h2></div>
+                <div class="products-grid" id="dynamic-products-grid"></div>
+            </div>
+        </div>
+
+        <div id="orders-screen" class="app-screen">
+            <div style="padding:25px 20px; font-size:1.4rem; font-weight:900; background:var(--card-bg);">My Applications</div>
+            <div id="orders-list" style="padding:20px;"></div>
+        </div>
+
+        <div id="earnings-screen" class="app-screen">
+            <div style="padding:25px 20px; font-size:1.4rem; font-weight:900; background:var(--card-bg);">My Earnings</div>
+            <div style="padding: 20px;">
+                <div style="background: var(--card-bg); padding:20px; border-radius:12px; border:1px solid var(--border-color); text-align:center; margin-bottom:20px;">
+                    <p style="color:var(--text-gray); font-weight:700; font-size:0.9rem; margin-bottom:5px;">Total Commission Earned</p>
+                    <h2 style="color:var(--success); font-size:2.5rem; margin:0;">₹<span id="total-earnings-display">0</span></h2>
+                </div>
+                <div style="background: var(--card-bg); padding:15px; border-radius:12px; border:1px solid var(--border-color); margin-bottom:20px; height:250px;"><canvas id="earningsChart"></canvas></div>
+                <h3 style="margin-bottom:10px; font-size:1.1rem;">Recent Transactions</h3>
+                <div id="transactions-list"></div>
+            </div>
+        </div>
         
-        <div class="products-section" id="ai-tools-section" style="display:none;">
-            <div class="products-header"><h2><i class="fa-solid fa-microchip" style="color: var(--accent);"></i> <span id="ui-title-aitools">AI Tools & Links</span></h2></div>
-            <div class="products-grid" id="dynamic-aitools-grid"></div>
-        </div>
-        
-        <div class="products-section" id="trending-section">
-            <div class="products-header"><h2><i class="fa-solid fa-fire" style="color: var(--accent);"></i> <span id="ui-title-top">Top Services</span></h2></div>
-            <!-- TRENDING GRID -->
-            <div class="products-grid" id="trending-products-grid"></div>
-        </div>
-
-        <div id="dynamic-headlines-container"></div>
-
-        <div class="products-section" id="all-services-section">
-            <div class="products-header"><h2><span id="ui-title-all">All Online Services</span></h2></div>
-            <!-- ALL SERVICES GRID -->
-            <div class="products-grid" id="dynamic-products-grid"></div>
-        </div>
-    </div>
-
-    <div id="orders-screen" class="app-screen">
-        <div style="padding:25px 20px; font-size:1.4rem; font-weight:900; background:var(--card-bg);">My Applications</div>
-        <div id="orders-list" style="padding:20px;"></div>
-    </div>
-
-    <div id="earnings-screen" class="app-screen">
-        <div style="padding:25px 20px; font-size:1.4rem; font-weight:900; background:var(--card-bg);">My Earnings</div>
-        <div style="padding: 20px;">
-            <div style="background: var(--card-bg); padding:20px; border-radius:12px; border:1px solid var(--border-color); text-align:center; margin-bottom:20px;">
-                <p style="color:var(--text-gray); font-weight:700; font-size:0.9rem; margin-bottom:5px;">Total Commission Earned</p>
-                <h2 style="color:var(--success); font-size:2.5rem; margin:0;">₹<span id="total-earnings-display">0</span></h2>
-            </div>
-            <div style="background: var(--card-bg); padding:15px; border-radius:12px; border:1px solid var(--border-color); margin-bottom:20px; height:250px;">
-                <canvas id="earningsChart"></canvas>
-            </div>
-            <h3 style="margin-bottom:10px; font-size:1.1rem;">Recent Transactions</h3>
-            <div id="transactions-list"></div>
-        </div>
-    </div>
-    
-    <div id="profile-screen" class="app-screen">
-        <div class="profile-header-premium">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <div class="profile-avatar-wrapper" onclick="openEditProfile()"><img id="profile-pic" src="logo.png"></div>
-                <div>
-                    <h2 id="profile-name" style="margin:0 0 5px 0; font-size:1.4rem; font-weight:800;">Guest User</h2>
-                    <p id="profile-email" style="margin:0; font-size:0.85rem; font-weight:500;">Login to access portal</p>
+        <div id="profile-screen" class="app-screen">
+            <div class="profile-header-premium">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="profile-avatar-wrapper" onclick="openEditProfile()"><img id="profile-pic" src="logo.png"></div>
+                    <div>
+                        <h2 id="profile-name" style="margin:0 0 5px 0; font-size:1.4rem; font-weight:800;">Guest User</h2>
+                        <p id="profile-email" style="margin:0; font-size:0.85rem; font-weight:500;">Login to access portal</p>
+                    </div>
+                </div>
+                
+                <div id="profile-action-btns" style="display:flex; gap:10px; margin-top:20px; width: 100%;">
+                    <button class="btn" onclick="openAuthModal(false)" style="flex:1; background:var(--white); color:var(--text-dark);">Login</button>
+                    <button class="btn btn-outline" onclick="openAuthModal(true)" style="flex:1; color:var(--white); border-color:var(--white);">Register</button>
                 </div>
             </div>
-            
-            <div id="profile-action-btns" style="display:flex; gap:10px; margin-top:20px; width: 100%;">
-                <button class="btn" onclick="openAuthModal(false)" style="flex:1; background:var(--white); color:var(--text-dark);">Login</button>
-                <button class="btn btn-outline" onclick="openAuthModal(true)" style="flex:1; color:var(--white); border-color:var(--white);">Register</button>
+
+            <div class="quick-action-grid">
+                <div class="action-card" onclick="switchAppScreen('orders-screen', 1)"><i class="fa-solid fa-file-signature"></i><p style="margin:0; font-size:0.85rem; font-weight:800;">Status</p></div>
+                <div class="action-card" onclick="openModal('helpdesk-modal')"><i class="fa-solid fa-headset"></i><p style="margin:0; font-size:0.85rem; font-weight:800;">Tickets</p></div>
+                <div class="action-card" onclick="window.open(`https://wa.me/919239369213`, '_blank')"><i class="fa-brands fa-whatsapp" style="color:#10b981;"></i><p style="margin:0; font-size:0.85rem; font-weight:800;">Support</p></div>
             </div>
-        </div>
 
-        <div class="quick-action-grid">
-            <div class="action-card" onclick="switchAppScreen('orders-screen', 1)"><i class="fa-solid fa-file-signature"></i><p style="margin:0; font-size:0.85rem; font-weight:800;">Status</p></div>
-            <div class="action-card" onclick="openModal('helpdesk-modal')"><i class="fa-solid fa-headset"></i><p style="margin:0; font-size:0.85rem; font-weight:800;">Tickets</p></div>
-            <div class="action-card" onclick="window.open(`https://wa.me/919239369213`, '_blank')"><i class="fa-brands fa-whatsapp" style="color:#10b981;"></i><p style="margin:0; font-size:0.85rem; font-weight:800;">Support</p></div>
-        </div>
+            <ul class="profile-menu" id="edit-profile-menu" style="display:none; margin: 0 20px 25px 20px;">
+                <li onclick="openEditProfile()"><div><i class="fa-solid fa-user-pen icon" style="margin-right:10px;"></i> Edit Profile</div><i class="fa-solid fa-chevron-right"></i></li>
+                <li id="li-certificate" onclick="generateAndShowCertificate()"><div><i class="fa-solid fa-award icon" style="color:var(--accent); margin-right:10px;"></i> Auth Certificate</div><i class="fa-solid fa-chevron-right"></i></li>
+            </ul>
 
-        <ul class="profile-menu" id="edit-profile-menu" style="display:none; margin: 0 20px 25px 20px;">
-            <li onclick="openEditProfile()"><div><i class="fa-solid fa-user-pen icon" style="margin-right:10px;"></i> Edit Profile</div><i class="fa-solid fa-chevron-right"></i></li>
-            <li id="li-certificate" onclick="generateAndShowCertificate()"><div><i class="fa-solid fa-award icon" style="color:var(--accent); margin-right:10px;"></i> Auth Certificate</div><i class="fa-solid fa-chevron-right"></i></li>
-        </ul>
-
-        <div class="wallet-card" id="wallet-section" style="display:none; margin-top:25px; background: linear-gradient(135deg, #10b981, #059669); color: white; border-radius: 16px; padding: 20px; margin: 0 20px 20px 20px; justify-content: space-between; align-items: center; box-shadow: 0 8px 20px rgba(16,185,129,0.3);">
-            <div><p style="margin:0; font-size:0.9rem; font-weight:600;">Wallet Balance</p><p class="wallet-bal" id="wallet-balance" style="font-size: 1.8rem; font-weight: 900; margin: 5px 0;">₹0.00</p></div>
-            <button class="add-money-btn" onclick="openModal('add-money-modal')" style="background: rgba(255,255,255,0.2); border: 1px solid white; padding: 8px 12px; border-radius: 8px; color: white; font-weight: bold; cursor: pointer;"><i class="fa-solid fa-plus"></i> Add Money</button>
-        </div>
-
-        <div class="refer-box" id="referral-section" style="display:none; background: var(--card-bg); margin: 0 20px 20px 20px; padding: 15px; border-radius: 16px; border: 1px dashed var(--accent); flex-direction: column; align-items: center; text-align: center;">
-            <h3 style="margin:0 0 5px 0; color:var(--text-dark);"><i class="fa-solid fa-gift" style="color:var(--accent);"></i> Refer & Earn</h3>
-            <p style="font-size:0.85rem; color:var(--text-gray); margin:0;">Share code for <b id="ui-ref-bonus">₹50</b> bonus & <b id="ui-form-comm">₹10</b> on forms!</p>
-            
-            <div style="display:flex; flex-direction:column; width:100%; max-width:300px; margin: 15px auto 10px auto;">
-                <label style="font-size:0.75rem; font-weight:bold; color:var(--text-gray); text-align:left; margin-bottom:5px;">Your Promo Code (Editable)</label>
-                <input type="text" id="edit-my-promo" style="margin:0; text-transform:uppercase; font-weight:900; color:var(--accent); border:2px solid var(--accent); text-align:center; letter-spacing:1px;" onchange="updateMyPromoCode(this.value)">
+            <div class="wallet-card" id="wallet-section" style="display:none; margin-top:25px; background: linear-gradient(135deg, #10b981, #059669); color: white; border-radius: 16px; padding: 20px; margin: 0 20px 20px 20px; justify-content: space-between; align-items: center; box-shadow: 0 8px 20px rgba(16,185,129,0.3);">
+                <div><p style="margin:0; font-size:0.9rem; font-weight:600;">Wallet Balance</p><p class="wallet-bal" id="wallet-balance" style="font-size: 1.8rem; font-weight: 900; margin: 5px 0;">₹0.00</p></div>
+                <button class="add-money-btn" onclick="openModal('add-money-modal')" style="background: rgba(255,255,255,0.2); border: 1px solid white; padding: 8px 12px; border-radius: 8px; color: white; font-weight: bold; cursor: pointer;"><i class="fa-solid fa-plus"></i> Add Money</button>
             </div>
-            
-            <div style="display:flex; gap:10px; width:100%; max-width:300px; margin:0 auto;">
-                <button class="btn btn-outline" style="padding:10px; font-size:0.9rem; flex:1;" onclick="copyReferral()"><i class="fa-regular fa-copy"></i> Copy</button>
-                <button class="btn" style="padding:10px; font-size:0.9rem; flex:1; background:var(--primary-color);" onclick="shareReferral()"><i class="fa-solid fa-share-nodes"></i> Share</button>
+
+            <div class="refer-box" id="referral-section" style="display:none; background: var(--card-bg); margin: 0 20px 20px 20px; padding: 15px; border-radius: 16px; border: 1px dashed var(--accent); flex-direction: column; align-items: center; text-align: center;">
+                <h3 style="margin:0 0 5px 0; color:var(--text-dark);"><i class="fa-solid fa-gift" style="color:var(--accent);"></i> Refer & Earn</h3>
+                <p style="font-size:0.85rem; color:var(--text-gray); margin:0;">Share code for <b id="ui-ref-bonus">₹50</b> bonus & <b id="ui-form-comm">₹10</b> on forms!</p>
+                <div style="display:flex; flex-direction:column; width:100%; max-width:300px; margin: 15px auto 10px auto;"><label style="font-size:0.75rem; font-weight:bold; color:var(--text-gray); text-align:left; margin-bottom:5px;">Your Promo Code (Editable)</label><input type="text" id="edit-my-promo" style="margin:0; text-transform:uppercase; font-weight:900; color:var(--accent); border:2px solid var(--accent); text-align:center; letter-spacing:1px;" onchange="updateMyPromoCode(this.value)"></div>
+                <div style="display:flex; gap:10px; width:100%; max-width:300px; margin:0 auto;"><button class="btn btn-outline" style="padding:10px; font-size:0.9rem; flex:1;" onclick="copyReferral()"><i class="fa-regular fa-copy"></i> Copy</button><button class="btn" style="padding:10px; font-size:0.9rem; flex:1; background:var(--primary-color);" onclick="shareReferral()"><i class="fa-solid fa-share-nodes"></i> Share</button></div>
             </div>
+
+            <button id="profile-logout-btn" class="btn-logout" onclick="logoutApp()" style="display:none; margin-bottom:20px;"><i class="fa-solid fa-power-off"></i> Secure Logout</button>
         </div>
 
-        <button id="profile-logout-btn" class="btn-logout" onclick="logoutApp()" style="display:none; margin-bottom:20px;"><i class="fa-solid fa-power-off"></i> Secure Logout</button>
-    </div>
+        <footer class="app-footer">
+            <div class="footer-links">
+                <span onclick="openLegalModal('Terms & Conditions', legalData.terms)">Terms & Conditions</span>
+                <span onclick="openLegalModal('Privacy Policy', legalData.privacy)">Privacy Policy</span>
+                <span onclick="openLegalModal('Refund Policy', legalData.refund)">Refund Policy</span>
+            </div>
+            <p style="margin:0;">&copy; <span id="current-year"></span>. All rights reserved.</p>
+        </footer>
 
-    <footer class="app-footer">
-        <div class="footer-links">
-            <span onclick="openLegalModal('Terms & Conditions', legalData.terms)">Terms & Conditions</span>
-            <span onclick="openLegalModal('Privacy Policy', legalData.privacy)">Privacy Policy</span>
-            <span onclick="openLegalModal('Refund Policy', legalData.refund)">Refund Policy</span>
-        </div>
-        <p style="margin:0;">&copy; <span id="current-year"></span> AJ INDIA SARVICES. All rights reserved.</p>
-    </footer>
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="switchAppScreen('home-screen', 0)"><i class="fa-solid fa-house"></i>Home</div>
+            <div class="nav-item" onclick="switchAppScreen('orders-screen', 1)"><i class="fa-solid fa-file-signature"></i>Status</div>
+            <div class="nav-item" onclick="switchAppScreen('earnings-screen', 2)"><i class="fa-solid fa-chart-line"></i>Earnings</div>
+            <div class="nav-item" onclick="switchAppScreen('profile-screen', 3)"><i class="fa-solid fa-user"></i>Profile</div>
+        </nav>
+    </div> <!-- END MAIN APP CONTAINER -->
 
-    <nav class="bottom-nav">
-        <div class="nav-item active" onclick="switchAppScreen('home-screen', 0)"><i class="fa-solid fa-house"></i>Home</div>
-        <div class="nav-item" onclick="switchAppScreen('orders-screen', 1)"><i class="fa-solid fa-file-signature"></i>Status</div>
-        <div class="nav-item" onclick="switchAppScreen('earnings-screen', 2)"><i class="fa-solid fa-chart-line"></i>Earnings</div>
-        <div class="nav-item" onclick="switchAppScreen('profile-screen', 3)"><i class="fa-solid fa-user"></i>Profile</div>
-    </nav>
-
+    <!-- ALL MODALS -->
     <div id="add-money-modal" class="modal-overlay"><div class="modal-box" style="text-align:center;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('add-money-modal')"></i><h2 style="margin-bottom:15px;">Add Money</h2><img id="wallet-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SARVICES%26am=0%26cu=INR" style="width:150px; height:150px; border:2px solid var(--border-color); padding:5px; border-radius:12px; object-fit:contain;"><br><b style="color:var(--secondary-color);">ajsarvices@ptyes</b><input type="number" id="wallet-add-amt" placeholder="Amount (₹)" style="margin-top:15px;" oninput="document.getElementById('wallet-qr').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SARVICES%26am=${this.value}%26cu=INR&size=200`"><input type="text" id="wallet-utr" placeholder="12-Digit UTR Number"><button class="btn" onclick="requestWalletRecharge()">Submit Request</button></div></div>
     <div id="helpdesk-modal" class="modal-overlay"><div class="modal-box"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('helpdesk-modal')"></i><h2 style="margin-bottom:15px;">Helpdesk</h2><textarea id="ticket-msg" rows="3" placeholder="Describe issue..."></textarea><button class="btn" onclick="submitTicket()">Create Ticket</button><h4 style="margin-top:20px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">My Tickets</h4><div id="my-tickets" style="margin-top:10px; max-height:250px; overflow-y:auto;"></div></div></div>
     <div id="noti-modal" class="modal-overlay"><div class="modal-box"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('noti-modal')"></i><h2 style="margin-bottom:15px;">Notifications</h2><div id="noti-list" style="max-height:350px; overflow-y:auto;"></div></div></div>
+
+    <div id="legal-modal" class="modal-overlay"><div class="modal-box"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('legal-modal')"></i><h2 id="legal-title" style="margin-bottom:15px; color:var(--primary-color);"></h2><div id="legal-content" style="white-space: pre-wrap; font-size:0.9rem; line-height:1.5; color:var(--text-gray);"></div></div></div>
     
-    <!-- EMBED MODAL REMOVED - AI TOOLS NOW OPEN IN NEW TAB -->
-
-    <div id="legal-modal" class="modal-overlay">
-        <div class="modal-box">
-            <i class="fa-solid fa-xmark close-btn" onclick="closeModal('legal-modal')"></i>
-            <h2 id="legal-title" style="margin-bottom:15px; color:var(--primary-color);"></h2>
-            <div id="legal-content" style="white-space: pre-wrap; font-size:0.9rem; line-height:1.5; color:var(--text-gray);"></div>
-        </div>
-    </div>
-
     <div id="auth-modal" class="modal-overlay">
         <div class="modal-box" onclick="event.stopPropagation()">
             <i class="fa-solid fa-xmark close-btn" onclick="closeModal('auth-modal')"></i>
             <div style="text-align:center;"><h2 id="auth-title" style="margin-bottom:15px;">Login</h2></div>
-            
-            <div id="login-fields-container">
-                <input type="email" id="auth-email" placeholder="E-Mail Address">
-                <input type="password" id="auth-password" placeholder="Password">
-                <div style="text-align:right; margin-bottom:15px;"><span style="color:var(--secondary-color); font-size:0.8rem; font-weight:bold; cursor:pointer;" onclick="resetPasswordUI()">Forgot Password?</span></div>
-                <button class="btn" id="auth-login-btn" onclick="executeLogin()">Login Securely</button>
-            </div>
-
-            <div id="reset-pass-container" style="display:none; text-align:center;">
-                <p style="font-size:0.9rem; color:var(--text-gray); margin-bottom:15px;">Enter your registered email to receive a password reset link.</p>
-                <input type="email" id="reset-email" placeholder="Registered E-Mail">
-                <button class="btn" onclick="sendResetEmail()" style="margin-bottom:10px;">Send Reset Link</button>
-                <span style="color:var(--text-gray); font-size:0.8rem; font-weight:bold; cursor:pointer;" onclick="switchAuthMode(false, false)">Back to Login</span>
-            </div>
-
-            <div id="reg-fields-container" style="display: none;">
-                <div class="pricing-grid">
-                    <label class="price-card"><input type="radio" name="rRole" value="59" checked onclick="selectRegRole('Retailer', 59)"> Retailer (₹59)</label>
-                    <label class="price-card"><input type="radio" name="rRole" value="109" onclick="selectRegRole('Distributor', 109)"> Distributor (₹109)</label>
-                    <label class="price-card"><input type="radio" name="rRole" value="199" onclick="selectRegRole('AJ Officer', 199)"> AJ Officer (₹199)</label>
-                </div>
-                <div class="reg-grid">
-                    <div><label class="form-label">Shop Name<span class="req-star">*</span></label><input type="text" id="auth-shop-name" placeholder="Shop Name"></div>
-                    <div><label class="form-label">Owner Name<span class="req-star">*</span></label><input type="text" id="auth-name" placeholder="Owner Name" oninput="autoFillReferral(this.value)"></div>
-                    <div><label class="form-label">E-Mail Address<span class="req-star">*</span></label><input type="email" id="auth-reg-email" placeholder="E-Mail Address"></div>
-                    <div><label class="form-label">Create Password<span class="req-star">*</span></label><input type="password" id="auth-reg-password" placeholder="Password"></div>
-                </div>
-                <input type="text" id="auth-referral" placeholder="Got a Referral Code? (Optional)" style="border-color:var(--accent); margin-top: 15px;">
-                <button class="btn" id="auth-reg-btn" onclick="executeRegistrationValidation()" style="margin-top: 10px;">Pay ₹59 & Register</button>
-            </div>
-            
-            <div id="reg-payment-container" style="display: none; text-align: center; margin-top: 10px;">
-                <h3 style="margin-bottom:8px;">Registration Payment</h3><p>Pay Fee: <b id="reg-pay-amt" style="color:var(--secondary-color);">₹59</b></p>
-                <img id="reg-upi-qr" src="" style="width:180px; height:180px; border:2px solid var(--border-color); border-radius:12px; padding:5px; object-fit:contain;"><br><b style="color:var(--secondary-color);">ajsarvices@ptyes</b>
-                <input type="text" id="reg-utr" placeholder="12-Digit UTR Number" style="margin-top:15px;" maxlength="12">
-                <button type="button" class="btn" onclick="finalizeRegistration()" id="reg-confirm-btn" style="background:var(--success);">Verify Payment & Register</button>
-                <button type="button" class="btn btn-outline" onclick="backToRegForm()" style="margin-top:10px;">Back to Details</button>
-            </div>
-            
+            <div id="login-fields-container"><input type="email" id="auth-email" placeholder="E-Mail Address"><input type="password" id="auth-password" placeholder="Password"><div style="text-align:right; margin-bottom:15px;"><span style="color:var(--secondary-color); font-size:0.8rem; font-weight:bold; cursor:pointer;" onclick="resetPasswordUI()">Forgot Password?</span></div><button class="btn" id="auth-login-btn" onclick="executeLogin()">Login Securely</button></div>
+            <div id="reset-pass-container" style="display:none; text-align:center;"><p style="font-size:0.9rem; color:var(--text-gray); margin-bottom:15px;">Enter your registered email to receive a password reset link.</p><input type="email" id="reset-email" placeholder="Registered E-Mail"><button class="btn" onclick="sendResetEmail()" style="margin-bottom:10px;">Send Reset Link</button><span style="color:var(--text-gray); font-size:0.8rem; font-weight:bold; cursor:pointer;" onclick="switchAuthMode(false, false)">Back to Login</span></div>
+            <div id="reg-fields-container" style="display: none;"><div class="pricing-grid"><label class="price-card"><input type="radio" name="rRole" value="59" checked onclick="selectRegRole('Retailer', 59)"> Retailer (₹59)</label><label class="price-card"><input type="radio" name="rRole" value="109" onclick="selectRegRole('Distributor', 109)"> Distributor (₹109)</label><label class="price-card"><input type="radio" name="rRole" value="199" onclick="selectRegRole('AJ Officer', 199)"> AJ Officer (₹199)</label></div><div class="reg-grid"><div><label class="form-label">Shop Name<span class="req-star">*</span></label><input type="text" id="auth-shop-name" placeholder="Shop Name"></div><div><label class="form-label">Owner Name<span class="req-star">*</span></label><input type="text" id="auth-name" placeholder="Owner Name" oninput="autoFillReferral(this.value)"></div><div><label class="form-label">E-Mail Address<span class="req-star">*</span></label><input type="email" id="auth-reg-email" placeholder="E-Mail Address"></div><div><label class="form-label">Create Password<span class="req-star">*</span></label><input type="password" id="auth-reg-password" placeholder="Password"></div></div><input type="text" id="auth-referral" placeholder="Got a Referral Code? (Optional)" style="border-color:var(--accent); margin-top: 15px;"><button class="btn" id="auth-reg-btn" onclick="executeRegistrationValidation()" style="margin-top: 10px;">Pay ₹59 & Register</button></div>
+            <div id="reg-payment-container" style="display: none; text-align: center; margin-top: 10px;"><h3 style="margin-bottom:8px;">Registration Payment</h3><p>Pay Fee: <b id="reg-pay-amt" style="color:var(--secondary-color);">₹59</b></p><img id="reg-upi-qr" src="" style="width:180px; height:180px; border:2px solid var(--border-color); border-radius:12px; padding:5px; object-fit:contain;"><br><b style="color:var(--secondary-color);">ajsarvices@ptyes</b><input type="text" id="reg-utr" placeholder="12-Digit UTR Number" style="margin-top:15px;" maxlength="12"><button type="button" class="btn" onclick="finalizeRegistration()" id="reg-confirm-btn" style="background:var(--success);">Verify Payment & Register</button><button type="button" class="btn btn-outline" onclick="backToRegForm()" style="margin-top:10px;">Back to Details</button></div>
             <p id="auth-toggle-text" style="text-align:center; margin-top:15px; color:var(--secondary-color); font-weight:bold; cursor:pointer;" onclick="switchAuthMode()">New Registration? Click Here</p>
         </div>
     </div>
 
     <!-- UPDATED PRODUCT DETAILS MODAL -->
-    <div id="product-details-modal" class="modal-overlay">
-        <div class="modal-box" style="padding:0;">
-            <i class="fa-solid fa-xmark close-btn" onclick="closeModal('product-details-modal')"></i>
-            <img id="pd-img" style="width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--bg-color); padding:0; border-radius: 20px 20px 0 0;">
-            <div style="padding:20px;">
-                <h2 id="pd-title"></h2>
-                <h3 id="pd-price" style="color:var(--primary-color);"></h3>
-                <p id="pd-desc" style="font-size:0.9rem;"></p>
-                
-                <a id="pd-yt-link" href="#" target="_blank" style="display:none; align-items:center; gap:8px; color:#ef4444; font-weight:bold; margin-top:10px; text-decoration:none; background:#fee2e2; padding:8px 12px; border-radius:8px; width: fit-content;">
-                    <i class="fa-brands fa-youtube" style="font-size:1.2rem;"></i> Watch Video Tutorial
-                </a>
-                
-                <div style="display:flex; gap:10px; margin-top:20px;" id="pd-action-buttons">
-                    <!-- Buttons are dynamically injected here based on custom settings -->
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div id="application-form-modal" class="modal-overlay">
-        <div class="modal-box" style="max-width: 900px;">
-            <i class="fa-solid fa-xmark close-btn" onclick="closeModal('application-form-modal')"></i>
-            <div style="text-align: center; margin-bottom: 20px;">
-                <img id="app-form-logo" src="" style="width: 80px; height: 80px; object-fit: contain; border-radius: 12px; background: var(--input-bg); padding: 5px; border: 1px solid var(--border-color); display: inline-block; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-                <h2 style="margin: 0 0 5px 0; font-weight: 900;">Fill Application Details</h2>
-                <p id="app-service-name" style="font-weight: 700; color: var(--primary-color); margin: 0; font-size: 1rem;"></p>
-            </div>
-            <div id="dynamic-custom-form-container" class="app-form-grid"></div>
-            <button class="btn" id="apply-proceed-btn" onclick="proceedToServiceCheckout()" style="background: var(--success);"><i class="fa-solid fa-wallet"></i> Proceed to Payment</button>
-        </div>
-    </div>
-    
+    <div id="product-details-modal" class="modal-overlay"><div class="modal-box" style="padding:0;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('product-details-modal')"></i><img id="pd-img" style="width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--bg-color); padding:0; border-radius: 20px 20px 0 0;"><div style="padding:20px;"><h2 id="pd-title"></h2><h3 id="pd-price" style="color:var(--primary-color);"></h3><p id="pd-desc" style="font-size:0.9rem;"></p><a id="pd-yt-link" href="#" target="_blank" style="display:none; align-items:center; gap:8px; color:#ef4444; font-weight:bold; margin-top:10px; text-decoration:none; background:#fee2e2; padding:8px 12px; border-radius:8px; width: fit-content;"><i class="fa-brands fa-youtube" style="font-size:1.2rem;"></i> Watch Video Tutorial</a><div style="display:flex; gap:10px; margin-top:20px;" id="pd-action-buttons"></div></div></div></div>
+    <div id="application-form-modal" class="modal-overlay"><div class="modal-box" style="max-width: 900px;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('application-form-modal')"></i><div style="text-align: center; margin-bottom: 20px;"><img id="app-form-logo" src="" style="width: 80px; height: 80px; object-fit: contain; border-radius: 12px; background: var(--input-bg); padding: 5px; border: 1px solid var(--border-color); display: inline-block; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);"><h2 style="margin: 0 0 5px 0; font-weight: 900;">Fill Application Details</h2><p id="app-service-name" style="font-weight: 700; color: var(--primary-color); margin: 0; font-size: 1rem;"></p></div><div id="dynamic-custom-form-container" class="app-form-grid"></div><button class="btn" id="apply-proceed-btn" onclick="proceedToServiceCheckout()" style="background: var(--success);"><i class="fa-solid fa-wallet"></i> Proceed to Payment</button></div></div>
     <div id="checkout-modal" class="modal-overlay"><div class="modal-box" style="text-align:center;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('checkout-modal')"></i><h2>Checkout</h2><p id="checkout-item-price" style="font-size:1.5rem; font-weight:bold; color:var(--primary-color);"></p><button class="btn" onclick="payWithWallet()" id="wallet-pay-btn" style="background:var(--success); margin-bottom:15px;"><i class="fa-solid fa-wallet"></i> Pay from Wallet (Bal: ₹<span id="ck-wallet-bal">0</span>)</button><p>--- OR PAY VIA UPI ---</p><img id="upi-qr-img" style="width:180px; height:180px; object-fit:contain; margin:10px auto;"><br><b>ajsarvices@ptyes</b><input type="text" id="utr-number" placeholder="Enter 12-Digit UTR" maxlength="12"><button class="btn" id="checkout-final-btn" onclick="verifyAndPlaceOrder()">Submit Order</button></div></div>
-    
-    <div id="certificate-modal" class="modal-overlay">
-        <div class="modal-box" style="text-align:center; background: #001b5e; border: 2px solid #4da6ff; padding:35px; max-width:800px;">
-            <i class="fa-solid fa-xmark close-btn" onclick="closeModal('certificate-modal')" style="background:#ffffff; color:#001b5e;"></i>
-            <h3 style="color:#ffffff; margin-bottom:20px; font-size:1.5rem;"><i class="fa-solid fa-award" style="color:#f59e0b;"></i> Authorization Certificate</h3>
-            <img id="cert-view-img" style="width:100%; margin-bottom:20px; border-radius:8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            <button class="btn" onclick="downloadCertificate()" style="background: #10b981; font-size:1.1rem;"><i class="fa-solid fa-download"></i> Download High-Res</button>
-        </div>
-    </div>
-    
-    <div id="edit-profile-modal" class="modal-overlay">
-        <div class="modal-box" style="text-align:center;">
-            <i class="fa-solid fa-xmark close-btn" onclick="closeModal('edit-profile-modal')"></i>
-            <h2 style="margin-bottom: 20px;">Edit Details</h2>
-            <div class="file-upload-box" style="margin-bottom:15px; text-align:left;">
-                <label style="font-size:0.8rem; font-weight:bold; color:var(--text-gray); display:block; margin-bottom:8px;">Upload New Logo / Profile Pic</label>
-                <input type="file" id="ep-logo" onchange="uploadProfileLogo(this)" accept="image/*">
-            </div>
-            <input type="text" id="ep-name" placeholder="Full Name">
-            <input type="text" id="ep-shop" placeholder="Shop Name">
-            <button class="btn" id="ep-save-btn" onclick="saveUserProfile()" style="background: var(--success); margin-top:15px;">Save Details</button>
-        </div>
-    </div>
+    <div id="certificate-modal" class="modal-overlay"><div class="modal-box" style="text-align:center; background: #001b5e; border: 2px solid #4da6ff; padding:35px; max-width:800px;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('certificate-modal')" style="background:#ffffff; color:#001b5e;"></i><h3 style="color:#ffffff; margin-bottom:20px; font-size:1.5rem;"><i class="fa-solid fa-award" style="color:#f59e0b;"></i> Authorization Certificate</h3><img id="cert-view-img" style="width:100%; margin-bottom:20px; border-radius:8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);"><button class="btn" onclick="downloadCertificate()" style="background: #10b981; font-size:1.1rem;"><i class="fa-solid fa-download"></i> Download High-Res</button></div></div>
+    <div id="edit-profile-modal" class="modal-overlay"><div class="modal-box" style="text-align:center;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('edit-profile-modal')"></i><h2 style="margin-bottom: 20px;">Edit Details</h2><div class="file-upload-box" style="margin-bottom:15px; text-align:left;"><label style="font-size:0.8rem; font-weight:bold; color:var(--text-gray); display:block; margin-bottom:8px;">Upload New Logo / Profile Pic</label><input type="file" id="ep-logo" onchange="uploadProfileLogo(this)" accept="image/*"></div><input type="text" id="ep-name" placeholder="Full Name"><input type="text" id="ep-shop" placeholder="Shop Name"><button class="btn" id="ep-save-btn" onclick="saveUserProfile()" style="background: var(--success); margin-top:15px;">Save Details</button></div></div>
 
     <script>
-        const firebaseConfig = { apiKey: "AIzaSyAw_-3KzAyG_i8vBb43xqD6gHUsDKupmxk", authDomain: "aj-sarvices-a8554.firebaseapp.com", databaseURL: "https://aj-sarvices-a8554-default-rtdb.firebaseio.com", projectId: "aj-sarvices-a8554", storageBucket: "aj-sarvices-a8554.firebasestorage.app", messagingSenderId: "109804150730", appId: "1:109804150730:web:e75006f44ef5e120d43933" };
-        
-        // UNIQUE APP INITIALIZATION FOR USER PORTAL (ISOLATED SESSION)
-        const userApp = firebase.initializeApp(firebaseConfig, "USER_PORTAL");
-        const db = userApp.database();
-        const auth = userApp.auth(); 
-        const IMGBB_API_KEY = "122cc16740d69ce4f60b53f0effed6c1";
-
+        // --- 1. GLOBAL VARIABLES ---
         let allProductsData = []; let selectedProductDetails = null; let currentCheckoutState = {}; let uploadedDocsArray = []; let tempRegData = {}; let isSignUpMode = false;
         let currentUserStatus = "Pending", userWallet = 0, uShopName = "", uRole = "", uName = "", uJoined = "", uReferredBy = "", appLogoUrl="logo.png", compCertUrl="", invSettings={name:"AJ INDIA SARVICES", address:"India"};
         let uProfilePic = "logo.png"; let tempProfileLogoUrl = ""; 
@@ -450,34 +313,134 @@
         let selectedRegRole = "Retailer", selectedRegPrice = 59;
         let allHeadlinesData = {}; let legalData = {terms:"", privacy:"", refund:""};
 
-        const utrRegex = /^[a-zA-Z0-9]{12}$/; // Strict 12 alphanumeric digits for Indian UTR/TxnID
-
-        document.getElementById('current-year').innerText = new Date().getFullYear();
-
-        if(localStorage.getItem('ajTheme') === 'dark') { document.body.classList.add('dark-theme'); document.querySelector('.theme-toggle').classList.remove('fa-moon'); document.querySelector('.theme-toggle').classList.add('fa-sun'); }
+        const utrRegex = /^[a-zA-Z0-9]{12}$/;
+        const IMGBB_API_KEY = "122cc16740d69ce4f60b53f0effed6c1";
         
-        auth.onAuthStateChanged((user) => { 
-            if(isRegisteringProcess) return; 
-            if(user && (!user.email || !user.email.toLowerCase().includes('ajsarvices@'))) { 
-                localStorage.setItem('ajUserLogged', 'true');
-                setupUserUI(user); 
-            } else { 
-                resetToGuestUI(); 
-            } 
-        });
+        // --- 2. FIREBASE INITIALIZATION ---
+        const firebaseConfig = { apiKey: "AIzaSyAw_-3KzAyG_i8vBb43xqD6gHUsDKupmxk", authDomain: "aj-sarvices-a8554.firebaseapp.com", databaseURL: "https://aj-sarvices-a8554-default-rtdb.firebaseio.com", projectId: "aj-sarvices-a8554", storageBucket: "aj-sarvices-a8554.firebasestorage.app", messagingSenderId: "109804150730", appId: "1:109804150730:web:e75006f44ef5e120d43933" };
+        const userApp = firebase.initializeApp(firebaseConfig, "AJUserApp"); // NAMED APP FOR SESSION ISOLATION
+        const db = userApp.database();
+        const auth = userApp.auth(); 
 
+        // --- 3. ON DOM LOAD / URL ROUTING ---
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sharedToolKey = urlParams.get('tool');
+
+            if (sharedToolKey) {
+                // RUN TOOL EMBED CODE
+                document.getElementById('main-app-container').style.display = 'none';
+                document.getElementById('full-page-loader').style.display = 'flex';
+                
+                db.ref('ai_tools/' + sharedToolKey).once('value').then(snap => {
+                    if (snap.exists() && snap.val().embed) {
+                        document.open();
+                        document.write(snap.val().embed);
+                        document.close();
+                    } else {
+                        document.body.innerHTML = '<h2 style="text-align:center; padding:50px; color:red;">Tool not found or has been removed.</h2>';
+                    }
+                }).catch(err => {
+                    document.body.innerHTML = '<h2 style="text-align:center; padding:50px; color:red;">Error Loading Tool!</h2>';
+                });
+            } else {
+                // RUN MAIN APPLICATION
+                initMainApp();
+            }
+        };
+
+        // --- 4. MAIN APP INITIALIZATION LOGIC ---
+        function initMainApp() {
+            document.getElementById('current-year').innerText = new Date().getFullYear();
+
+            if(localStorage.getItem('ajTheme') === 'dark') { 
+                document.body.classList.add('dark-theme'); 
+                document.querySelector('.theme-toggle').classList.remove('fa-moon'); 
+                document.querySelector('.theme-toggle').classList.add('fa-sun'); 
+            }
+            
+            auth.onAuthStateChanged((user) => { 
+                if(isRegisteringProcess) return; 
+                if(user && (!user.email || !user.email.toLowerCase().includes('ajsarvices@'))) { 
+                    localStorage.setItem('ajUserLogged', 'true');
+                    setupUserUI(user); 
+                } else { 
+                    resetToGuestUI(); 
+                } 
+            });
+
+            db.ref('legal_policies').on('value', s => { if(s.exists()) { legalData = s.val(); } });
+
+            db.ref('app_settings').on('value', s => { 
+                if(s.exists()){ 
+                    const d=s.val(); 
+                    if(d.maintenance_mode) { document.getElementById('maintenance-overlay').style.display = 'flex'; } else { document.getElementById('maintenance-overlay').style.display = 'none'; }
+                    
+                    if(d.marquee && d.marquee.active){ document.getElementById('breaking-news').style.display='flex'; document.getElementById('marquee-text-display').innerText=d.marquee.text; } else { document.getElementById('breaking-news').style.display='none'; } 
+                    if(d.refer_earn) { refBonusAmt=d.refer_earn.signupBonus||50; formCommAmt=d.refer_earn.formCommission||10; if(document.getElementById('ui-ref-bonus')) document.getElementById('ui-ref-bonus').innerText = "₹" + refBonusAmt; if(document.getElementById('ui-form-comm')) document.getElementById('ui-form-comm').innerText = "₹" + formCommAmt; } 
+                    if(d.section_titles) { if(document.getElementById('ui-title-aitools')) document.getElementById('ui-title-aitools').innerText = escapeHTML(d.section_titles.aitools) || "AI Tools & Links"; if(document.getElementById('ui-title-top')) document.getElementById('ui-title-top').innerText = escapeHTML(d.section_titles.top) || "Top Services"; if(document.getElementById('ui-title-all')) document.getElementById('ui-title-all').innerText = escapeHTML(d.section_titles.all) || "All Online Services"; }
+                    
+                    if(d.main_logo) { 
+                        appLogoUrl = d.main_logo; 
+                        document.querySelectorAll('.dynamic-app-logo').forEach(el => {
+                            if(el.tagName.toLowerCase() === 'link') el.href = appLogoUrl;
+                            else el.src = appLogoUrl;
+                        }); 
+                    }
+                    if(d.logo_size) {
+                        document.querySelectorAll('.dynamic-app-logo').forEach(el => {
+                            if(el.tagName.toLowerCase() === 'img') {
+                                let safeSize = Math.min(d.logo_size, 80); 
+                                el.style.height = safeSize + 'px';
+                                el.style.width = 'auto';
+                            }
+                        });
+                    }
+                    if(d.certificate_url) { compCertUrl = d.certificate_url; }
+                    if(d.invoice_details && document.getElementById('inv-c-name')) { const inv = d.invoice_details; document.getElementById('inv-c-name').value=inv.name||''; document.getElementById('inv-c-address').value=inv.address||''; document.getElementById('inv-c-email').value=inv.email||''; document.getElementById('inv-c-phone').value=inv.phone||''; document.getElementById('inv-c-gst').value=inv.gst||''; }
+                }
+            }); 
+            
+            db.ref('categories').on('value', s => { const list = document.getElementById('dynamic-categories-list'); list.innerHTML = ''; s.forEach(c => { const cat = c.val(); list.innerHTML += `<div class="category-item"><div class="category-icon"><img src="${cat.imageUrl}" onerror="this.src='logo.png'"></div><span>${escapeHTML(cat.title)}</span></div>`; }); });
+            db.ref('banners').on('value', s => { const slider = document.getElementById('slider'); slider.innerHTML = ''; s.forEach(c => { const b = c.val(); slider.innerHTML += `<div class="slide" style="background-image: url('${b.imageUrl}')" onclick="${b.link ? `window.open('${b.link}','_blank')` : ''}"></div>`; }); });
+            
+            db.ref('service_headlines').on('value', s => {
+                const container = document.getElementById('dynamic-headlines-container');
+                container.innerHTML = ''; allHeadlinesData = {};
+                if(s.exists()){ s.forEach(c => { const h = c.val(); allHeadlinesData[c.key] = h; let iconHtml = h.imageUrl ? `<img src="${h.imageUrl}" style="width:24px; height:24px; object-fit:contain; vertical-align:middle; margin-right:8px; border-radius:4px;">` : `<i class="fa-solid fa-layer-group" style="color: var(--accent); margin-right:8px;"></i>`; container.innerHTML += `<div class="products-section"><div class="products-header"><h2 style="display:flex; align-items:center;">${iconHtml} ${escapeHTML(h.title)}</h2></div><div class="products-grid" id="grid-head-${c.key}"></div></div>`; }); }
+                if(allProductsData && allProductsData.length > 0) renderProducts();
+            });
+
+            db.ref('products').on('value', s => { 
+                allProductsData = []; 
+                s.forEach(c => { const p = c.val(); p.key = c.key; allProductsData.push(p); }); 
+                renderProducts(); 
+            });
+
+            db.ref('ai_tools').on('value', s => { 
+                const grid = document.getElementById('dynamic-aitools-grid'); 
+                grid.innerHTML = ''; allAIToolsData = {}; 
+                if(s.exists()) { 
+                    document.getElementById('ai-tools-section').style.display = 'block'; 
+                    s.forEach(c => { 
+                        const t = c.val(); allAIToolsData[c.key] = t; 
+                        let imgUrl = t.imageUrl || 'logo.png'; 
+                        grid.innerHTML += `<div class="product-card" style="padding:15px; cursor:pointer;" onclick="handleAIToolClick('${c.key}')"><div class="product-image-box" style="height:90px; background:transparent;"><img src="${imgUrl}" onerror="this.src='logo.png'" style="object-fit:contain;"></div><div class="product-title" style="text-align:center; font-size:1.05rem;">${escapeHTML(t.title)}</div><p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:0;">${escapeHTML(t.description||'')}</p></div>`; 
+                    }); 
+                } else { 
+                    document.getElementById('ai-tools-section').style.display = 'none'; 
+                } 
+            });
+        }
+
+        // --- 5. GLOBAL FUNCTIONS FOR UI & LOGIC ---
+        function escapeHTML(str) { if (!str) return ''; return String(str).replace(/[&<>'"]/g, function(tag) { const charsToReplace = { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }; return charsToReplace[tag] || tag; }); }
         function toggleTheme() { document.body.classList.toggle('dark-theme'); const icon = document.querySelector('.theme-toggle'); icon.classList.toggle('fa-moon'); icon.classList.toggle('fa-sun'); localStorage.setItem('ajTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light'); }
         function showToast(m, success=true) { const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'toast'; t.style.background = success?'var(--success)':'var(--danger)'; t.innerHTML = m; c.appendChild(t); setTimeout(() => t.remove(), 4000); }
         function switchAppScreen(id, navIndex) { document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active')); document.querySelectorAll('.nav-item')[navIndex].classList.add('active'); if(id==='earnings-screen') loadEarningsData(); window.scrollTo(0,0); }
         function openModal(id) { document.getElementById(id).style.display = 'flex'; } function closeModal(id) { document.getElementById(id).style.display = 'none'; }
         
-        function escapeHTML(str) {
-            if (!str) return '';
-            return String(str).replace(/[&<>'"]/g, function(tag) {
-                const charsToReplace = { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' };
-                return charsToReplace[tag] || tag;
-            });
-        }
+        function openLegalModal(title, content) { document.getElementById('legal-title').innerText = escapeHTML(title); document.getElementById('legal-content').innerText = content || "Content not available."; openModal('legal-modal'); }
 
         function liveSearch(query) {
             query = query.toLowerCase(); 
@@ -495,60 +458,8 @@
             const filtered = allProductsData.filter(p => p.title.toLowerCase().includes(query));
             filtered.forEach(p => { let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; grid.innerHTML+=`<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${p.imageUrl}" onerror="this.src='logo.png'"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`; });
             
-            if (!query) renderProducts(); // Reset fully if search is cleared
+            if (!query) renderProducts(); 
         }
-
-        db.ref('legal_policies').on('value', s => { if(s.exists()) { legalData = s.val(); } });
-
-        function openLegalModal(title, content) {
-            document.getElementById('legal-title').innerText = escapeHTML(title);
-            document.getElementById('legal-content').innerText = content || "Content not available.";
-            openModal('legal-modal');
-        }
-
-        db.ref('app_settings').on('value', s => { 
-            if(s.exists()){ 
-                const d=s.val(); 
-                if(d.maintenance_mode) { document.getElementById('maintenance-overlay').style.display = 'flex'; } else { document.getElementById('maintenance-overlay').style.display = 'none'; }
-                
-                if(d.marquee && d.marquee.active){ document.getElementById('breaking-news').style.display='flex'; document.getElementById('marquee-text-display').innerText=d.marquee.text; } else { document.getElementById('breaking-news').style.display='none'; } 
-                if(d.refer_earn) { refBonusAmt=d.refer_earn.signupBonus||50; formCommAmt=d.refer_earn.formCommission||10; if(document.getElementById('ui-ref-bonus')) document.getElementById('ui-ref-bonus').innerText = "₹" + refBonusAmt; if(document.getElementById('ui-form-comm')) document.getElementById('ui-form-comm').innerText = "₹" + formCommAmt; } 
-                if(d.section_titles) { if(document.getElementById('ui-title-aitools')) document.getElementById('ui-title-aitools').innerText = escapeHTML(d.section_titles.aitools) || "AI Tools & Links"; if(document.getElementById('ui-title-top')) document.getElementById('ui-title-top').innerText = escapeHTML(d.section_titles.top) || "Top Services"; if(document.getElementById('ui-title-all')) document.getElementById('ui-title-all').innerText = escapeHTML(d.section_titles.all) || "All Online Services"; }
-                
-                if(d.main_logo) { 
-                    appLogoUrl = d.main_logo; 
-                    document.querySelectorAll('.dynamic-app-logo').forEach(el => {
-                        if(el.tagName.toLowerCase() === 'link') el.href = appLogoUrl;
-                        else el.src = appLogoUrl;
-                    }); 
-                }
-                
-                if(d.logo_size) {
-                    document.querySelectorAll('.dynamic-app-logo').forEach(el => {
-                        if(el.tagName.toLowerCase() === 'img') {
-                            let safeSize = Math.min(d.logo_size, 80); 
-                            el.style.height = safeSize + 'px';
-                            el.style.width = 'auto';
-                        }
-                    });
-                }
-                
-                if(d.certificate_url) { compCertUrl = d.certificate_url; }
-                if(d.invoice_details && document.getElementById('inv-c-name')) { const inv = d.invoice_details; document.getElementById('inv-c-name').value=inv.name||''; document.getElementById('inv-c-address').value=inv.address||''; document.getElementById('inv-c-email').value=inv.email||''; document.getElementById('inv-c-phone').value=inv.phone||''; document.getElementById('inv-c-gst').value=inv.gst||''; }
-            }
-        }); 
-        
-        db.ref('categories').on('value', s => { const list = document.getElementById('dynamic-categories-list'); list.innerHTML = ''; s.forEach(c => { const cat = c.val(); list.innerHTML += `<div class="category-item"><div class="category-icon"><img src="${cat.imageUrl}" onerror="this.src='logo.png'"></div><span>${escapeHTML(cat.title)}</span></div>`; }); });
-        db.ref('banners').on('value', s => { const slider = document.getElementById('slider'); slider.innerHTML = ''; s.forEach(c => { const b = c.val(); slider.innerHTML += `<div class="slide" style="background-image: url('${b.imageUrl}')" onclick="${b.link ? `window.open('${b.link}','_blank')` : ''}"></div>`; }); });
-        
-        db.ref('service_headlines').on('value', s => {
-            const container = document.getElementById('dynamic-headlines-container');
-            container.innerHTML = ''; allHeadlinesData = {};
-            if(s.exists()){ s.forEach(c => { const h = c.val(); allHeadlinesData[c.key] = h; let iconHtml = h.imageUrl ? `<img src="${h.imageUrl}" style="width:24px; height:24px; object-fit:contain; vertical-align:middle; margin-right:8px; border-radius:4px;">` : `<i class="fa-solid fa-layer-group" style="color: var(--accent); margin-right:8px;"></i>`; container.innerHTML += `<div class="products-section"><div class="products-header"><h2 style="display:flex; align-items:center;">${iconHtml} ${escapeHTML(h.title)}</h2></div><div class="products-grid" id="grid-head-${c.key}"></div></div>`; }); }
-            if(allProductsData.length > 0) renderProducts();
-        });
-
-        db.ref('products').on('value', s => { allProductsData = []; s.forEach(c => { const p = c.val(); p.key = c.key; allProductsData.push(p); }); renderProducts(); });
 
         function renderProducts() {
             const mainGrid = document.getElementById('dynamic-products-grid'); 
@@ -559,35 +470,32 @@
             
             Object.keys(allHeadlinesData).forEach(k => { const g = document.getElementById('grid-head-'+k); if(g) g.innerHTML = ''; });
             
-            // Populate All Services & Custom Headlines
-            allProductsData.forEach(p => { 
-                let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
-                let cardHtml = `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${p.imageUrl}" onerror="this.src='logo.png'"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
-                
-                if(mainGrid) mainGrid.innerHTML += cardHtml; 
-                if(p.headline) { 
-                    let hKey = Object.keys(allHeadlinesData).find(k => allHeadlinesData[k].title === p.headline); 
-                    if(hKey) { let dynGrid = document.getElementById('grid-head-'+hKey); if(dynGrid) dynGrid.innerHTML += cardHtml; } 
-                }
-            });
-
-            // Populate Top Services (Sort by clicks, limit top 8)
-            let topProducts = [...allProductsData].sort((a, b) => (b.clicks || 0) - (a.clicks || 0)).slice(0, 8);
-            if(topProducts.length > 0) {
-                topProducts.forEach(p => {
+            if(allProductsData && allProductsData.length > 0) {
+                allProductsData.forEach(p => { 
                     let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
                     let cardHtml = `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${p.imageUrl}" onerror="this.src='logo.png'"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
-                    if(trendingGrid) trendingGrid.innerHTML += cardHtml;
+                    
+                    if(mainGrid) mainGrid.innerHTML += cardHtml; 
+                    if(p.headline) { 
+                        let hKey = Object.keys(allHeadlinesData).find(k => allHeadlinesData[k].title === p.headline); 
+                        if(hKey) { let dynGrid = document.getElementById('grid-head-'+hKey); if(dynGrid) dynGrid.innerHTML += cardHtml; } 
+                    }
                 });
-                document.getElementById('trending-section').style.display = 'block';
-            } else {
-                document.getElementById('trending-section').style.display = 'none';
+
+                let topProducts = [...allProductsData].sort((a, b) => (b.clicks || 0) - (a.clicks || 0)).slice(0, 8);
+                if(topProducts.length > 0) {
+                    topProducts.forEach(p => {
+                        let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
+                        let cardHtml = `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${p.imageUrl}" onerror="this.src='logo.png'"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
+                        if(trendingGrid) trendingGrid.innerHTML += cardHtml;
+                    });
+                    document.getElementById('trending-section').style.display = 'block';
+                } else {
+                    document.getElementById('trending-section').style.display = 'none';
+                }
             }
         }
 
-        db.ref('ai_tools').on('value', s => { const grid = document.getElementById('dynamic-aitools-grid'); grid.innerHTML = ''; allAIToolsData = {}; if(s.exists()) { document.getElementById('ai-tools-section').style.display = 'block'; s.forEach(c => { const t = c.val(); allAIToolsData[c.key] = t; let imgUrl = t.imageUrl || 'logo.png'; grid.innerHTML += `<div class="product-card" style="padding:15px; cursor:pointer;" onclick="handleAIToolClick('${c.key}')"><div class="product-image-box" style="height:90px; background:transparent;"><img src="${imgUrl}" onerror="this.src='logo.png'" style="object-fit:contain;"></div><div class="product-title" style="text-align:center; font-size:1.05rem;">${escapeHTML(t.title)}</div><p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:0;">${escapeHTML(t.description||'')}</p></div>`; }); } else { document.getElementById('ai-tools-section').style.display = 'none'; } });
-        
-        // --- ADDED NEW WINDOW LOGIC FOR AI TOOLS ---
         function handleAIToolClick(k) { 
             if(!auth.currentUser || currentUserStatus!=='Active') { 
                 showToast("Register / Login to use AI Tools!", false); openAuthModal(false); return; 
@@ -595,52 +503,20 @@
             const t = allAIToolsData[k]; 
             if(t) { 
                 if(t.embed) { 
-                    const newWin = window.open('', '_blank');
-                    newWin.document.open();
-                    newWin.document.write(t.embed);
-                    newWin.document.close();
+                    const safeName = encodeURIComponent(t.title.trim().replace(/\s+/g, '-').toLowerCase());
+                    const shareUrl = window.location.origin + window.location.pathname + `?tool=${k}&name=${safeName}`;
+                    window.open(shareUrl, '_blank');
                 } else if(t.link) { 
                     window.open(t.link, '_blank'); 
                 } 
             } 
         }
 
-        function openAuthModal(forceReg = false){ 
-            openModal('auth-modal'); isSignUpMode = forceReg;
-            document.getElementById('reset-pass-container').style.display = 'none';
-            document.getElementById('login-fields-container').style.display = isSignUpMode ? 'none' : 'block'; 
-            document.getElementById('reg-fields-container').style.display = isSignUpMode ? 'block' : 'none'; 
-            document.getElementById('auth-title').innerText = isSignUpMode ? 'Registration' : 'Login'; 
-            document.getElementById('auth-toggle-text').innerText = isSignUpMode ? 'Already have an account? Login Here' : 'New Registration? Click Here';
-            document.getElementById('auth-toggle-text').style.display = 'block';
-        }
+        function openAuthModal(forceReg = false){ openModal('auth-modal'); isSignUpMode = forceReg; document.getElementById('reset-pass-container').style.display = 'none'; document.getElementById('login-fields-container').style.display = isSignUpMode ? 'none' : 'block'; document.getElementById('reg-fields-container').style.display = isSignUpMode ? 'block' : 'none'; document.getElementById('auth-title').innerText = isSignUpMode ? 'Registration' : 'Login'; document.getElementById('auth-toggle-text').innerText = isSignUpMode ? 'Already have an account? Login Here' : 'New Registration? Click Here'; document.getElementById('auth-toggle-text').style.display = 'block'; }
+        function switchAuthMode(forceReg = null, hideToggle = false) { isSignUpMode = forceReg !== null ? forceReg : !isSignUpMode; document.getElementById('reset-pass-container').style.display = 'none'; document.getElementById('login-fields-container').style.display = isSignUpMode ? 'none' : 'block'; document.getElementById('reg-fields-container').style.display = isSignUpMode ? 'block' : 'none'; document.getElementById('auth-title').innerText = isSignUpMode ? 'Registration' : 'Login'; document.getElementById('auth-toggle-text').innerText = isSignUpMode ? 'Already have an account? Login Here' : 'New Registration? Click Here'; document.getElementById('auth-toggle-text').style.display = hideToggle ? 'none' : 'block'; }
+        function resetPasswordUI() { document.getElementById('login-fields-container').style.display = 'none'; document.getElementById('reg-fields-container').style.display = 'none'; document.getElementById('auth-toggle-text').style.display = 'none'; document.getElementById('reset-pass-container').style.display = 'block'; document.getElementById('auth-title').innerText = 'Reset Password'; }
 
-        function switchAuthMode(forceReg = null, hideToggle = false) {
-            isSignUpMode = forceReg !== null ? forceReg : !isSignUpMode;
-            document.getElementById('reset-pass-container').style.display = 'none';
-            document.getElementById('login-fields-container').style.display = isSignUpMode ? 'none' : 'block'; 
-            document.getElementById('reg-fields-container').style.display = isSignUpMode ? 'block' : 'none'; 
-            document.getElementById('auth-title').innerText = isSignUpMode ? 'Registration' : 'Login'; 
-            document.getElementById('auth-toggle-text').innerText = isSignUpMode ? 'Already have an account? Login Here' : 'New Registration? Click Here';
-            document.getElementById('auth-toggle-text').style.display = hideToggle ? 'none' : 'block';
-        }
-
-        function resetPasswordUI() {
-            document.getElementById('login-fields-container').style.display = 'none';
-            document.getElementById('reg-fields-container').style.display = 'none';
-            document.getElementById('auth-toggle-text').style.display = 'none';
-            document.getElementById('reset-pass-container').style.display = 'block';
-            document.getElementById('auth-title').innerText = 'Reset Password';
-        }
-
-        function sendResetEmail() {
-            const e = document.getElementById('reset-email').value.trim();
-            if(!e) return showToast("Enter your email first!", false);
-            auth.sendPasswordResetEmail(e).then(() => {
-                showToast("Reset link sent to email!", true);
-                switchAuthMode(false);
-            }).catch(err => showToast(err.message, false));
-        }
+        function sendResetEmail() { const e = document.getElementById('reset-email').value.trim(); if(!e) return showToast("Enter your email first!", false); auth.sendPasswordResetEmail(e).then(() => { showToast("Reset link sent to email!", true); switchAuthMode(false); }).catch(err => showToast(err.message, false)); }
 
         function selectRegRole(role, price) { selectedRegRole = role; selectedRegPrice = price; document.querySelectorAll('.price-card').forEach(c => c.classList.remove('active')); event.currentTarget.classList.add('active'); document.getElementById('auth-reg-btn').innerText = `Pay ₹${price} & Register`; }
         
@@ -650,21 +526,15 @@
             if(!em || !ps) return showToast("Enter email and password", false); 
             
             const btn=document.getElementById('auth-login-btn'); 
-            btn.innerText="Logging in..."; 
-            btn.disabled=true; 
+            btn.innerText="Logging in..."; btn.disabled=true; 
             
-            auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
-                return auth.signInWithEmailAndPassword(em, ps);
-            }).then(() => { 
+            auth.signInWithEmailAndPassword(em, ps).then(() => { 
                 localStorage.setItem('ajUserLogged', 'true');
-                closeModal('auth-modal'); 
-                showToast("Logged In Successfully!", true); 
-                btn.innerText="Login Securely"; 
-                btn.disabled=false;
+                closeModal('auth-modal'); showToast("Logged In Successfully!", true); 
+                btn.innerText="Login Securely"; btn.disabled=false;
             }).catch(e => { 
                 showToast("Wrong Email or Password!", false); 
-                btn.innerText="Login Securely"; 
-                btn.disabled=false;
+                btn.innerText="Login Securely"; btn.disabled=false;
             }); 
         }
 
@@ -709,6 +579,8 @@
                     myGenReferCode = d.myCode || u.uid; document.getElementById('edit-my-promo').value = myGenReferCode; 
                     document.getElementById('profile-name').innerText=escapeHTML(uName); document.getElementById('header-user-name').innerText=escapeHTML(uName).split(' ')[0]; document.getElementById('wallet-balance').innerText="₹"+userWallet; document.getElementById('header-wallet-bal').innerText=userWallet; document.getElementById('ck-wallet-bal').innerText=userWallet; 
                     let em = d.email || u.email || ""; document.getElementById('profile-email').innerHTML=`${escapeHTML(em)}<br><span class="status-badge-profile">${escapeHTML(currentUserStatus)}</span>`; 
+                    
+                    renderProducts(); // Update prices dynamically based on role
                 } else { document.getElementById('profile-name').innerText = escapeHTML(u.displayName) || "User"; document.getElementById('profile-email').innerHTML = `${escapeHTML(u.email)}<br><span class="status-badge-profile">Pending</span>`; }
             });
             loadMyOrders(); loadNotifications();
@@ -719,11 +591,7 @@
             document.getElementById('profile-action-btns').style.display='flex'; document.getElementById('profile-logout-btn').style.display='none'; document.getElementById('wallet-section').style.display='none'; document.getElementById('referral-section').style.display='none'; document.getElementById('edit-profile-menu').style.display='none'; document.getElementById('header-wallet-pill').style.display='none'; currentUserStatus="Pending"; 
         }
 
-        function logoutApp(){ 
-            localStorage.removeItem('ajUserLogged'); // Clear User Session only
-            auth.signOut(); 
-            switchAppScreen('home-screen', 0); 
-        }
+        function logoutApp(){ localStorage.removeItem('ajUserLogged'); auth.signOut(); switchAppScreen('home-screen', 0); }
         
         function updateMyPromoCode(val) { val = val.trim().toUpperCase(); if(!val.startsWith("AJ-")) { val = "AJ-" + val.replace(/[^A-Z0-9]/g, ''); } document.getElementById('edit-my-promo').value = val; myGenReferCode = val; if(auth.currentUser) { db.ref('customers/'+auth.currentUser.uid).update({myCode: val}).then(()=>{ showToast("Promo Code Saved!", true); }); } }
         function copyReferral() { navigator.clipboard.writeText(myGenReferCode).then(()=>showToast("Code Copied!", true)); }
@@ -737,37 +605,23 @@
         function openProductDetails(k){ 
             if(!auth.currentUser || currentUserStatus!=='Active') { showToast("Register / Login to apply!", false); openAuthModal(false); return; } 
             
-            // Track Clicks to update "Top Services" correctly
             db.ref('products/' + k + '/clicks').set(firebase.database.ServerValue.increment(1)).catch(e=>{});
 
             const p=allProductsData.find(i=>i.key===k); selectedProductDetails=p; 
             let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
             selectedProductDetails.parsedPrice = price; 
             
-            document.getElementById('pd-img').src=p.imageUrl; 
-            document.getElementById('pd-title').innerText=escapeHTML(p.title); 
-            document.getElementById('pd-price').innerText="₹"+price; 
-            document.getElementById('pd-desc').innerText=escapeHTML(p.description); 
+            document.getElementById('pd-img').src=p.imageUrl; document.getElementById('pd-title').innerText=escapeHTML(p.title); document.getElementById('pd-price').innerText="₹"+price; document.getElementById('pd-desc').innerText=escapeHTML(p.description); 
             
             const ytLinkBtn = document.getElementById('pd-yt-link');
-            if(p.ytLink) {
-                ytLinkBtn.href = p.ytLink;
-                ytLinkBtn.style.display = 'inline-flex';
-            } else {
-                ytLinkBtn.style.display = 'none';
-            }
+            if(p.ytLink) { ytLinkBtn.href = p.ytLink; ytLinkBtn.style.display = 'inline-flex'; } else { ytLinkBtn.style.display = 'none'; }
 
             const btnContainer = document.getElementById('pd-action-buttons');
             btnContainer.innerHTML = '';
             
-            let b1Text = p.btn1Text || "Apply Now";
-            let b1Type = p.btn1Type || "form";
-            let b1Link = p.btn1Link || "";
-            
+            let b1Text = p.btn1Text || "Apply Now"; let b1Type = p.btn1Type || "form"; let b1Link = p.btn1Link || "";
             let b2Show = p.btn2Show !== undefined ? p.btn2Show : (p.serviceLink ? true : false);
-            let b2Text = p.btn2Text || "Open Link";
-            let b2Type = p.btn2Type || "link";
-            let b2Link = p.btn2Link || p.serviceLink || "";
+            let b2Text = p.btn2Text || "Open Link"; let b2Type = p.btn2Type || "link"; let b2Link = p.btn2Link || p.serviceLink || "";
 
             let btn1Action = (b1Type === 'form') ? 'openApplicationForm()' : `window.open('${escapeHTML(b1Link)}', '_blank')`;
             btnContainer.innerHTML += `<button class="btn" onclick="${btn1Action}" style="flex:1;">${escapeHTML(b1Text)}</button>`;
@@ -776,7 +630,6 @@
                 let btn2Action = (b2Type === 'form') ? 'openApplicationForm()' : `window.open('${escapeHTML(b2Link)}', '_blank')`;
                 btnContainer.innerHTML += `<button class="btn btn-outline" onclick="${btn2Action}" style="flex:1;">${escapeHTML(b2Text)}</button>`;
             }
-
             openModal('product-details-modal');
         }
         
@@ -784,22 +637,8 @@
         
         function toggleDynamicUpload(sel, fid){ const upArea=document.getElementById(fid+'_upload_area'), name=document.getElementById(fid+'_name'), hid=document.getElementById(fid); if(sel.value){ upArea.style.display='block'; name.innerText=sel.value; hid.setAttribute('data-label', sel.getAttribute('data-base-label')+' ('+sel.value+')'); } else { upArea.style.display='none'; hid.value=''; } }
         
-        function handleMultipleUploads(inp) { 
-            Array.from(inp.files).forEach(f => { 
-                const fd = new FormData(); fd.append('image', f); 
-                fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {method: 'POST', body: fd})
-                .then(r => r.json()).then(d => { 
-                    uploadedDocsArray.push(d.data.url); 
-                    renderPreviewGrid();
-                }); 
-            }); 
-        }
-        function renderPreviewGrid() {
-            const grid = document.getElementById('upload-preview-grid'); grid.innerHTML = '';
-            uploadedDocsArray.forEach((url, i) => {
-                grid.innerHTML += `<div style="position:relative; display:inline-block;"><img src="${url}" width="50" height="50" style="border-radius:5px; object-fit:cover; border:1px solid #ccc;"><i class="fa-solid fa-circle-xmark" style="position:absolute; top:-5px; right:-5px; color:red; cursor:pointer; background:#fff; border-radius:50%;" onclick="removePreviewFile(${i})"></i></div>`;
-            });
-        }
+        function handleMultipleUploads(inp) { Array.from(inp.files).forEach(f => { const fd = new FormData(); fd.append('image', f); fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {method: 'POST', body: fd}).then(r => r.json()).then(d => { uploadedDocsArray.push(d.data.url); renderPreviewGrid(); }); }); }
+        function renderPreviewGrid() { const grid = document.getElementById('upload-preview-grid'); grid.innerHTML = ''; uploadedDocsArray.forEach((url, i) => { grid.innerHTML += `<div style="position:relative; display:inline-block;"><img src="${url}" width="50" height="50" style="border-radius:5px; object-fit:cover; border:1px solid #ccc;"><i class="fa-solid fa-circle-xmark" style="position:absolute; top:-5px; right:-5px; color:red; cursor:pointer; background:#fff; border-radius:50%;" onclick="removePreviewFile(${i})"></i></div>`; }); }
         function removePreviewFile(index) { uploadedDocsArray.splice(index, 1); renderPreviewGrid(); }
 
         function uploadDynamicFile(inp,hid){ const f=inp.files[0]; const fd=new FormData(); fd.append('image',f); fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {method:'POST',body:fd}).then(r=>r.json()).then(d=>{ document.getElementById(hid).value=d.data.url; uploadedDocsArray.push(d.data.url); showToast("File Uploaded", true); }); }
@@ -814,17 +653,10 @@
                 db.ref('customers/'+auth.currentUser.uid).once('value').then(snap => {
                     const currentServerWallet = snap.val().walletBalance || 0;
                     if(currentServerWallet >= currentCheckoutState.total) {
-                        db.ref('customers/'+auth.currentUser.uid).update({walletBalance: currentServerWallet - currentCheckoutState.total}).then(() => {
-                            placeOrder("WALLET-PAY");
-                        });
-                    } else {
-                        showToast("Insufficient Server Balance.", false);
-                        btn.innerHTML = `<i class="fa-solid fa-wallet"></i> Pay from Wallet`; btn.disabled = false;
-                    }
+                        db.ref('customers/'+auth.currentUser.uid).update({walletBalance: currentServerWallet - currentCheckoutState.total}).then(() => { placeOrder("WALLET-PAY"); });
+                    } else { showToast("Insufficient Server Balance.", false); btn.innerHTML = `<i class="fa-solid fa-wallet"></i> Pay from Wallet`; btn.disabled = false; }
                 });
-            } else { 
-                showToast("Insufficient Wallet Balance!", false); 
-            } 
+            } else { showToast("Insufficient Wallet Balance!", false); } 
         }
         
         function verifyAndPlaceOrder(){ const utr=document.getElementById('utr-number').value.trim(); if(utrRegex.test(utr)) placeOrder(utr); else showToast("Enter Valid 12-Digit UTR", false); }
