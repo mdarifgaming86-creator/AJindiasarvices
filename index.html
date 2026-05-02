@@ -70,8 +70,6 @@
         .category-item span { font-size: 0.8rem; font-weight: 600; text-align: center; }
 
         .products-section { padding: 10px 20px 20px 20px; }
-        
-        /* FIXED HEADLINE ALIGNMENT HERE */
         .products-header h2 { font-size: 1.25rem; font-weight: 900; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; justify-content: flex-start;}
         
         /* STRICT 3 AND 8 GRID LAYOUT */
@@ -79,7 +77,6 @@
         @media (min-width: 768px) { .products-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; } }
         @media (min-width: 1024px) { .products-grid { grid-template-columns: repeat(8, 1fr); gap: 15px; } }
 
-        /* Adjusted Card For 3-Column Mobile Grid */
         .product-card { background: var(--card-bg); border-radius: 10px; padding: 8px; border: 1px solid var(--border-color); cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; transition: 0.2s; min-width: 0; overflow: hidden; word-wrap: break-word;}
         .product-card:active { transform: scale(0.98); }
         .product-image-box { width: 100%; aspect-ratio: 16 / 9; height: auto; background: transparent; border-radius: 6px; display: flex; align-items: center; justify-content: center; padding: 0; margin-bottom: 8px; overflow: hidden;}
@@ -308,7 +305,15 @@
             <i class="fa-solid fa-xmark close-btn" onclick="closeModal('auth-modal')"></i>
             <div style="text-align:center;"><h2 id="auth-title" style="margin-bottom:15px;">Login</h2></div>
             <div id="login-fields-container"><input type="email" id="auth-email" placeholder="E-Mail Address"><input type="password" id="auth-password" placeholder="Password"><div style="text-align:right; margin-bottom:15px;"><span style="color:var(--secondary-color); font-size:0.8rem; font-weight:bold; cursor:pointer;" onclick="resetPasswordUI()">Forgot Password?</span></div><button class="btn" id="auth-login-btn" onclick="executeLogin()">Login Securely</button></div>
-            <div id="reset-pass-container" style="display:none; text-align:center;"><p style="font-size:0.9rem; color:var(--text-gray); margin-bottom:15px;">Enter your registered email to receive a password reset link.</p><input type="email" id="reset-email" placeholder="Registered E-Mail"><button class="btn" onclick="sendResetEmail()" style="margin-bottom:10px;">Send Reset Link</button><span style="color:var(--text-gray); font-size:0.8rem; font-weight:bold; cursor:pointer;" onclick="switchAuthMode(false, false)">Back to Login</span></div>
+            
+            <!-- PASSWORD RESET SECTION WITH UPDATED JS FUNCTION -->
+            <div id="reset-pass-container" style="display:none; text-align:center;">
+                <p style="font-size:0.9rem; color:var(--text-gray); margin-bottom:15px;">Enter your registered email to receive a password reset link.</p>
+                <input type="email" id="reset-email" placeholder="Registered E-Mail">
+                <button class="btn" id="reset-submit-btn" onclick="sendResetEmail()" style="margin-bottom:10px;">Send Reset Link</button>
+                <span style="color:var(--text-gray); font-size:0.8rem; font-weight:bold; cursor:pointer;" onclick="switchAuthMode(false, false)">Back to Login</span>
+            </div>
+
             <div id="reg-fields-container" style="display: none;">
                 <div class="pricing-grid">
                     <label class="price-card active"><input type="radio" name="rRole" value="59" checked onclick="selectRegRole('Retailer', 59)"> Retailer (₹59)</label>
@@ -324,7 +329,6 @@
                 
                 <input type="text" id="auth-referral" placeholder="Got a Referral Code? (Optional)" style="border-color:var(--accent); margin-top: 15px;">
                 
-                <!-- NEW PROMO CODE SECTION FOR REGISTRATION -->
                 <div style="background:#f1f5f9; padding:10px; border-radius:8px; border:1px dashed var(--secondary-color); margin-top:10px;">
                     <label style="font-size:0.8rem; font-weight:bold; color:var(--text-dark); display:block; margin-bottom:5px;">Have a Promo Code for Discount?</label>
                     <div style="display:flex; gap:10px;">
@@ -341,7 +345,6 @@
         </div>
     </div>
 
-    <!-- UPDATED PRODUCT DETAILS MODAL -->
     <div id="product-details-modal" class="modal-overlay"><div class="modal-box" style="padding:0;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('product-details-modal')"></i><img id="pd-img" style="width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--bg-color); padding:0; border-radius: 20px 20px 0 0;"><div style="padding:20px;"><h2 id="pd-title"></h2><h3 id="pd-price" style="color:var(--primary-color);"></h3><p id="pd-desc" style="font-size:0.9rem;"></p><a id="pd-yt-link" href="#" target="_blank" style="display:none; align-items:center; gap:8px; color:#ef4444; font-weight:bold; margin-top:10px; text-decoration:none; background:#fee2e2; padding:8px 12px; border-radius:8px; width: fit-content;"><i class="fa-brands fa-youtube" style="font-size:1.2rem;"></i> Watch Video Tutorial</a><div style="display:flex; gap:10px; margin-top:20px;" id="pd-action-buttons"></div></div></div></div>
     <div id="application-form-modal" class="modal-overlay"><div class="modal-box" style="max-width: 900px;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('application-form-modal')"></i><div style="text-align: center; margin-bottom: 20px;"><img id="app-form-logo" src="" style="width: 80px; height: 80px; object-fit: contain; border-radius: 12px; background: var(--input-bg); padding: 5px; border: 1px solid var(--border-color); display: inline-block; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);"><h2 style="margin: 0 0 5px 0; font-weight: 900;">Fill Application Details</h2><p id="app-service-name" style="font-weight: 700; color: var(--primary-color); margin: 0; font-size: 1rem;"></p></div><div id="dynamic-custom-form-container" class="app-form-grid"></div><button class="btn" id="apply-proceed-btn" onclick="proceedToServiceCheckout()" style="background: var(--success);"><i class="fa-solid fa-wallet"></i> Proceed to Payment</button></div></div>
     <div id="checkout-modal" class="modal-overlay"><div class="modal-box" style="text-align:center;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('checkout-modal')"></i><h2>Checkout</h2><p id="checkout-item-price" style="font-size:1.5rem; font-weight:bold; color:var(--primary-color);"></p><button class="btn" onclick="payWithWallet()" id="wallet-pay-btn" style="background:var(--success); margin-bottom:15px;"><i class="fa-solid fa-wallet"></i> Pay from Wallet (Bal: ₹<span id="ck-wallet-bal">0</span>)</button><p>--- OR PAY VIA UPI ---</p><img id="upi-qr-img" style="width:180px; height:180px; object-fit:contain; margin:10px auto;"><br><b>ajsarvices@ptyes</b><input type="text" id="utr-number" placeholder="Enter 12-Digit UTR" maxlength="12"><button class="btn" id="checkout-final-btn" onclick="verifyAndPlaceOrder()">Submit Order</button><button class="btn btn-outline" onclick="backToFormFromCheckout()" style="margin-top:15px;"><i class="fa-solid fa-arrow-left"></i> Back to Edit Form</button></div></div>
@@ -371,7 +374,6 @@
         const db = userApp.database();
         const auth = userApp.auth(); 
 
-        // Resize Listener for dynamic grid limit refresh
         window.addEventListener('resize', () => {
             clearTimeout(window.resizeTimer);
             window.resizeTimer = setTimeout(() => {
@@ -382,7 +384,6 @@
             }, 300);
         });
 
-        // 3 columns on mobile, 8 columns on laptop
         const getGridLimit = () => window.innerWidth < 768 ? 6 : 16; 
 
         // --- 3. ON DOM LOAD / URL ROUTING ---
@@ -766,7 +767,29 @@
         function switchAuthMode(forceReg = null, hideToggle = false) { isSignUpMode = forceReg !== null ? forceReg : !isSignUpMode; document.getElementById('reset-pass-container').style.display = 'none'; document.getElementById('login-fields-container').style.display = isSignUpMode ? 'none' : 'block'; document.getElementById('reg-fields-container').style.display = isSignUpMode ? 'block' : 'none'; document.getElementById('auth-title').innerText = isSignUpMode ? 'Registration' : 'Login'; document.getElementById('auth-toggle-text').innerText = isSignUpMode ? 'Already have an account? Login Here' : 'New Registration? Click Here'; document.getElementById('auth-toggle-text').style.display = hideToggle ? 'none' : 'block'; }
         function resetPasswordUI() { document.getElementById('login-fields-container').style.display = 'none'; document.getElementById('reg-fields-container').style.display = 'none'; document.getElementById('auth-toggle-text').style.display = 'none'; document.getElementById('reset-pass-container').style.display = 'block'; document.getElementById('auth-title').innerText = 'Reset Password'; }
 
-        function sendResetEmail() { const e = document.getElementById('reset-email').value.trim(); if(!e) return showToast("Enter your email first!", false); auth.sendPasswordResetEmail(e).then(() => { showToast("Reset link sent to email!", true); switchAuthMode(false); }).catch(err => showToast(err.message, false)); }
+        // ====== UPDATED PASSWORD RESET FUNCTION ======
+        function sendResetEmail() { 
+            const e = document.getElementById('reset-email').value.trim(); 
+            if(!e) return showToast("Enter your email first!", false); 
+            
+            const btn = document.getElementById('reset-submit-btn');
+            const oldText = btn.innerText;
+            btn.innerText = "Sending...";
+            btn.disabled = true;
+
+            auth.sendPasswordResetEmail(e).then(() => { 
+                showToast("Reset link sent! Check Inbox & Spam.", true); 
+                console.log("Firebase confirmed password reset email queued for:", e);
+                switchAuthMode(false); 
+                btn.innerText = oldText;
+                btn.disabled = false;
+            }).catch(err => {
+                console.error("Firebase Reset Error:", err);
+                showToast(err.message, false); 
+                btn.innerText = oldText;
+                btn.disabled = false;
+            }); 
+        }
 
         function selectRegRole(role, price) { selectedRegRole = role; selectedRegPrice = price; document.querySelectorAll('.price-card').forEach(c => c.classList.remove('active')); event.currentTarget.classList.add('active'); updateRegButtonPrice(); }
         
