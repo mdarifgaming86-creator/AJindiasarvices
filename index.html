@@ -70,20 +70,21 @@
         .category-item span { font-size: 0.8rem; font-weight: 600; text-align: center; }
 
         .products-section { padding: 10px 20px 20px 20px; }
-        .products-header h2 { font-size: 1.25rem; font-weight: 900; margin-bottom: 15px; }
+        .products-header h2 { font-size: 1.15rem; font-weight: 900; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between;}
         
-        /* STRICT 4 AND 8 GRID LAYOUT */
-        .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        /* STRICT 3 AND 8 GRID LAYOUT */
+        .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; box-sizing: border-box; }
+        @media (min-width: 768px) { .products-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; } }
         @media (min-width: 1024px) { .products-grid { grid-template-columns: repeat(8, 1fr); gap: 15px; } }
 
-        /* Adjusted Card For 4-Column Mobile Grid */
-        .product-card { background: var(--card-bg); border-radius: 12px; padding: 8px; border: 1px solid var(--border-color); cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; transition: 0.2s;}
+        /* Adjusted Card For 3-Column Mobile Grid */
+        .product-card { background: var(--card-bg); border-radius: 10px; padding: 8px; border: 1px solid var(--border-color); cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; transition: 0.2s; min-width: 0; overflow: hidden; word-wrap: break-word;}
         .product-card:active { transform: scale(0.98); }
-        .product-image-box { width: 100%; aspect-ratio: 16 / 9; height: auto; background: var(--input-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 0; margin-bottom: 8px; overflow: hidden;}
-        .product-image-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px;}
-        .discount-badge { position: absolute; top: 10px; left: 0; background: var(--danger); color: #fff; font-size: 0.55rem; font-weight: 800; padding: 3px 6px; border-radius: 0 4px 4px 0; z-index: 10;}
-        .product-title { font-size: 0.75rem; font-weight: 800; margin-bottom: 5px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height: 1.2;}
-        .product-price { font-size: 0.9rem; font-weight: 900; color: var(--secondary-color); margin-top: auto;}
+        .product-image-box { width: 100%; aspect-ratio: 16 / 9; height: auto; background: transparent; border-radius: 6px; display: flex; align-items: center; justify-content: center; padding: 0; margin-bottom: 8px; overflow: hidden;}
+        .product-image-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px;}
+        .discount-badge { position: absolute; top: 8px; left: 0; background: var(--danger); color: #fff; font-size: 0.5rem; font-weight: 800; padding: 2px 6px; border-radius: 0 4px 4px 0; z-index: 10;}
+        .product-title { font-size: 0.7rem; font-weight: 800; margin-bottom: 5px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height: 1.25;}
+        .product-price { font-size: 0.85rem; font-weight: 900; color: var(--secondary-color); margin-top: auto;}
 
         .app-form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; text-align: left; margin-bottom: 20px;}
         @media (max-width: 900px) { .app-form-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -203,7 +204,7 @@
             <div id="dynamic-headlines-container"></div>
 
             <div class="products-section" id="all-services-section">
-                <div class="products-header"><h2><span id="ui-title-all">All Online Services</span></h2></div>
+                <div class="products-header"><h2 id="ui-title-all-container"><span id="ui-title-all">All Online Services</span></h2></div>
                 <div class="products-grid" id="dynamic-products-grid"></div>
             </div>
         </div>
@@ -337,6 +338,7 @@
         </div>
     </div>
 
+    <!-- UPDATED PRODUCT DETAILS MODAL -->
     <div id="product-details-modal" class="modal-overlay"><div class="modal-box" style="padding:0;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('product-details-modal')"></i><img id="pd-img" style="width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--bg-color); padding:0; border-radius: 20px 20px 0 0;"><div style="padding:20px;"><h2 id="pd-title"></h2><h3 id="pd-price" style="color:var(--primary-color);"></h3><p id="pd-desc" style="font-size:0.9rem;"></p><a id="pd-yt-link" href="#" target="_blank" style="display:none; align-items:center; gap:8px; color:#ef4444; font-weight:bold; margin-top:10px; text-decoration:none; background:#fee2e2; padding:8px 12px; border-radius:8px; width: fit-content;"><i class="fa-brands fa-youtube" style="font-size:1.2rem;"></i> Watch Video Tutorial</a><div style="display:flex; gap:10px; margin-top:20px;" id="pd-action-buttons"></div></div></div></div>
     <div id="application-form-modal" class="modal-overlay"><div class="modal-box" style="max-width: 900px;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('application-form-modal')"></i><div style="text-align: center; margin-bottom: 20px;"><img id="app-form-logo" src="" style="width: 80px; height: 80px; object-fit: contain; border-radius: 12px; background: var(--input-bg); padding: 5px; border: 1px solid var(--border-color); display: inline-block; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);"><h2 style="margin: 0 0 5px 0; font-weight: 900;">Fill Application Details</h2><p id="app-service-name" style="font-weight: 700; color: var(--primary-color); margin: 0; font-size: 1rem;"></p></div><div id="dynamic-custom-form-container" class="app-form-grid"></div><button class="btn" id="apply-proceed-btn" onclick="proceedToServiceCheckout()" style="background: var(--success);"><i class="fa-solid fa-wallet"></i> Proceed to Payment</button></div></div>
     <div id="checkout-modal" class="modal-overlay"><div class="modal-box" style="text-align:center;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('checkout-modal')"></i><h2>Checkout</h2><p id="checkout-item-price" style="font-size:1.5rem; font-weight:bold; color:var(--primary-color);"></p><button class="btn" onclick="payWithWallet()" id="wallet-pay-btn" style="background:var(--success); margin-bottom:15px;"><i class="fa-solid fa-wallet"></i> Pay from Wallet (Bal: ₹<span id="ck-wallet-bal">0</span>)</button><p>--- OR PAY VIA UPI ---</p><img id="upi-qr-img" style="width:180px; height:180px; object-fit:contain; margin:10px auto;"><br><b>ajsarvices@ptyes</b><input type="text" id="utr-number" placeholder="Enter 12-Digit UTR" maxlength="12"><button class="btn" id="checkout-final-btn" onclick="verifyAndPlaceOrder()">Submit Order</button><button class="btn btn-outline" onclick="backToFormFromCheckout()" style="margin-top:15px;"><i class="fa-solid fa-arrow-left"></i> Back to Edit Form</button></div></div>
@@ -377,7 +379,7 @@
             }, 300);
         });
 
-        const getGridLimit = () => window.innerWidth < 1024 ? 8 : 16;
+        const getGridLimit = () => window.innerWidth < 1024 ? 6 : 16;
 
         // --- 3. ON DOM LOAD / URL ROUTING ---
         window.onload = function() {
@@ -446,7 +448,7 @@
                         if(document.getElementById('ui-title-aitools')) document.getElementById('ui-title-aitools').innerText = escapeHTML(d.section_titles.aitools) || "AI Tools & Links"; 
                         if(document.getElementById('ui-title-top')) document.getElementById('ui-title-top').innerText = escapeHTML(d.section_titles.top) || "Top Services"; 
                         defaultAllTitle = d.section_titles.all || "All Online Services";
-                        if(document.getElementById('ui-title-all')) document.getElementById('ui-title-all').innerText = escapeHTML(defaultAllTitle); 
+                        if(document.getElementById('ui-title-all-container')) document.getElementById('ui-title-all-container').innerHTML = `<span id="ui-title-all">${escapeHTML(defaultAllTitle)}</span>`; 
                     }
                     
                     if(d.main_logo) { 
@@ -499,7 +501,7 @@
                 currentSlide = 0;
                 updateSlide();
                 if(slideInterval) clearInterval(slideInterval);
-                slideInterval = setInterval(() => moveSlide(1), 3000);
+                slideInterval = setInterval(() => moveSlide(1), 3000); 
             });
             
             db.ref('service_headlines').on('value', s => {
@@ -509,7 +511,7 @@
                     s.forEach(c => { 
                         const h = c.val(); allHeadlinesData[c.key] = h; 
                         let iconHtml = h.imageUrl ? `<img src="${h.imageUrl}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';" style="width:24px; height:24px; object-fit:contain; vertical-align:middle; margin-right:8px; border-radius:4px;">` : `<i class="fa-solid fa-layer-group" style="color: var(--accent); margin-right:8px;"></i>`; 
-                        container.innerHTML += `<div class="products-section"><div class="products-header"><h2><span style="display:flex; align-items:center;">${iconHtml} ${escapeHTML(h.title)}</span></h2></div><div class="products-grid" id="grid-head-${c.key}"></div></div>`; 
+                        container.innerHTML += `<div class="products-section"><div class="products-header"><h2 id="cat-head-${c.key}"><span style="display:flex; align-items:center;">${iconHtml} ${escapeHTML(h.title)}</span></h2></div><div class="products-grid" id="grid-head-${c.key}"></div></div>`; 
                     }); 
                 }
                 if(allProductsData && allProductsData.length > 0) renderProducts();
@@ -531,6 +533,7 @@
             });
         }
 
+        // --- RENDER AI TOOLS FUNCTION ---
         function renderAITools() {
             const grid = document.getElementById('dynamic-aitools-grid'); 
             if(!grid) return;
@@ -543,7 +546,7 @@
                 
                 displayTools.forEach(t => {
                     let imgUrl = t.imageUrl || appLogoUrl; 
-                    grid.innerHTML += `<div class="product-card" style="padding:15px; cursor:pointer;" onclick="handleAIToolClick('${t.key}')"><div class="product-image-box" style="height:90px; background:transparent;"><img src="${imgUrl}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';" style="object-fit:contain;"></div><div class="product-title" style="text-align:center; font-size:1.05rem;">${escapeHTML(t.title)}</div><p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:0;">${escapeHTML(t.description||'')}</p></div>`; 
+                    grid.innerHTML += `<div class="product-card" onclick="handleAIToolClick('${t.key}')"><div class="product-image-box"><img src="${imgUrl}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(t.title)}</div><p style="font-size:0.75rem; color:var(--text-gray); margin-bottom:0;">${escapeHTML(t.description||'')}</p></div>`; 
                 });
                 
                 if(globalAIToolsArray.length > limit) {
@@ -567,13 +570,12 @@
             document.getElementById('slider').style.transform = `translateX(-${currentSlide * 100}%)`;
         }
 
-        // --- 5. GLOBAL FUNCTIONS FOR UI & LOGIC ---
+        // --- GLOBAL FUNCTIONS FOR UI & LOGIC ---
         function escapeHTML(str) { if (!str) return ''; return String(str).replace(/[&<>'"]/g, function(tag) { const charsToReplace = { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }; return charsToReplace[tag] || tag; }); }
         function toggleTheme() { document.body.classList.toggle('dark-theme'); const icon = document.querySelector('.theme-toggle'); icon.classList.toggle('fa-moon'); icon.classList.toggle('fa-sun'); localStorage.setItem('ajTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light'); }
         function showToast(m, success=true) { const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'toast'; t.style.background = success?'var(--success)':'var(--danger)'; t.innerHTML = m; c.appendChild(t); setTimeout(() => t.remove(), 4000); }
         function switchAppScreen(id, navIndex) { document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active')); if(navIndex >= 0) { document.querySelectorAll('.nav-item')[navIndex].classList.add('active'); } if(id==='earnings-screen') loadEarningsData(); window.scrollTo(0,0); }
         function openModal(id) { document.getElementById(id).style.display = 'flex'; } function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        
         function openLegalModal(title, content) { document.getElementById('legal-title').innerText = escapeHTML(title); document.getElementById('legal-content').innerText = content || "Content not available."; openModal('legal-modal'); }
 
         function liveSearch(query) {
@@ -585,24 +587,25 @@
                 document.getElementById('trending-section').style.display = 'none';
                 document.getElementById('dynamic-headlines-container').style.display = 'none';
                 document.getElementById('ai-tools-section').style.display = 'none';
-                document.getElementById('ui-title-all').innerText = "Search Results";
+                document.getElementById('ui-title-all-container').innerHTML = `<span id="ui-title-all">Search Results</span>`;
             } else {
                 document.getElementById('trending-section').style.display = 'block';
                 document.getElementById('dynamic-headlines-container').style.display = 'block';
                 document.getElementById('ai-tools-section').style.display = globalAIToolsArray.length > 0 ? 'block' : 'none';
-                document.getElementById('ui-title-all').innerText = escapeHTML(defaultAllTitle);
+                document.getElementById('ui-title-all-container').innerHTML = `<span id="ui-title-all">${escapeHTML(defaultAllTitle)}</span>`;
             }
             
             const filtered = allProductsData.filter(p => p.title.toLowerCase().includes(query));
             filtered.forEach(p => { 
                 let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
                 let pImg = p.imageUrl || appLogoUrl;
-                grid.innerHTML+=`<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`; 
+                grid.innerHTML+=`<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">${(price==0)?'<span style="color:var(--success)">Free</span>': '₹'+price}</div></div>`; 
             });
             
             if (!query) renderProducts(); 
         }
 
+        // STRICT CATEGORY FILTER WITH 'X' CLEAR BUTTON
         function filterByCategory(categoryName, element) {
             document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
             if(element) element.classList.add('active');
@@ -611,10 +614,16 @@
             grid.innerHTML = '';
 
             if (categoryName !== 'All') {
+                // STRICTLY HIDE EVERYTHING ELSE
                 document.getElementById('trending-section').style.display = 'none';
                 document.getElementById('dynamic-headlines-container').style.display = 'none';
                 document.getElementById('ai-tools-section').style.display = 'none';
-                document.getElementById('ui-title-all').innerText = escapeHTML(categoryName);
+                
+                // Add Clear X button to Title
+                document.getElementById('ui-title-all-container').innerHTML = `
+                    <span id="ui-title-all">${escapeHTML(categoryName)}</span> 
+                    <span style="background:var(--danger); color:white; font-size:0.7rem; padding:4px 10px; border-radius:12px; cursor:pointer; margin-left:10px; vertical-align:middle; display:inline-block;" onclick="filterByCategory('All', document.querySelector('.category-item'))"><i class="fa-solid fa-xmark"></i> Clear</span>
+                `;
 
                 const filtered = allProductsData.filter(p => p.category === categoryName);
                 let limit = getGridLimit();
@@ -625,7 +634,7 @@
                     if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; 
                     if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
                     let pImg = p.imageUrl || appLogoUrl;
-                    grid.innerHTML+=`<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`; 
+                    grid.innerHTML+=`<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">${(price==0)?'<span style="color:var(--success)">Free</span>': '₹'+price}</div></div>`; 
                 });
 
                 if(filtered.length > limit) {
@@ -633,7 +642,7 @@
                 }
 
             } else {
-                document.getElementById('ui-title-all').innerText = escapeHTML(defaultAllTitle);
+                document.getElementById('ui-title-all-container').innerHTML = `<span id="ui-title-all">${escapeHTML(defaultAllTitle)}</span>`;
                 document.getElementById('trending-section').style.display = 'block';
                 document.getElementById('dynamic-headlines-container').style.display = 'block';
                 document.getElementById('ai-tools-section').style.display = globalAIToolsArray.length > 0 ? 'block' : 'none';
@@ -667,17 +676,17 @@
             dataToRender.forEach(p => {
                 if(p.isAI) {
                      let imgUrl = p.imageUrl || appLogoUrl; 
-                     grid.innerHTML += `<div class="product-card" style="padding:15px; cursor:pointer;" onclick="handleAIToolClick('${p.key}')"><div class="product-image-box" style="height:90px; background:transparent;"><img src="${imgUrl}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';" style="object-fit:contain;"></div><div class="product-title" style="text-align:center; font-size:1.05rem;">${escapeHTML(p.title)}</div><p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:0;">${escapeHTML(p.description||'')}</p></div>`;
+                     grid.innerHTML += `<div class="product-card" onclick="handleAIToolClick('${p.key}')"><div class="product-image-box"><img src="${imgUrl}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><p style="font-size:0.75rem; color:var(--text-gray); margin-bottom:0;">${escapeHTML(p.description||'')}</p></div>`;
                 } else {
                      let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
                      let pImg = p.imageUrl || appLogoUrl;
-                     grid.innerHTML += `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
+                     grid.innerHTML += `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">${(price==0)?'<span style="color:var(--success)">Free</span>': '₹'+price}</div></div>`;
                 }
             });
             switchAppScreen('view-all-screen', -1);
         }
 
-        // PERFECTED GRID RENDERER
+        // PERFECTED GRID RENDERER FOR PRODUCTS (4x2 and 8x2)
         function renderProducts() {
             const mainGrid = document.getElementById('dynamic-products-grid'); 
             const trendingGrid = document.getElementById('trending-products-grid');
@@ -695,7 +704,7 @@
                 displayAll.forEach(p => { 
                     let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
                     let pImg = p.imageUrl || appLogoUrl;
-                    let cardHtml = `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
+                    let cardHtml = `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">${(price==0)?'<span style="color:var(--success)">Free</span>': '₹'+price}</div></div>`;
                     if(mainGrid) mainGrid.innerHTML += cardHtml; 
                 });
                 if(allProductsData.length > limit && mainGrid) {
@@ -711,7 +720,7 @@
                         displayCat.forEach(p => {
                             let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
                             let pImg = p.imageUrl || appLogoUrl;
-                            dynGrid.innerHTML += `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
+                            dynGrid.innerHTML += `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">${(price==0)?'<span style="color:var(--success)">Free</span>': '₹'+price}</div></div>`;
                         });
                         if(catProducts.length > limit) {
                             dynGrid.innerHTML += `<div style="grid-column: 1 / -1; display:flex; justify-content:center; margin-top:10px;"><button class="btn btn-outline" style="width:auto; padding:10px 30px;" onclick="openViewAll('headline', '${hKey}')">View All</button></div>`;
@@ -726,7 +735,7 @@
                     displayTop.forEach(p => {
                         let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
                         let pImg = p.imageUrl || appLogoUrl;
-                        let cardHtml = `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
+                        let cardHtml = `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">${(price==0)?'<span style="color:var(--success)">Free</span>': '₹'+price}</div></div>`;
                         if(trendingGrid) trendingGrid.innerHTML += cardHtml;
                     });
                     if(topProducts.length > limit && trendingGrid) {
@@ -936,7 +945,7 @@
             currentCheckoutState={total:Number(selectedProductDetails.parsedPrice), title:selectedProductDetails.title, img:selectedProductDetails.imageUrl, docs:uploadedDocsArray, extra:ex}; 
             closeModal('application-form-modal'); 
             document.getElementById('checkout-item-price').innerHTML = (currentCheckoutState.total == 0) ? `<span style="color:var(--success);">Free Application</span>` : "₹"+currentCheckoutState.total; 
-            document.getElementById('upi-qr-img').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SARVICES%26am=${currentCheckoutState.total}%26cu=INR&size=200`; 
+            document.getElementById('upi-qr-img').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SERVICES%26am=${currentCheckoutState.total}%26cu=INR&size=200`; 
             openModal('checkout-modal'); 
         }
 
