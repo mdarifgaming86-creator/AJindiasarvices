@@ -70,7 +70,9 @@
         .category-item span { font-size: 0.8rem; font-weight: 600; text-align: center; }
 
         .products-section { padding: 10px 20px 20px 20px; }
-        .products-header h2 { font-size: 1.15rem; font-weight: 900; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between;}
+        
+        /* FIXED HEADLINE ALIGNMENT HERE */
+        .products-header h2 { font-size: 1.25rem; font-weight: 900; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; justify-content: flex-start;}
         
         /* STRICT 3 AND 8 GRID LAYOUT */
         .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; box-sizing: border-box; }
@@ -204,7 +206,7 @@
             <div id="dynamic-headlines-container"></div>
 
             <div class="products-section" id="all-services-section">
-                <div class="products-header"><h2 id="ui-title-all-container"><span id="ui-title-all">All Online Services</span></h2></div>
+                <div class="products-header"><h2 id="ui-title-all-container"><i class="fa-solid fa-layer-group" style="color: var(--accent);"></i> <span id="ui-title-all">All Online Services</span></h2></div>
                 <div class="products-grid" id="dynamic-products-grid"></div>
             </div>
         </div>
@@ -322,6 +324,7 @@
                 
                 <input type="text" id="auth-referral" placeholder="Got a Referral Code? (Optional)" style="border-color:var(--accent); margin-top: 15px;">
                 
+                <!-- NEW PROMO CODE SECTION FOR REGISTRATION -->
                 <div style="background:#f1f5f9; padding:10px; border-radius:8px; border:1px dashed var(--secondary-color); margin-top:10px;">
                     <label style="font-size:0.8rem; font-weight:bold; color:var(--text-dark); display:block; margin-bottom:5px;">Have a Promo Code for Discount?</label>
                     <div style="display:flex; gap:10px;">
@@ -379,7 +382,8 @@
             }, 300);
         });
 
-        const getGridLimit = () => window.innerWidth < 1024 ? 6 : 16;
+        // 3 columns on mobile, 8 columns on laptop
+        const getGridLimit = () => window.innerWidth < 768 ? 6 : 16; 
 
         // --- 3. ON DOM LOAD / URL ROUTING ---
         window.onload = function() {
@@ -448,7 +452,7 @@
                         if(document.getElementById('ui-title-aitools')) document.getElementById('ui-title-aitools').innerText = escapeHTML(d.section_titles.aitools) || "AI Tools & Links"; 
                         if(document.getElementById('ui-title-top')) document.getElementById('ui-title-top').innerText = escapeHTML(d.section_titles.top) || "Top Services"; 
                         defaultAllTitle = d.section_titles.all || "All Online Services";
-                        if(document.getElementById('ui-title-all-container')) document.getElementById('ui-title-all-container').innerHTML = `<span id="ui-title-all">${escapeHTML(defaultAllTitle)}</span>`; 
+                        if(document.getElementById('ui-title-all-container')) document.getElementById('ui-title-all-container').innerHTML = `<i class="fa-solid fa-layer-group" style="color: var(--accent);"></i> <span id="ui-title-all">${escapeHTML(defaultAllTitle)}</span>`; 
                     }
                     
                     if(d.main_logo) { 
@@ -533,7 +537,6 @@
             });
         }
 
-        // --- RENDER AI TOOLS FUNCTION ---
         function renderAITools() {
             const grid = document.getElementById('dynamic-aitools-grid'); 
             if(!grid) return;
@@ -570,7 +573,7 @@
             document.getElementById('slider').style.transform = `translateX(-${currentSlide * 100}%)`;
         }
 
-        // --- GLOBAL FUNCTIONS FOR UI & LOGIC ---
+        // --- 5. GLOBAL FUNCTIONS FOR UI & LOGIC ---
         function escapeHTML(str) { if (!str) return ''; return String(str).replace(/[&<>'"]/g, function(tag) { const charsToReplace = { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }; return charsToReplace[tag] || tag; }); }
         function toggleTheme() { document.body.classList.toggle('dark-theme'); const icon = document.querySelector('.theme-toggle'); icon.classList.toggle('fa-moon'); icon.classList.toggle('fa-sun'); localStorage.setItem('ajTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light'); }
         function showToast(m, success=true) { const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'toast'; t.style.background = success?'var(--success)':'var(--danger)'; t.innerHTML = m; c.appendChild(t); setTimeout(() => t.remove(), 4000); }
@@ -592,7 +595,7 @@
                 document.getElementById('trending-section').style.display = 'block';
                 document.getElementById('dynamic-headlines-container').style.display = 'block';
                 document.getElementById('ai-tools-section').style.display = globalAIToolsArray.length > 0 ? 'block' : 'none';
-                document.getElementById('ui-title-all-container').innerHTML = `<span id="ui-title-all">${escapeHTML(defaultAllTitle)}</span>`;
+                document.getElementById('ui-title-all-container').innerHTML = `<i class="fa-solid fa-layer-group" style="color: var(--accent);"></i> <span id="ui-title-all">${escapeHTML(defaultAllTitle)}</span>`;
             }
             
             const filtered = allProductsData.filter(p => p.title.toLowerCase().includes(query));
@@ -605,7 +608,6 @@
             if (!query) renderProducts(); 
         }
 
-        // STRICT CATEGORY FILTER WITH 'X' CLEAR BUTTON
         function filterByCategory(categoryName, element) {
             document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
             if(element) element.classList.add('active');
@@ -614,12 +616,10 @@
             grid.innerHTML = '';
 
             if (categoryName !== 'All') {
-                // STRICTLY HIDE EVERYTHING ELSE
                 document.getElementById('trending-section').style.display = 'none';
                 document.getElementById('dynamic-headlines-container').style.display = 'none';
                 document.getElementById('ai-tools-section').style.display = 'none';
                 
-                // Add Clear X button to Title
                 document.getElementById('ui-title-all-container').innerHTML = `
                     <span id="ui-title-all">${escapeHTML(categoryName)}</span> 
                     <span style="background:var(--danger); color:white; font-size:0.7rem; padding:4px 10px; border-radius:12px; cursor:pointer; margin-left:10px; vertical-align:middle; display:inline-block;" onclick="filterByCategory('All', document.querySelector('.category-item'))"><i class="fa-solid fa-xmark"></i> Clear</span>
@@ -642,7 +642,7 @@
                 }
 
             } else {
-                document.getElementById('ui-title-all-container').innerHTML = `<span id="ui-title-all">${escapeHTML(defaultAllTitle)}</span>`;
+                document.getElementById('ui-title-all-container').innerHTML = `<i class="fa-solid fa-layer-group" style="color: var(--accent);"></i> <span id="ui-title-all">${escapeHTML(defaultAllTitle)}</span>`;
                 document.getElementById('trending-section').style.display = 'block';
                 document.getElementById('dynamic-headlines-container').style.display = 'block';
                 document.getElementById('ai-tools-section').style.display = globalAIToolsArray.length > 0 ? 'block' : 'none';
@@ -650,7 +650,6 @@
             }
         }
 
-        // VIEW ALL PAGE RENDERER
         function openViewAll(type, headlineKey) {
             const grid = document.getElementById('view-all-grid');
             grid.innerHTML = '';
@@ -686,7 +685,6 @@
             switchAppScreen('view-all-screen', -1);
         }
 
-        // PERFECTED GRID RENDERER FOR PRODUCTS (4x2 and 8x2)
         function renderProducts() {
             const mainGrid = document.getElementById('dynamic-products-grid'); 
             const trendingGrid = document.getElementById('trending-products-grid');
@@ -945,7 +943,7 @@
             currentCheckoutState={total:Number(selectedProductDetails.parsedPrice), title:selectedProductDetails.title, img:selectedProductDetails.imageUrl, docs:uploadedDocsArray, extra:ex}; 
             closeModal('application-form-modal'); 
             document.getElementById('checkout-item-price').innerHTML = (currentCheckoutState.total == 0) ? `<span style="color:var(--success);">Free Application</span>` : "₹"+currentCheckoutState.total; 
-            document.getElementById('upi-qr-img').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SERVICES%26am=${currentCheckoutState.total}%26cu=INR&size=200`; 
+            document.getElementById('upi-qr-img').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SARVICES%26am=${currentCheckoutState.total}%26cu=INR&size=200`; 
             openModal('checkout-modal'); 
         }
 
