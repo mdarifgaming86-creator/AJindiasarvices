@@ -6,7 +6,6 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta name="theme-color" content="#1e3a8a">
     <title>AJ INDIA SARVICES - Premium Portal</title>
-    <!-- Default Favicon Updated -->
     <link rel="icon" type="image/jpeg" href="logoa.jpg" class="dynamic-app-logo">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -27,7 +26,6 @@
         .marquee-wrapper { display: inline-block; padding-left: 100%; animation: scroll-left 25s linear infinite; }
         @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-        /* --- Header & Layout Fixes --- */
         header { background: var(--card-bg); padding: 15px 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.05); transition: 0.3s;}
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .logo { display: flex; align-items: center; }
@@ -46,7 +44,6 @@
         .user-profile-header img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover;}
         .user-profile-header span { font-size: 0.8rem; font-weight: 700; max-width: 80px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
         
-        /* --- Search Box Perfect Size Fix --- */
         .search-box { display: flex; background: var(--input-bg); border-radius: 12px; padding: 0 15px; align-items: center; border: 1px solid var(--border-color); height: 48px; width: 100%; box-sizing: border-box; overflow: hidden;}
         .search-box input { border: none !important; background: transparent !important; width: 100% !important; height: 100% !important; outline: none !important; margin: 0 0 0 10px !important; padding: 0 !important; font-size: 0.95rem; color: var(--text-dark);}
         
@@ -54,12 +51,17 @@
         .app-screen.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .slider-container { width: 100%; aspect-ratio: 21/9; overflow: hidden; background: var(--border-color); border-radius: 0 0 20px 20px;}
-        .slider { display: flex; transition: 0.5s; width: 100%; height: 100%; }
-        .slide { min-width: 100%; background-size: cover; background-position: center;}
+        /* --- Slider Styles Updated --- */
+        .slider-container { width: 100%; aspect-ratio: 21/9; overflow: hidden; background: var(--border-color); border-radius: 0 0 20px 20px; position: relative;}
+        .slider { display: flex; transition: transform 0.5s ease-in-out; width: 100%; height: 100%; }
+        .slide { min-width: 100%; background-size: cover; background-position: center; position: relative;}
+        .slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; width: 35px; height: 35px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 10; font-size: 1rem;}
+        .slider-arrow:hover { background: rgba(0,0,0,0.8); }
+        .slider-left { left: 10px; } .slider-right { right: 10px; }
+        .slide-link-btn { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); background: var(--success); color: white; padding: 6px 18px; border-radius: 20px; text-decoration: none; font-weight: 800; font-size: 0.85rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 5;}
+        .slide-link-btn:active { transform: translateX(-50%) scale(0.95); }
         
         .categories-wrapper { padding: 15px 20px; }
-        .categories-title { font-size: 1.1rem; margin-bottom: 15px; font-weight: 800; display: flex; justify-content: space-between; }
         .categories-list { display: flex; overflow-x: auto; gap: 15px; padding-bottom: 10px; scrollbar-width: none; }
         .category-item { display: flex; flex-direction: column; align-items: center; min-width: 70px; cursor: pointer; }
         .category-icon { width: 60px; height: 60px; border-radius: 16px; background: var(--card-bg); display: flex; justify-content: center; align-items: center; margin-bottom: 8px; border: 2px solid transparent; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
@@ -70,14 +72,13 @@
         .products-section { padding: 10px 20px 20px 20px; }
         .products-header h2 { font-size: 1.25rem; font-weight: 900; margin-bottom: 15px; }
         .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        @media (min-width: 640px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (min-width: 1024px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (min-width: 640px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (min-width: 1024px) { .products-grid { grid-template-columns: repeat(6, 1fr); } }
 
         .product-card { background: var(--card-bg); border-radius: 16px; padding: 12px; border: 1px solid var(--border-color); cursor: pointer; display: flex; flex-direction: column; position: relative; transition: 0.2s;}
         .product-card:active { transform: scale(0.98); }
         .product-image-box { width: 100%; aspect-ratio: 16 / 9; height: auto; background: var(--input-bg); border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 0; margin-bottom: 12px; overflow: hidden;}
         .product-image-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px;}
-        .discount-badge { position: absolute; top: 15px; left: 0; background: var(--danger); color: #fff; font-size: 0.65rem; font-weight: 800; padding: 4px 10px; border-radius: 0 6px 6px 0; z-index: 10;}
         .product-title { font-size: 0.95rem; font-weight: 800; margin-bottom: 8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height: 1.3;}
         .product-price { font-size: 1.2rem; font-weight: 900; color: var(--secondary-color); margin-top: auto;}
 
@@ -180,7 +181,12 @@
         </header>
 
         <div id="home-screen" class="app-screen active">
-            <div class="slider-container"><div class="slider" id="slider"></div></div>
+            <!-- Updated Slider Section with Arrows and Buttons -->
+            <div class="slider-container">
+                <div class="slider" id="slider"></div>
+                <button class="slider-arrow slider-left" onclick="moveSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="slider-arrow slider-right" onclick="moveSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
             <div class="categories-wrapper"><div class="categories-list" id="dynamic-categories-list"></div></div>
             
             <div class="products-section" id="ai-tools-section" style="display:none;">
@@ -199,6 +205,15 @@
                 <div class="products-header"><h2><span id="ui-title-all">All Online Services</span></h2></div>
                 <div class="products-grid" id="dynamic-products-grid"></div>
             </div>
+        </div>
+
+        <!-- NEW: View All Screen (Full Page Grid) -->
+        <div id="view-all-screen" class="app-screen">
+            <div style="padding:15px 20px; display:flex; align-items:center; gap:15px; background:var(--card-bg); position:sticky; top:0; z-index:100; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
+                <i class="fa-solid fa-arrow-left" style="font-size:1.2rem; cursor:pointer;" onclick="switchAppScreen('home-screen', 0)"></i>
+                <h2 id="view-all-title" style="margin:0; font-size:1.2rem; font-weight:900;">All Services</h2>
+            </div>
+            <div class="products-grid" id="view-all-grid" style="padding:20px;"></div>
         </div>
 
         <div id="orders-screen" class="app-screen">
@@ -291,7 +306,33 @@
             <div style="text-align:center;"><h2 id="auth-title" style="margin-bottom:15px;">Login</h2></div>
             <div id="login-fields-container"><input type="email" id="auth-email" placeholder="E-Mail Address"><input type="password" id="auth-password" placeholder="Password"><div style="text-align:right; margin-bottom:15px;"><span style="color:var(--secondary-color); font-size:0.8rem; font-weight:bold; cursor:pointer;" onclick="resetPasswordUI()">Forgot Password?</span></div><button class="btn" id="auth-login-btn" onclick="executeLogin()">Login Securely</button></div>
             <div id="reset-pass-container" style="display:none; text-align:center;"><p style="font-size:0.9rem; color:var(--text-gray); margin-bottom:15px;">Enter your registered email to receive a password reset link.</p><input type="email" id="reset-email" placeholder="Registered E-Mail"><button class="btn" onclick="sendResetEmail()" style="margin-bottom:10px;">Send Reset Link</button><span style="color:var(--text-gray); font-size:0.8rem; font-weight:bold; cursor:pointer;" onclick="switchAuthMode(false, false)">Back to Login</span></div>
-            <div id="reg-fields-container" style="display: none;"><div class="pricing-grid"><label class="price-card"><input type="radio" name="rRole" value="59" checked onclick="selectRegRole('Retailer', 59)"> Retailer (₹59)</label><label class="price-card"><input type="radio" name="rRole" value="109" onclick="selectRegRole('Distributor', 109)"> Distributor (₹109)</label><label class="price-card"><input type="radio" name="rRole" value="199" onclick="selectRegRole('AJ Officer', 199)"> AJ Officer (₹199)</label></div><div class="reg-grid"><div><label class="form-label">Shop Name<span class="req-star">*</span></label><input type="text" id="auth-shop-name" placeholder="Shop Name"></div><div><label class="form-label">Owner Name<span class="req-star">*</span></label><input type="text" id="auth-name" placeholder="Owner Name" oninput="autoFillReferral(this.value)"></div><div><label class="form-label">E-Mail Address<span class="req-star">*</span></label><input type="email" id="auth-reg-email" placeholder="E-Mail Address"></div><div><label class="form-label">Create Password<span class="req-star">*</span></label><input type="password" id="auth-reg-password" placeholder="Password"></div></div><input type="text" id="auth-referral" placeholder="Got a Referral Code? (Optional)" style="border-color:var(--accent); margin-top: 15px;"><button class="btn" id="auth-reg-btn" onclick="executeRegistrationValidation()" style="margin-top: 10px;">Pay ₹59 & Register</button></div>
+            <div id="reg-fields-container" style="display: none;">
+                <div class="pricing-grid">
+                    <label class="price-card active"><input type="radio" name="rRole" value="59" checked onclick="selectRegRole('Retailer', 59)"> Retailer (₹59)</label>
+                    <label class="price-card"><input type="radio" name="rRole" value="109" onclick="selectRegRole('Distributor', 109)"> Distributor (₹109)</label>
+                    <label class="price-card"><input type="radio" name="rRole" value="199" onclick="selectRegRole('AJ Officer', 199)"> AJ Officer (₹199)</label>
+                </div>
+                <div class="reg-grid">
+                    <div><label class="form-label">Shop Name<span class="req-star">*</span></label><input type="text" id="auth-shop-name" placeholder="Shop Name"></div>
+                    <div><label class="form-label">Owner Name<span class="req-star">*</span></label><input type="text" id="auth-name" placeholder="Owner Name" oninput="autoFillReferral(this.value)"></div>
+                    <div><label class="form-label">E-Mail Address<span class="req-star">*</span></label><input type="email" id="auth-reg-email" placeholder="E-Mail Address"></div>
+                    <div><label class="form-label">Create Password<span class="req-star">*</span></label><input type="password" id="auth-reg-password" placeholder="Password"></div>
+                </div>
+                
+                <input type="text" id="auth-referral" placeholder="Got a Referral Code? (Optional)" style="border-color:var(--accent); margin-top: 15px;">
+                
+                <!-- NEW PROMO CODE SECTION FOR REGISTRATION -->
+                <div style="background:#f1f5f9; padding:10px; border-radius:8px; border:1px dashed var(--secondary-color); margin-top:10px;">
+                    <label style="font-size:0.8rem; font-weight:bold; color:var(--text-dark); display:block; margin-bottom:5px;">Have a Promo Code for Discount?</label>
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" id="auth-promo" placeholder="Enter Promo Code" style="margin:0; text-transform:uppercase;">
+                        <button class="btn btn-outline" style="margin:0; width:auto; padding:10px 20px;" onclick="applyRegPromo()">Apply</button>
+                    </div>
+                    <p id="promo-msg" style="font-size:0.85rem; margin:5px 0 0 0;"></p>
+                </div>
+                
+                <button class="btn" id="auth-reg-btn" onclick="executeRegistrationValidation()" style="margin-top: 15px;">Pay ₹59 & Register</button>
+            </div>
             <div id="reg-payment-container" style="display: none; text-align: center; margin-top: 10px;"><h3 style="margin-bottom:8px;">Registration Payment</h3><p>Pay Fee: <b id="reg-pay-amt" style="color:var(--secondary-color);">₹59</b></p><img id="reg-upi-qr" src="" style="width:180px; height:180px; border:2px solid var(--border-color); border-radius:12px; padding:5px; object-fit:contain;"><br><b style="color:var(--secondary-color);">ajsarvices@ptyes</b><input type="text" id="reg-utr" placeholder="12-Digit UTR Number" style="margin-top:15px;" maxlength="12"><button type="button" class="btn" onclick="finalizeRegistration()" id="reg-confirm-btn" style="background:var(--success);">Verify Payment & Register</button><button type="button" class="btn btn-outline" onclick="backToRegForm()" style="margin-top:10px;">Back to Details</button></div>
             <p id="auth-toggle-text" style="text-align:center; margin-top:15px; color:var(--secondary-color); font-weight:bold; cursor:pointer;" onclick="switchAuthMode()">New Registration? Click Here</p>
         </div>
@@ -300,7 +341,7 @@
     <!-- UPDATED PRODUCT DETAILS MODAL -->
     <div id="product-details-modal" class="modal-overlay"><div class="modal-box" style="padding:0;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('product-details-modal')"></i><img id="pd-img" style="width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--bg-color); padding:0; border-radius: 20px 20px 0 0;"><div style="padding:20px;"><h2 id="pd-title"></h2><h3 id="pd-price" style="color:var(--primary-color);"></h3><p id="pd-desc" style="font-size:0.9rem;"></p><a id="pd-yt-link" href="#" target="_blank" style="display:none; align-items:center; gap:8px; color:#ef4444; font-weight:bold; margin-top:10px; text-decoration:none; background:#fee2e2; padding:8px 12px; border-radius:8px; width: fit-content;"><i class="fa-brands fa-youtube" style="font-size:1.2rem;"></i> Watch Video Tutorial</a><div style="display:flex; gap:10px; margin-top:20px;" id="pd-action-buttons"></div></div></div></div>
     <div id="application-form-modal" class="modal-overlay"><div class="modal-box" style="max-width: 900px;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('application-form-modal')"></i><div style="text-align: center; margin-bottom: 20px;"><img id="app-form-logo" src="" style="width: 80px; height: 80px; object-fit: contain; border-radius: 12px; background: var(--input-bg); padding: 5px; border: 1px solid var(--border-color); display: inline-block; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);"><h2 style="margin: 0 0 5px 0; font-weight: 900;">Fill Application Details</h2><p id="app-service-name" style="font-weight: 700; color: var(--primary-color); margin: 0; font-size: 1rem;"></p></div><div id="dynamic-custom-form-container" class="app-form-grid"></div><button class="btn" id="apply-proceed-btn" onclick="proceedToServiceCheckout()" style="background: var(--success);"><i class="fa-solid fa-wallet"></i> Proceed to Payment</button></div></div>
-    <div id="checkout-modal" class="modal-overlay"><div class="modal-box" style="text-align:center;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('checkout-modal')"></i><h2>Checkout</h2><p id="checkout-item-price" style="font-size:1.5rem; font-weight:bold; color:var(--primary-color);"></p><button class="btn" onclick="payWithWallet()" id="wallet-pay-btn" style="background:var(--success); margin-bottom:15px;"><i class="fa-solid fa-wallet"></i> Pay from Wallet (Bal: ₹<span id="ck-wallet-bal">0</span>)</button><p>--- OR PAY VIA UPI ---</p><img id="upi-qr-img" style="width:180px; height:180px; object-fit:contain; margin:10px auto;"><br><b>ajsarvices@ptyes</b><input type="text" id="utr-number" placeholder="Enter 12-Digit UTR" maxlength="12"><button class="btn" id="checkout-final-btn" onclick="verifyAndPlaceOrder()">Submit Order</button></div></div>
+    <div id="checkout-modal" class="modal-overlay"><div class="modal-box" style="text-align:center;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('checkout-modal')"></i><h2>Checkout</h2><p id="checkout-item-price" style="font-size:1.5rem; font-weight:bold; color:var(--primary-color);"></p><button class="btn" onclick="payWithWallet()" id="wallet-pay-btn" style="background:var(--success); margin-bottom:15px;"><i class="fa-solid fa-wallet"></i> Pay from Wallet (Bal: ₹<span id="ck-wallet-bal">0</span>)</button><p>--- OR PAY VIA UPI ---</p><img id="upi-qr-img" style="width:180px; height:180px; object-fit:contain; margin:10px auto;"><br><b>ajsarvices@ptyes</b><input type="text" id="utr-number" placeholder="Enter 12-Digit UTR" maxlength="12"><button class="btn" id="checkout-final-btn" onclick="verifyAndPlaceOrder()">Submit Order</button><button class="btn btn-outline" onclick="backToFormFromCheckout()" style="margin-top:15px;"><i class="fa-solid fa-arrow-left"></i> Back to Edit Form</button></div></div>
     <div id="certificate-modal" class="modal-overlay"><div class="modal-box" style="text-align:center; background: #001b5e; border: 2px solid #4da6ff; padding:35px; max-width:800px;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('certificate-modal')" style="background:#ffffff; color:#001b5e;"></i><h3 style="color:#ffffff; margin-bottom:20px; font-size:1.5rem;"><i class="fa-solid fa-award" style="color:#f59e0b;"></i> Authorization Certificate</h3><img id="cert-view-img" style="width:100%; margin-bottom:20px; border-radius:8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);"><button class="btn" onclick="downloadCertificate()" style="background: #10b981; font-size:1.1rem;"><i class="fa-solid fa-download"></i> Download High-Res</button></div></div>
     <div id="edit-profile-modal" class="modal-overlay"><div class="modal-box" style="text-align:center;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('edit-profile-modal')"></i><h2 style="margin-bottom: 20px;">Edit Details</h2><div class="file-upload-box" style="margin-bottom:15px; text-align:left;"><label style="font-size:0.8rem; font-weight:bold; color:var(--text-gray); display:block; margin-bottom:8px;">Upload New Logo / Profile Pic</label><input type="file" id="ep-logo" onchange="uploadProfileLogo(this)" accept="image/*"></div><input type="text" id="ep-name" placeholder="Full Name"><input type="text" id="ep-shop" placeholder="Shop Name"><button class="btn" id="ep-save-btn" onclick="saveUserProfile()" style="background: var(--success); margin-top:15px;">Save Details</button></div></div>
 
@@ -311,8 +352,10 @@
         let uProfilePic = "logoa.jpg"; let tempProfileLogoUrl = ""; 
         let earningsChartInstance = null; let myOrdersData={}; let isRegisteringProcess = false; let allAIToolsData = {};
         let refBonusAmt = 50; let formCommAmt = 10; let myGenReferCode = "";
-        let selectedRegRole = "Retailer", selectedRegPrice = 59;
+        let selectedRegPrice = 59; let selectedRegRole = "Retailer";
+        let appliedPromoDiscount = 0; let globalPromoCodes = {};
         let allHeadlinesData = {}; let legalData = {terms:"", privacy:"", refund:""};
+        let currentSlide = 0; let totalSlides = 0; let slideInterval;
 
         const utrRegex = /^[a-zA-Z0-9]{12}$/;
         const IMGBB_API_KEY = "122cc16740d69ce4f60b53f0effed6c1";
@@ -329,7 +372,6 @@
             const sharedToolKey = urlParams.get('tool');
 
             if (sharedToolKey) {
-                // RUN TOOL EMBED CODE
                 document.getElementById('main-app-container').style.display = 'none';
                 document.getElementById('full-page-loader').style.display = 'flex';
                 
@@ -370,6 +412,9 @@
             });
 
             db.ref('legal_policies').on('value', s => { if(s.exists()) { legalData = s.val(); } });
+            
+            // PROMO CODES DATA LOAD
+            db.ref('promocodes').on('value', s => { globalPromoCodes = s.val() || {}; });
 
             db.ref('app_settings').on('value', s => { 
                 if(s.exists()){ 
@@ -415,12 +460,35 @@
                 }); 
             });
 
-            db.ref('banners').on('value', s => { const slider = document.getElementById('slider'); slider.innerHTML = ''; s.forEach(c => { const b = c.val(); slider.innerHTML += `<div class="slide" style="background-image: url('${b.imageUrl}')" onclick="${b.link ? `window.open('${b.link}','_blank')` : ''}"></div>`; }); });
+            // UPDATED SLIDER RENDER (Auto Slide & Links)
+            db.ref('banners').on('value', s => { 
+                const slider = document.getElementById('slider'); 
+                slider.innerHTML = ''; 
+                totalSlides = s.numChildren();
+                if(totalSlides === 0) return;
+                
+                s.forEach(c => { 
+                    const b = c.val(); 
+                    let btnHtml = b.link ? `<a href="${escapeHTML(b.link)}" target="_blank" class="slide-link-btn">Click Here</a>` : '';
+                    slider.innerHTML += `<div class="slide" style="background-image: url('${b.imageUrl}')">${btnHtml}</div>`; 
+                }); 
+                
+                currentSlide = 0;
+                updateSlide();
+                if(slideInterval) clearInterval(slideInterval);
+                slideInterval = setInterval(() => moveSlide(1), 3000); // 3 seconds auto-slide
+            });
             
             db.ref('service_headlines').on('value', s => {
                 const container = document.getElementById('dynamic-headlines-container');
                 container.innerHTML = ''; allHeadlinesData = {};
-                if(s.exists()){ s.forEach(c => { const h = c.val(); allHeadlinesData[c.key] = h; let iconHtml = h.imageUrl ? `<img src="${h.imageUrl}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';" style="width:24px; height:24px; object-fit:contain; vertical-align:middle; margin-right:8px; border-radius:4px;">` : `<i class="fa-solid fa-layer-group" style="color: var(--accent); margin-right:8px;"></i>`; container.innerHTML += `<div class="products-section"><div class="products-header"><h2 style="display:flex; align-items:center;">${iconHtml} ${escapeHTML(h.title)}</h2></div><div class="products-grid" id="grid-head-${c.key}"></div></div>`; }); }
+                if(s.exists()){ 
+                    s.forEach(c => { 
+                        const h = c.val(); allHeadlinesData[c.key] = h; 
+                        let iconHtml = h.imageUrl ? `<img src="${h.imageUrl}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';" style="width:24px; height:24px; object-fit:contain; vertical-align:middle; margin-right:8px; border-radius:4px;">` : `<i class="fa-solid fa-layer-group" style="color: var(--accent); margin-right:8px;"></i>`; 
+                        container.innerHTML += `<div class="products-section"><div class="products-header"><h2><span style="display:flex; align-items:center;">${iconHtml} ${escapeHTML(h.title)}</span></h2></div><div class="products-grid" id="grid-head-${c.key}"></div></div>`; 
+                    }); 
+                }
                 if(allProductsData && allProductsData.length > 0) renderProducts();
             });
 
@@ -435,22 +503,45 @@
                 grid.innerHTML = ''; allAIToolsData = {}; 
                 if(s.exists()) { 
                     document.getElementById('ai-tools-section').style.display = 'block'; 
-                    s.forEach(c => { 
-                        const t = c.val(); allAIToolsData[c.key] = t; 
+                    let toolsArray = [];
+                    s.forEach(c => { const t = c.val(); t.key = c.key; allAIToolsData[c.key] = t; toolsArray.push(t); }); 
+                    
+                    let limit = window.innerWidth < 640 ? 6 : 8;
+                    let displayTools = toolsArray.slice(0, limit);
+                    
+                    displayTools.forEach(t => {
                         let imgUrl = t.imageUrl || appLogoUrl; 
-                        grid.innerHTML += `<div class="product-card" style="padding:15px; cursor:pointer;" onclick="handleAIToolClick('${c.key}')"><div class="product-image-box" style="height:90px; background:transparent;"><img src="${imgUrl}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';" style="object-fit:contain;"></div><div class="product-title" style="text-align:center; font-size:1.05rem;">${escapeHTML(t.title)}</div><p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:0;">${escapeHTML(t.description||'')}</p></div>`; 
-                    }); 
+                        grid.innerHTML += `<div class="product-card" style="padding:15px; cursor:pointer;" onclick="handleAIToolClick('${t.key}')"><div class="product-image-box" style="height:90px; background:transparent;"><img src="${imgUrl}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';" style="object-fit:contain;"></div><div class="product-title" style="text-align:center; font-size:1.05rem;">${escapeHTML(t.title)}</div><p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:0;">${escapeHTML(t.description||'')}</p></div>`; 
+                    });
+                    
+                    if(toolsArray.length > limit) {
+                        grid.innerHTML += `<div style="grid-column: 1 / -1; text-align:center; margin-top:10px;"><button class="btn btn-outline" style="width:auto; padding:10px 30px;" onclick="openViewAll('aitools')">View All Tools</button></div>`;
+                    }
                 } else { 
                     document.getElementById('ai-tools-section').style.display = 'none'; 
                 } 
             });
         }
 
+        // --- SLIDER LOGIC ---
+        function moveSlide(step) {
+            currentSlide += step;
+            if(currentSlide >= totalSlides) currentSlide = 0;
+            if(currentSlide < 0) currentSlide = totalSlides - 1;
+            updateSlide();
+            // Reset interval so manual click doesn't immediately slide again
+            if(slideInterval) clearInterval(slideInterval);
+            slideInterval = setInterval(() => moveSlide(1), 3000);
+        }
+        function updateSlide() {
+            document.getElementById('slider').style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
         // --- 5. GLOBAL FUNCTIONS FOR UI & LOGIC ---
         function escapeHTML(str) { if (!str) return ''; return String(str).replace(/[&<>'"]/g, function(tag) { const charsToReplace = { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }; return charsToReplace[tag] || tag; }); }
         function toggleTheme() { document.body.classList.toggle('dark-theme'); const icon = document.querySelector('.theme-toggle'); icon.classList.toggle('fa-moon'); icon.classList.toggle('fa-sun'); localStorage.setItem('ajTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light'); }
         function showToast(m, success=true) { const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'toast'; t.style.background = success?'var(--success)':'var(--danger)'; t.innerHTML = m; c.appendChild(t); setTimeout(() => t.remove(), 4000); }
-        function switchAppScreen(id, navIndex) { document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active')); document.querySelectorAll('.nav-item')[navIndex].classList.add('active'); if(id==='earnings-screen') loadEarningsData(); window.scrollTo(0,0); }
+        function switchAppScreen(id, navIndex) { document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active')); if(navIndex >= 0) { document.querySelectorAll('.nav-item')[navIndex].classList.add('active'); } if(id==='earnings-screen') loadEarningsData(); window.scrollTo(0,0); }
         function openModal(id) { document.getElementById(id).style.display = 'flex'; } function closeModal(id) { document.getElementById(id).style.display = 'none'; }
         
         function openLegalModal(title, content) { document.getElementById('legal-title').innerText = escapeHTML(title); document.getElementById('legal-content').innerText = content || "Content not available."; openModal('legal-modal'); }
@@ -508,6 +599,40 @@
             if(categoryName === 'All') renderProducts(); 
         }
 
+        // VIEW ALL PAGE RENDERER
+        function openViewAll(type, headlineKey) {
+            const grid = document.getElementById('view-all-grid');
+            grid.innerHTML = '';
+            let dataToRender = [];
+
+            if(type === 'aitools') {
+                document.getElementById('view-all-title').innerText = "All AI Tools & Links";
+                dataToRender = Object.values(allAIToolsData).map(t => ({...t, isAI: true}));
+            } else if(type === 'trending') {
+                document.getElementById('view-all-title').innerText = "Top Services";
+                dataToRender = [...allProductsData].sort((a,b)=> (b.clicks||0)-(a.clicks||0));
+            } else if(type === 'all') {
+                document.getElementById('view-all-title').innerText = "All Online Services";
+                dataToRender = allProductsData;
+            } else if(type === 'headline') {
+                document.getElementById('view-all-title').innerText = allHeadlinesData[headlineKey].title;
+                dataToRender = allProductsData.filter(p => p.headline === allHeadlinesData[headlineKey].title);
+            }
+
+            dataToRender.forEach(p => {
+                if(p.isAI) {
+                     let imgUrl = p.imageUrl || appLogoUrl; 
+                     grid.innerHTML += `<div class="product-card" style="padding:15px; cursor:pointer;" onclick="handleAIToolClick('${p.key}')"><div class="product-image-box" style="height:90px; background:transparent;"><img src="${imgUrl}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';" style="object-fit:contain;"></div><div class="product-title" style="text-align:center; font-size:1.05rem;">${escapeHTML(p.title)}</div><p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:0;">${escapeHTML(p.description||'')}</p></div>`;
+                } else {
+                     let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
+                     let pImg = p.imageUrl || appLogoUrl;
+                     grid.innerHTML += `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
+                }
+            });
+            switchAppScreen('view-all-screen', -1);
+        }
+
+        // UPDATED RENDER PRODUCTS TO HANDLE GRID LIMITS AND "VIEW ALL"
         function renderProducts() {
             const mainGrid = document.getElementById('dynamic-products-grid'); 
             const trendingGrid = document.getElementById('trending-products-grid');
@@ -517,27 +642,51 @@
             
             Object.keys(allHeadlinesData).forEach(k => { const g = document.getElementById('grid-head-'+k); if(g) g.innerHTML = ''; });
             
+            let limit = window.innerWidth < 640 ? 6 : 8; // 6 items on mobile, 8 on laptop
+
             if(allProductsData && allProductsData.length > 0) {
-                allProductsData.forEach(p => { 
+                // ALL SERVICES
+                let displayAll = allProductsData.slice(0, limit);
+                displayAll.forEach(p => { 
                     let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
                     let pImg = p.imageUrl || appLogoUrl;
                     let cardHtml = `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
-                    
                     if(mainGrid) mainGrid.innerHTML += cardHtml; 
-                    if(p.headline) { 
-                        let hKey = Object.keys(allHeadlinesData).find(k => allHeadlinesData[k].title === p.headline); 
-                        if(hKey) { let dynGrid = document.getElementById('grid-head-'+hKey); if(dynGrid) dynGrid.innerHTML += cardHtml; } 
+                });
+                if(allProductsData.length > limit && mainGrid) {
+                    mainGrid.innerHTML += `<div style="grid-column: 1 / -1; text-align:center; margin-top:10px;"><button class="btn btn-outline" style="width:auto; padding:10px 30px;" onclick="openViewAll('all')">View All Services</button></div>`;
+                }
+
+                // CUSTOM HEADLINES
+                Object.keys(allHeadlinesData).forEach(hKey => {
+                    let catProducts = allProductsData.filter(p => p.headline === allHeadlinesData[hKey].title);
+                    let dynGrid = document.getElementById('grid-head-'+hKey);
+                    if(dynGrid && catProducts.length > 0) {
+                        let displayCat = catProducts.slice(0, limit);
+                        displayCat.forEach(p => {
+                            let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
+                            let pImg = p.imageUrl || appLogoUrl;
+                            dynGrid.innerHTML += `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
+                        });
+                        if(catProducts.length > limit) {
+                            dynGrid.innerHTML += `<div style="grid-column: 1 / -1; text-align:center; margin-top:10px;"><button class="btn btn-outline" style="width:auto; padding:10px 30px;" onclick="openViewAll('headline', '${hKey}')">View All</button></div>`;
+                        }
                     }
                 });
 
-                let topProducts = [...allProductsData].sort((a, b) => (b.clicks || 0) - (a.clicks || 0)).slice(0, 8);
+                // TRENDING / TOP SERVICES
+                let topProducts = [...allProductsData].sort((a, b) => (b.clicks || 0) - (a.clicks || 0));
                 if(topProducts.length > 0) {
-                    topProducts.forEach(p => {
+                    let displayTop = topProducts.slice(0, limit);
+                    displayTop.forEach(p => {
                         let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
                         let pImg = p.imageUrl || appLogoUrl;
                         let cardHtml = `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
                         if(trendingGrid) trendingGrid.innerHTML += cardHtml;
                     });
+                    if(topProducts.length > limit && trendingGrid) {
+                        trendingGrid.innerHTML += `<div style="grid-column: 1 / -1; text-align:center; margin-top:10px;"><button class="btn btn-outline" style="width:auto; padding:10px 30px;" onclick="openViewAll('trending')">View All Top Services</button></div>`;
+                    }
                     document.getElementById('trending-section').style.display = 'block';
                 } else {
                     document.getElementById('trending-section').style.display = 'none';
@@ -567,7 +716,30 @@
 
         function sendResetEmail() { const e = document.getElementById('reset-email').value.trim(); if(!e) return showToast("Enter your email first!", false); auth.sendPasswordResetEmail(e).then(() => { showToast("Reset link sent to email!", true); switchAuthMode(false); }).catch(err => showToast(err.message, false)); }
 
-        function selectRegRole(role, price) { selectedRegRole = role; selectedRegPrice = price; document.querySelectorAll('.price-card').forEach(c => c.classList.remove('active')); event.currentTarget.classList.add('active'); document.getElementById('auth-reg-btn').innerText = `Pay ₹${price} & Register`; }
+        function selectRegRole(role, price) { selectedRegRole = role; selectedRegPrice = price; document.querySelectorAll('.price-card').forEach(c => c.classList.remove('active')); event.currentTarget.classList.add('active'); updateRegButtonPrice(); }
+        
+        function updateRegButtonPrice() {
+            let finalPrice = selectedRegPrice - appliedPromoDiscount;
+            if(finalPrice < 0) finalPrice = 0;
+            document.getElementById('auth-reg-btn').innerText = `Pay ₹${finalPrice} & Register`;
+        }
+
+        // NEW: APPLY PROMO CODE FUNCTION
+        function applyRegPromo() {
+            const code = document.getElementById('auth-promo').value.trim().toUpperCase();
+            if(!code) return showToast("Enter promo code", false);
+            
+            if(globalPromoCodes[code]) {
+                appliedPromoDiscount = globalPromoCodes[code].discount;
+                showToast(`Promo Applied! ₹${appliedPromoDiscount} discount.`, true);
+                document.getElementById('promo-msg').innerHTML = `<span style="color:var(--success)"><b>${code}</b> applied! ₹${appliedPromoDiscount} off.</span>`;
+                updateRegButtonPrice();
+            } else {
+                appliedPromoDiscount = 0;
+                document.getElementById('promo-msg').innerHTML = `<span style="color:var(--danger)">Invalid Code!</span>`;
+                updateRegButtonPrice();
+            }
+        }
         
         function executeLogin() { 
             const em = document.getElementById('auth-email').value.trim(); 
@@ -594,20 +766,25 @@
             let n = name.replace(/[^a-zA-Z]/g, ''); let prefix = n.length > 0 ? n.substring(0,4).toUpperCase() : "USR";
             myGenReferCode = "AJ-" + prefix + Math.floor(100 + Math.random() * 900);
 
-            tempRegData = { shopName: shop, name: name, email: e, pass: ps, role: selectedRegRole, fee: selectedRegPrice, referCode: document.getElementById('auth-referral').value.trim(), myReferralId: myGenReferCode }; 
-            document.getElementById('login-fields-container').style.display='none'; document.getElementById('reg-fields-container').style.display='none'; document.getElementById('reg-pay-amt').innerText=`₹${selectedRegPrice}`; document.getElementById('reg-upi-qr').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SARVICES%26am=${selectedRegPrice}%26cu=INR&size=250`; document.getElementById('reg-payment-container').style.display='block'; document.getElementById('auth-toggle-text').style.display='none'; 
+            let finalRegFee = selectedRegPrice - appliedPromoDiscount;
+            if(finalRegFee < 0) finalRegFee = 0;
+
+            tempRegData = { shopName: shop, name: name, email: e, pass: ps, role: selectedRegRole, fee: finalRegFee, referCode: document.getElementById('auth-referral').value.trim(), myReferralId: myGenReferCode }; 
+            document.getElementById('login-fields-container').style.display='none'; document.getElementById('reg-fields-container').style.display='none'; document.getElementById('reg-pay-amt').innerText=`₹${finalRegFee}`; document.getElementById('reg-upi-qr').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SARVICES%26am=${finalRegFee}%26cu=INR&size=250`; document.getElementById('reg-payment-container').style.display='block'; document.getElementById('auth-toggle-text').style.display='none'; 
         }
 
         function backToRegForm(){ document.getElementById('reg-payment-container').style.display='none'; document.getElementById('reg-fields-container').style.display='block'; document.getElementById('auth-toggle-text').style.display='block'; }
         
         function finalizeRegistration(){ 
             const utr=document.getElementById('reg-utr').value.trim(); 
-            if(!utrRegex.test(utr)){ showToast("Valid 12-Digit UTR needed!", false); return; } 
+            // If fee is 0 due to discount, bypass UTR requirement or just check anyway. Let's say bypass if fee=0.
+            if(tempRegData.fee > 0 && !utrRegex.test(utr)){ showToast("Valid 12-Digit UTR needed!", false); return; } 
+            
             document.getElementById('reg-confirm-btn').innerText="Processing..."; document.getElementById('reg-confirm-btn').disabled=true; isRegisteringProcess = true; 
             
             auth.createUserWithEmailAndPassword(tempRegData.email, tempRegData.pass).then(r=>{ 
                 r.user.updateProfile({displayName:tempRegData.name}); 
-                db.ref('customers/'+r.user.uid).set({ shopName:tempRegData.shopName, name:tempRegData.name, email:tempRegData.email, role:tempRegData.role, registrationUtr:utr, accountStatus:"Pending", walletBalance:0, commission:0, referredBy: tempRegData.referCode, myCode: tempRegData.myReferralId, profilePic: appLogoUrl, joined:new Date().toLocaleDateString() }).then(()=>{ 
+                db.ref('customers/'+r.user.uid).set({ shopName:tempRegData.shopName, name:tempRegData.name, email:tempRegData.email, role:tempRegData.role, registrationUtr:utr||"FEE_WAIVED", accountStatus:"Pending", walletBalance:0, commission:0, referredBy: tempRegData.referCode, myCode: tempRegData.myReferralId, profilePic: appLogoUrl, joined:new Date().toLocaleDateString() }).then(()=>{ 
                     if(tempRegData.referCode){ db.ref('customers').orderByChild('myCode').equalTo(tempRegData.referCode).once('value').then(s=>{ if(s.exists()){ const parentKey = Object.keys(s.val())[0]; let w=s.val()[parentKey].walletBalance||0; let c=s.val()[parentKey].commission||0; db.ref('customers/'+parentKey).update({walletBalance: w+refBonusAmt, commission: c+refBonusAmt}); db.ref('transactions').push({uid: parentKey, type: 'Referral Sign Up Bonus', amount: refBonusAmt, date: new Date().toLocaleDateString(), from: tempRegData.name}); } }); } 
                     
                     isRegisteringProcess = false; closeModal('auth-modal'); showToast("Payment Submitted! Account is Pending Approval", true); 
@@ -682,7 +859,7 @@
             openModal('product-details-modal');
         }
         
-        function openApplicationForm(){ closeModal('product-details-modal'); uploadedDocsArray=[]; document.getElementById('app-form-logo').src = selectedProductDetails.imageUrl || appLogoUrl; document.getElementById('app-service-name').innerText = escapeHTML(selectedProductDetails.title); const c=document.getElementById('dynamic-custom-form-container'); c.innerHTML=''; if(selectedProductDetails.customForm){ selectedProductDetails.customForm.forEach((f,i)=>{ if(f.type==='select'){ let o=''; f.options.split(',').forEach(x=>o+=`<option>${escapeHTML(x)}</option>`); c.innerHTML+=`<div><label class="form-label">${escapeHTML(f.label)}</label><select class="dyn-input" data-label="${escapeHTML(f.label)}">${o}</select></div>`; } else if(f.type==='file'){ c.innerHTML+=`<div><label class="form-label">${escapeHTML(f.label)}</label><div class="file-upload-box"><input type="file" onchange="uploadDynamicFile(this,'hf_${i}')"><input type="hidden" class="dyn-input" id="hf_${i}" data-label="${escapeHTML(f.label)}"></div></div>`; } else if (f.type === 'dynamic_doc') { let o='<option value="">Select Document...</option>'; f.options.split(',').forEach(x=>o+=`<option>${escapeHTML(x)}</option>`); c.innerHTML+=`<div class="full-width-field" style="background:var(--bg-color); padding:10px; border-radius:10px; border:1px dashed var(--secondary-color); margin-bottom:10px;"><label class="form-label" style="color:var(--primary-color);">${escapeHTML(f.label)}</label><select class="doc-select dyn-input" data-base-label="${escapeHTML(f.label)}" id="hf_${i}_select" onchange="toggleDynamicUpload(this, 'hf_${i}')">${o}</select><div id="hf_${i}_upload_area" style="display:none; margin-top:10px;"><label class="form-label">Upload <span id="hf_${i}_name"></span></label><div class="file-upload-box"><input type="file" onchange="uploadDynamicFile(this, 'hf_${i}')"><input type="hidden" class="dyn-input" data-label="${escapeHTML(f.label)}" id="hf_${i}"></div></div></div>`; } else { c.innerHTML+=`<div><label class="form-label">${escapeHTML(f.label)}</label><input type="${f.type}" class="dyn-input" placeholder="Enter ${escapeHTML(f.label)}" data-label="${escapeHTML(f.label)}"></div>`; } }); } else { c.innerHTML+=`<div class="full-width-field"><label class="form-label">Full Name</label><input type="text" class="dyn-input" data-label="Name" placeholder="Enter Name"></div><div class="full-width-field" style="background:var(--bg-color); padding:15px; border-radius:10px; border:1px dashed var(--secondary-color); text-align:center;"><p style="font-size:0.9rem; font-weight:bold; margin-bottom:10px;">Upload Documents</p><input type="file" multiple onchange="handleMultipleUploads(this)" style="background:transparent; border:none; margin:0 auto; display:block;"><div id="upload-preview-grid" style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; justify-content:center;"></div></div>`; } openModal('application-form-modal'); }
+        function openApplicationForm(){ closeModal('product-details-modal'); uploadedDocsArray=[]; document.getElementById('app-form-logo').src = selectedProductDetails.imageUrl || appLogoUrl; document.getElementById('app-service-name').innerText = escapeHTML(selectedProductDetails.title); const c=document.getElementById('dynamic-custom-form-container'); c.innerHTML=''; if(selectedProductDetails.customForm){ selectedProductDetails.customForm.forEach((f,i)=>{ if(f.type==='select'){ let o=''; f.options.split(',').forEach(x=>o+=`<option>${escapeHTML(x)}</option>`); c.innerHTML+=`<div><label class="form-label">${escapeHTML(f.label)} <span style="color:red;">*</span></label><select class="dyn-input" data-label="${escapeHTML(f.label)}">${o}</select></div>`; } else if(f.type==='file'){ c.innerHTML+=`<div><label class="form-label">${escapeHTML(f.label)} <span style="color:red;">*</span></label><div class="file-upload-box"><input type="file" onchange="uploadDynamicFile(this,'hf_${i}')"><input type="hidden" class="dyn-input" id="hf_${i}" data-label="${escapeHTML(f.label)}"></div></div>`; } else if (f.type === 'dynamic_doc') { let o='<option value="">Select Document...</option>'; f.options.split(',').forEach(x=>o+=`<option>${escapeHTML(x)}</option>`); c.innerHTML+=`<div class="full-width-field" style="background:var(--bg-color); padding:10px; border-radius:10px; border:1px dashed var(--secondary-color); margin-bottom:10px;"><label class="form-label" style="color:var(--primary-color);">${escapeHTML(f.label)} <span style="color:red;">*</span></label><select class="doc-select dyn-input" data-base-label="${escapeHTML(f.label)}" id="hf_${i}_select" onchange="toggleDynamicUpload(this, 'hf_${i}')">${o}</select><div id="hf_${i}_upload_area" style="display:none; margin-top:10px;"><label class="form-label">Upload <span id="hf_${i}_name"></span></label><div class="file-upload-box"><input type="file" onchange="uploadDynamicFile(this, 'hf_${i}')"><input type="hidden" class="dyn-input" data-label="${escapeHTML(f.label)}" id="hf_${i}"></div></div></div>`; } else { c.innerHTML+=`<div><label class="form-label">${escapeHTML(f.label)} <span style="color:red;">*</span></label><input type="${f.type}" class="dyn-input" placeholder="Enter ${escapeHTML(f.label)}" data-label="${escapeHTML(f.label)}"></div>`; } }); } else { c.innerHTML+=`<div class="full-width-field"><label class="form-label">Full Name <span style="color:red;">*</span></label><input type="text" class="dyn-input" data-label="Name" placeholder="Enter Name"></div><div class="full-width-field" style="background:var(--bg-color); padding:15px; border-radius:10px; border:1px dashed var(--secondary-color); text-align:center;"><p style="font-size:0.9rem; font-weight:bold; margin-bottom:10px;">Upload Documents</p><input type="file" multiple onchange="handleMultipleUploads(this)" style="background:transparent; border:none; margin:0 auto; display:block;"><div id="upload-preview-grid" style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; justify-content:center;"></div></div>`; } openModal('application-form-modal'); }
         
         function toggleDynamicUpload(sel, fid){ const upArea=document.getElementById(fid+'_upload_area'), name=document.getElementById(fid+'_name'), hid=document.getElementById(fid); if(sel.value){ upArea.style.display='block'; name.innerText=sel.value; hid.setAttribute('data-label', sel.getAttribute('data-base-label')+' ('+sel.value+')'); } else { upArea.style.display='none'; hid.value=''; } }
         
@@ -692,8 +869,36 @@
 
         function uploadDynamicFile(inp,hid){ const f=inp.files[0]; const fd=new FormData(); fd.append('image',f); fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {method:'POST',body:fd}).then(r=>r.json()).then(d=>{ document.getElementById(hid).value=d.data.url; uploadedDocsArray.push(d.data.url); showToast("File Uploaded", true); }); }
 
-        // HTML FIX FOR EXTRA DETAILS IN INDEX
-        function proceedToServiceCheckout(){ let ex=""; document.querySelectorAll('.dyn-input').forEach(i=>{ if(i.classList.contains('doc-select'))return; if(i.value) ex+=`<b>${escapeHTML(i.getAttribute('data-label'))}:</b> ${escapeHTML(i.value)}<br>`; }); currentCheckoutState={total:Number(selectedProductDetails.parsedPrice), title:selectedProductDetails.title, img:selectedProductDetails.imageUrl, docs:uploadedDocsArray, extra:ex}; closeModal('application-form-modal'); document.getElementById('checkout-item-price').innerText="₹"+currentCheckoutState.total; document.getElementById('upi-qr-img').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SARVICES%26am=${currentCheckoutState.total}%26cu=INR&size=200`; openModal('checkout-modal'); }
+        // NEW FIX: STRICT FORM VALIDATION BEFORE PAYMENT
+        function proceedToServiceCheckout(){ 
+            let ex=""; 
+            let isValid = true;
+            document.querySelectorAll('.dyn-input').forEach(i=>{ 
+                if(i.classList.contains('doc-select')) return; 
+                // Check if empty
+                if(!i.value || i.value.trim() === "") {
+                    isValid = false;
+                } else {
+                    ex+=`<b>${escapeHTML(i.getAttribute('data-label'))}:</b> ${escapeHTML(i.value)}<br>`; 
+                }
+            }); 
+
+            if(!isValid) {
+                return showToast("Please fill all required details!", false);
+            }
+
+            currentCheckoutState={total:Number(selectedProductDetails.parsedPrice), title:selectedProductDetails.title, img:selectedProductDetails.imageUrl, docs:uploadedDocsArray, extra:ex}; 
+            closeModal('application-form-modal'); 
+            document.getElementById('checkout-item-price').innerText="₹"+currentCheckoutState.total; 
+            document.getElementById('upi-qr-img').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SARVICES%26am=${currentCheckoutState.total}%26cu=INR&size=200`; 
+            openModal('checkout-modal'); 
+        }
+
+        // NEW FIX: BACK BUTTON TO RETURN TO EDIT FORM
+        function backToFormFromCheckout() {
+            closeModal('checkout-modal');
+            openModal('application-form-modal');
+        }
 
         function payWithWallet(){ 
             if(userWallet >= currentCheckoutState.total) { 
