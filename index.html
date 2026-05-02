@@ -6,7 +6,8 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta name="theme-color" content="#1e3a8a">
     <title>AJ INDIA SARVICES - Premium Portal</title>
-    <link rel="icon" type="image/png" href="logo.png" class="dynamic-app-logo">
+    <!-- Default Favicon Updated -->
+    <link rel="icon" type="image/jpeg" href="logoa.jpg" class="dynamic-app-logo">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Firebase SDKs -->
@@ -167,12 +168,12 @@
 
         <header>
             <div class="header-top">
-                <div class="logo"><img src="logo.png" alt="Portal Logo" class="dynamic-app-logo"></div>
+                <div class="logo"><img src="logoa.jpg" alt="Portal Logo" class="dynamic-app-logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/150x80?text=AJ+INDIA+SARVICES'"></div>
                 <div class="header-icons">
                     <div id="header-wallet-pill" class="header-wallet-pill" onclick="document.querySelectorAll('.nav-item')[3].click()"><i class="fa-solid fa-wallet" style="margin-right: 5px;"></i> ₹<span id="header-wallet-bal">0</span></div>
                     <i class="fa-solid fa-moon theme-toggle" onclick="toggleTheme()"></i>
                     <div style="position:relative;" onclick="openNotifications()"><i class="fa-solid fa-bell"></i><span class="noti-badge" id="noti-count" style="display:none;">0</span></div>
-                    <div class="user-profile-header" onclick="document.querySelectorAll('.nav-item')[3].click()"><img id="header-user-pic" src="logo.png"><span id="header-user-name">Login</span></div>
+                    <div class="user-profile-header" onclick="document.querySelectorAll('.nav-item')[3].click()"><img id="header-user-pic" src="logoa.jpg" onerror="this.onerror=null; this.src='https://via.placeholder.com/150x80?text=AJ+INDIA+SARVICES'"><span id="header-user-name">Login</span></div>
                 </div>
             </div>
             <div class="search-box"><i class="fa-solid fa-magnifying-glass" style="color:#94a3b8"></i><input type="text" id="search-input" placeholder="Search Services..." oninput="liveSearch(this.value)"></div>
@@ -221,7 +222,7 @@
         <div id="profile-screen" class="app-screen">
             <div class="profile-header-premium">
                 <div style="display: flex; align-items: center; gap: 15px;">
-                    <div class="profile-avatar-wrapper" onclick="openEditProfile()"><img id="profile-pic" src="logo.png"></div>
+                    <div class="profile-avatar-wrapper" onclick="openEditProfile()"><img id="profile-pic" src="logoa.jpg" onerror="this.onerror=null; this.src='https://via.placeholder.com/150x80?text=AJ+INDIA+SARVICES'"></div>
                     <div>
                         <h2 id="profile-name" style="margin:0 0 5px 0; font-size:1.4rem; font-weight:800;">Guest User</h2>
                         <p id="profile-email" style="margin:0; font-size:0.85rem; font-weight:500;">Login to access portal</p>
@@ -296,6 +297,7 @@
         </div>
     </div>
 
+    <!-- UPDATED PRODUCT DETAILS MODAL -->
     <div id="product-details-modal" class="modal-overlay"><div class="modal-box" style="padding:0;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('product-details-modal')"></i><img id="pd-img" style="width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--bg-color); padding:0; border-radius: 20px 20px 0 0;"><div style="padding:20px;"><h2 id="pd-title"></h2><h3 id="pd-price" style="color:var(--primary-color);"></h3><p id="pd-desc" style="font-size:0.9rem;"></p><a id="pd-yt-link" href="#" target="_blank" style="display:none; align-items:center; gap:8px; color:#ef4444; font-weight:bold; margin-top:10px; text-decoration:none; background:#fee2e2; padding:8px 12px; border-radius:8px; width: fit-content;"><i class="fa-brands fa-youtube" style="font-size:1.2rem;"></i> Watch Video Tutorial</a><div style="display:flex; gap:10px; margin-top:20px;" id="pd-action-buttons"></div></div></div></div>
     <div id="application-form-modal" class="modal-overlay"><div class="modal-box" style="max-width: 900px;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('application-form-modal')"></i><div style="text-align: center; margin-bottom: 20px;"><img id="app-form-logo" src="" style="width: 80px; height: 80px; object-fit: contain; border-radius: 12px; background: var(--input-bg); padding: 5px; border: 1px solid var(--border-color); display: inline-block; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);"><h2 style="margin: 0 0 5px 0; font-weight: 900;">Fill Application Details</h2><p id="app-service-name" style="font-weight: 700; color: var(--primary-color); margin: 0; font-size: 1rem;"></p></div><div id="dynamic-custom-form-container" class="app-form-grid"></div><button class="btn" id="apply-proceed-btn" onclick="proceedToServiceCheckout()" style="background: var(--success);"><i class="fa-solid fa-wallet"></i> Proceed to Payment</button></div></div>
     <div id="checkout-modal" class="modal-overlay"><div class="modal-box" style="text-align:center;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('checkout-modal')"></i><h2>Checkout</h2><p id="checkout-item-price" style="font-size:1.5rem; font-weight:bold; color:var(--primary-color);"></p><button class="btn" onclick="payWithWallet()" id="wallet-pay-btn" style="background:var(--success); margin-bottom:15px;"><i class="fa-solid fa-wallet"></i> Pay from Wallet (Bal: ₹<span id="ck-wallet-bal">0</span>)</button><p>--- OR PAY VIA UPI ---</p><img id="upi-qr-img" style="width:180px; height:180px; object-fit:contain; margin:10px auto;"><br><b>ajsarvices@ptyes</b><input type="text" id="utr-number" placeholder="Enter 12-Digit UTR" maxlength="12"><button class="btn" id="checkout-final-btn" onclick="verifyAndPlaceOrder()">Submit Order</button></div></div>
@@ -305,8 +307,8 @@
     <script>
         // --- 1. GLOBAL VARIABLES ---
         let allProductsData = []; let selectedProductDetails = null; let currentCheckoutState = {}; let uploadedDocsArray = []; let tempRegData = {}; let isSignUpMode = false;
-        let currentUserStatus = "Pending", userWallet = 0, uShopName = "", uRole = "", uName = "", uJoined = "", uReferredBy = "", appLogoUrl="logo.png", compCertUrl="", invSettings={name:"AJ INDIA SARVICES", address:"India"};
-        let uProfilePic = "logo.png"; let tempProfileLogoUrl = ""; 
+        let currentUserStatus = "Pending", userWallet = 0, uShopName = "", uRole = "", uName = "", uJoined = "", uReferredBy = "", appLogoUrl="logoa.jpg", compCertUrl="", invSettings={name:"AJ INDIA SARVICES", address:"India"};
+        let uProfilePic = "logoa.jpg"; let tempProfileLogoUrl = ""; 
         let earningsChartInstance = null; let myOrdersData={}; let isRegisteringProcess = false; let allAIToolsData = {};
         let refBonusAmt = 50; let formCommAmt = 10; let myGenReferCode = "";
         let selectedRegRole = "Retailer", selectedRegPrice = 59;
@@ -384,8 +386,7 @@
                             if(el.tagName.toLowerCase() === 'link') el.href = appLogoUrl;
                             else el.src = appLogoUrl;
                         }); 
-                        // Update default user profile pic to appLogoUrl if it was set to logo.png
-                        if(uProfilePic === "logo.png" || uProfilePic === "") {
+                        if(uProfilePic === "logo.png" || uProfilePic === "logoa.jpg" || uProfilePic === "") {
                             document.getElementById('profile-pic').src = appLogoUrl; 
                             document.getElementById('header-user-pic').src = appLogoUrl; 
                         }
@@ -410,7 +411,7 @@
                 s.forEach(c => { 
                     const cat = c.val(); 
                     let catImg = cat.imageUrl || appLogoUrl;
-                    list.innerHTML += `<div class="category-item" onclick="filterByCategory('${escapeHTML(cat.title)}', this)"><div class="category-icon"><img src="${catImg}" onerror="this.src=window.appLogoUrl"></div><span>${escapeHTML(cat.title)}</span></div>`; 
+                    list.innerHTML += `<div class="category-item" onclick="filterByCategory('${escapeHTML(cat.title)}', this)"><div class="category-icon"><img src="${catImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><span>${escapeHTML(cat.title)}</span></div>`; 
                 }); 
             });
 
@@ -419,7 +420,7 @@
             db.ref('service_headlines').on('value', s => {
                 const container = document.getElementById('dynamic-headlines-container');
                 container.innerHTML = ''; allHeadlinesData = {};
-                if(s.exists()){ s.forEach(c => { const h = c.val(); allHeadlinesData[c.key] = h; let iconHtml = h.imageUrl ? `<img src="${h.imageUrl}" onerror="this.src=window.appLogoUrl" style="width:24px; height:24px; object-fit:contain; vertical-align:middle; margin-right:8px; border-radius:4px;">` : `<i class="fa-solid fa-layer-group" style="color: var(--accent); margin-right:8px;"></i>`; container.innerHTML += `<div class="products-section"><div class="products-header"><h2 style="display:flex; align-items:center;">${iconHtml} ${escapeHTML(h.title)}</h2></div><div class="products-grid" id="grid-head-${c.key}"></div></div>`; }); }
+                if(s.exists()){ s.forEach(c => { const h = c.val(); allHeadlinesData[c.key] = h; let iconHtml = h.imageUrl ? `<img src="${h.imageUrl}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';" style="width:24px; height:24px; object-fit:contain; vertical-align:middle; margin-right:8px; border-radius:4px;">` : `<i class="fa-solid fa-layer-group" style="color: var(--accent); margin-right:8px;"></i>`; container.innerHTML += `<div class="products-section"><div class="products-header"><h2 style="display:flex; align-items:center;">${iconHtml} ${escapeHTML(h.title)}</h2></div><div class="products-grid" id="grid-head-${c.key}"></div></div>`; }); }
                 if(allProductsData && allProductsData.length > 0) renderProducts();
             });
 
@@ -437,7 +438,7 @@
                     s.forEach(c => { 
                         const t = c.val(); allAIToolsData[c.key] = t; 
                         let imgUrl = t.imageUrl || appLogoUrl; 
-                        grid.innerHTML += `<div class="product-card" style="padding:15px; cursor:pointer;" onclick="handleAIToolClick('${c.key}')"><div class="product-image-box" style="height:90px; background:transparent;"><img src="${imgUrl}" onerror="this.src=window.appLogoUrl" style="object-fit:contain;"></div><div class="product-title" style="text-align:center; font-size:1.05rem;">${escapeHTML(t.title)}</div><p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:0;">${escapeHTML(t.description||'')}</p></div>`; 
+                        grid.innerHTML += `<div class="product-card" style="padding:15px; cursor:pointer;" onclick="handleAIToolClick('${c.key}')"><div class="product-image-box" style="height:90px; background:transparent;"><img src="${imgUrl}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';" style="object-fit:contain;"></div><div class="product-title" style="text-align:center; font-size:1.05rem;">${escapeHTML(t.title)}</div><p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:0;">${escapeHTML(t.description||'')}</p></div>`; 
                     }); 
                 } else { 
                     document.getElementById('ai-tools-section').style.display = 'none'; 
@@ -471,7 +472,7 @@
             filtered.forEach(p => { 
                 let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
                 let pImg = p.imageUrl || appLogoUrl;
-                grid.innerHTML+=`<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.src=window.appLogoUrl"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`; 
+                grid.innerHTML+=`<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`; 
             });
             
             if (!query) renderProducts(); 
@@ -501,7 +502,7 @@
                 if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; 
                 if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
                 let pImg = p.imageUrl || appLogoUrl;
-                grid.innerHTML+=`<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.src=window.appLogoUrl"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`; 
+                grid.innerHTML+=`<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`; 
             });
 
             if(categoryName === 'All') renderProducts(); 
@@ -520,7 +521,7 @@
                 allProductsData.forEach(p => { 
                     let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
                     let pImg = p.imageUrl || appLogoUrl;
-                    let cardHtml = `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.src=window.appLogoUrl"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
+                    let cardHtml = `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
                     
                     if(mainGrid) mainGrid.innerHTML += cardHtml; 
                     if(p.headline) { 
@@ -534,7 +535,7 @@
                     topProducts.forEach(p => {
                         let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
                         let pImg = p.imageUrl || appLogoUrl;
-                        let cardHtml = `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.src=window.appLogoUrl"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
+                        let cardHtml = `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
                         if(trendingGrid) trendingGrid.innerHTML += cardHtml;
                     });
                     document.getElementById('trending-section').style.display = 'block';
@@ -691,6 +692,7 @@
 
         function uploadDynamicFile(inp,hid){ const f=inp.files[0]; const fd=new FormData(); fd.append('image',f); fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {method:'POST',body:fd}).then(r=>r.json()).then(d=>{ document.getElementById(hid).value=d.data.url; uploadedDocsArray.push(d.data.url); showToast("File Uploaded", true); }); }
 
+        // HTML FIX FOR EXTRA DETAILS IN INDEX
         function proceedToServiceCheckout(){ let ex=""; document.querySelectorAll('.dyn-input').forEach(i=>{ if(i.classList.contains('doc-select'))return; if(i.value) ex+=`<b>${escapeHTML(i.getAttribute('data-label'))}:</b> ${escapeHTML(i.value)}<br>`; }); currentCheckoutState={total:Number(selectedProductDetails.parsedPrice), title:selectedProductDetails.title, img:selectedProductDetails.imageUrl, docs:uploadedDocsArray, extra:ex}; closeModal('application-form-modal'); document.getElementById('checkout-item-price').innerText="₹"+currentCheckoutState.total; document.getElementById('upi-qr-img').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SARVICES%26am=${currentCheckoutState.total}%26cu=INR&size=200`; openModal('checkout-modal'); }
 
         function payWithWallet(){ 
@@ -713,7 +715,7 @@
 
         function cancelMyOrder(key) { if(confirm("Are you sure you want to cancel this order?")) { db.ref('orders/'+key).update({status: 'Cancelled'}).then(() => { showToast("Order Cancelled Successfully", true); }); } }
 
-        function loadMyOrders(){ if(!auth.currentUser) return; db.ref('orders').orderByChild('userId').equalTo(auth.currentUser.uid).on('value', s=>{ const lst=document.getElementById('orders-list'); lst.innerHTML=''; myOrdersData={}; let seq=1; s.forEach(c=>{ const o=c.val(); o.key=c.key; o.sequentialId=seq++; myOrdersData[o.key]=o; let statCls=o.status==="Pending"?"var(--accent)":o.status==="Delivered"?"var(--success)":"var(--secondary-color)"; let btns=`<div style="display:flex; gap:10px; margin-top:10px;"><button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem; flex:1;" onclick="printReceipt('${c.key}')"><i class="fa-solid fa-print"></i> Print</button>`; if(o.status === "Delivered") { btns += `<button class="btn" style="padding:6px 12px; font-size:0.8rem; flex:1; background:#ef4444; color:#fff;" onclick="downloadPDFInvoice('${c.key}')"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>`; } if(o.status === "Pending") { btns += `<button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem; flex:1; color:var(--danger); border-color:var(--danger);" onclick="cancelMyOrder('${c.key}')"><i class="fa-solid fa-xmark"></i> Cancel</button>`; } btns += `</div>`; if(o.resultUrl) btns+=`<button class="btn" style="padding:6px 12px; font-size:0.8rem; margin-top:8px; width:100%; background:var(--success);" onclick="window.open('${escapeHTML(o.resultUrl)}','_blank')"><i class="fa-solid fa-download"></i> Result Doc</button>`; let oImg = o.img || appLogoUrl; lst.innerHTML+=`<div class="order-card"><div style="display:flex; align-items:center;"><img src="${oImg}" onerror="this.src=window.appLogoUrl" style="width:65px; height:65px; border-radius:12px; margin-right:15px; object-fit:cover; border:1px solid var(--border-color);"><div style="flex:1;"><p style="font-weight:800; font-size:1rem; margin-bottom:4px;">${escapeHTML(o.title)}</p><p style="font-size:0.85rem; color:var(--text-gray); margin:0;">Status: <span class="status-badge" style="background:${statCls}; color:#fff; padding:2px 8px; border-radius:12px; font-size:0.7rem;">${escapeHTML(o.status)}</span></p></div><div style="font-weight:900; font-size:1.2rem; color:var(--primary-color);">₹${o.price}</div></div><div>${btns}</div></div>`; }); }); }
+        function loadMyOrders(){ if(!auth.currentUser) return; db.ref('orders').orderByChild('userId').equalTo(auth.currentUser.uid).on('value', s=>{ const lst=document.getElementById('orders-list'); lst.innerHTML=''; myOrdersData={}; let seq=1; s.forEach(c=>{ const o=c.val(); o.key=c.key; o.sequentialId=seq++; myOrdersData[o.key]=o; let statCls=o.status==="Pending"?"var(--accent)":o.status==="Delivered"?"var(--success)":"var(--secondary-color)"; let btns=`<div style="display:flex; gap:10px; margin-top:10px;"><button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem; flex:1;" onclick="printReceipt('${c.key}')"><i class="fa-solid fa-print"></i> Print</button>`; if(o.status === "Delivered") { btns += `<button class="btn" style="padding:6px 12px; font-size:0.8rem; flex:1; background:#ef4444; color:#fff;" onclick="downloadPDFInvoice('${c.key}')"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>`; } if(o.status === "Pending") { btns += `<button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem; flex:1; color:var(--danger); border-color:var(--danger);" onclick="cancelMyOrder('${c.key}')"><i class="fa-solid fa-xmark"></i> Cancel</button>`; } btns += `</div>`; if(o.resultUrl) btns+=`<button class="btn" style="padding:6px 12px; font-size:0.8rem; margin-top:8px; width:100%; background:var(--success);" onclick="window.open('${escapeHTML(o.resultUrl)}','_blank')"><i class="fa-solid fa-download"></i> Result Doc</button>`; let oImg = o.img || appLogoUrl; lst.innerHTML+=`<div class="order-card"><div style="display:flex; align-items:center;"><img src="${oImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';" style="width:65px; height:65px; border-radius:12px; margin-right:15px; object-fit:cover; border:1px solid var(--border-color);"><div style="flex:1;"><p style="font-weight:800; font-size:1rem; margin-bottom:4px;">${escapeHTML(o.title)}</p><p style="font-size:0.85rem; color:var(--text-gray); margin:0;">Status: <span class="status-badge" style="background:${statCls}; color:#fff; padding:2px 8px; border-radius:12px; font-size:0.7rem;">${escapeHTML(o.status)}</span></p></div><div style="font-weight:900; font-size:1.2rem; color:var(--primary-color);">₹${o.price}</div></div><div>${btns}</div></div>`; }); }); }
 
         function printReceipt(key){ const o=myOrdersData[key]; const prt=window.open('','_blank'); prt.document.write(`<html><body style="font-family:sans-serif; text-align:center; padding:20px;"><h2>${escapeHTML(invSettings.name)}</h2><p>${escapeHTML(invSettings.address)}</p><hr><h3>Customer Receipt</h3><p><b>Order ID:</b> AJ-ORD-${o.sequentialId}</p><p><b>Service:</b> ${escapeHTML(o.title)}</p><p><b>Status:</b> ${escapeHTML(o.status)}</p><p><b>Amount:</b> ₹${o.price}</p><p><b>Date:</b> ${escapeHTML(o.date)}</p><hr><p>Shop: ${escapeHTML(o.userName)}</p><button onclick="window.print()" style="padding:10px 20px; background:#1e40af; color:#fff; border:none; border-radius:5px; cursor:pointer;">Print</button></body></html>`); prt.document.close(); }
 
