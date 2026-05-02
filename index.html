@@ -51,7 +51,7 @@
         .app-screen.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- Slider Styles Updated --- */
+        /* --- Slider Styles --- */
         .slider-container { width: 100%; aspect-ratio: 21/9; overflow: hidden; background: var(--border-color); border-radius: 0 0 20px 20px; position: relative;}
         .slider { display: flex; transition: transform 0.5s ease-in-out; width: 100%; height: 100%; }
         .slide { min-width: 100%; background-size: cover; background-position: center; position: relative;}
@@ -71,16 +71,19 @@
 
         .products-section { padding: 10px 20px 20px 20px; }
         .products-header h2 { font-size: 1.25rem; font-weight: 900; margin-bottom: 15px; }
-        .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        @media (min-width: 640px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
-        @media (min-width: 1024px) { .products-grid { grid-template-columns: repeat(6, 1fr); } }
+        
+        /* STRICT 4 AND 8 GRID LAYOUT */
+        .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        @media (min-width: 1024px) { .products-grid { grid-template-columns: repeat(8, 1fr); gap: 15px; } }
 
-        .product-card { background: var(--card-bg); border-radius: 16px; padding: 12px; border: 1px solid var(--border-color); cursor: pointer; display: flex; flex-direction: column; position: relative; transition: 0.2s;}
+        /* Adjusted Card For 4-Column Mobile Grid */
+        .product-card { background: var(--card-bg); border-radius: 12px; padding: 8px; border: 1px solid var(--border-color); cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; transition: 0.2s;}
         .product-card:active { transform: scale(0.98); }
-        .product-image-box { width: 100%; aspect-ratio: 16 / 9; height: auto; background: var(--input-bg); border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 0; margin-bottom: 12px; overflow: hidden;}
-        .product-image-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px;}
-        .product-title { font-size: 0.95rem; font-weight: 800; margin-bottom: 8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height: 1.3;}
-        .product-price { font-size: 1.2rem; font-weight: 900; color: var(--secondary-color); margin-top: auto;}
+        .product-image-box { width: 100%; aspect-ratio: 16 / 9; height: auto; background: var(--input-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 0; margin-bottom: 8px; overflow: hidden;}
+        .product-image-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px;}
+        .discount-badge { position: absolute; top: 10px; left: 0; background: var(--danger); color: #fff; font-size: 0.55rem; font-weight: 800; padding: 3px 6px; border-radius: 0 4px 4px 0; z-index: 10;}
+        .product-title { font-size: 0.75rem; font-weight: 800; margin-bottom: 5px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height: 1.2;}
+        .product-price { font-size: 0.9rem; font-weight: 900; color: var(--secondary-color); margin-top: auto;}
 
         .app-form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; text-align: left; margin-bottom: 20px;}
         @media (max-width: 900px) { .app-form-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -147,7 +150,6 @@
 </head>
 <body>
 
-    <!-- ONLY DISPLAYED FOR EMBED URL INTERCEPTION -->
     <div id="full-page-loader" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#f4f7f9; z-index:99999999; justify-content:center; align-items:center; font-family:sans-serif;">
         <h2 style="color:#3b82f6;">Loading Tool...</h2>
     </div>
@@ -181,7 +183,6 @@
         </header>
 
         <div id="home-screen" class="app-screen active">
-            <!-- Updated Slider Section with Arrows and Buttons -->
             <div class="slider-container">
                 <div class="slider" id="slider"></div>
                 <button class="slider-arrow slider-left" onclick="moveSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
@@ -207,7 +208,6 @@
             </div>
         </div>
 
-        <!-- NEW: View All Screen (Full Page Grid) -->
         <div id="view-all-screen" class="app-screen">
             <div style="padding:15px 20px; display:flex; align-items:center; gap:15px; background:var(--card-bg); position:sticky; top:0; z-index:100; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
                 <i class="fa-solid fa-arrow-left" style="font-size:1.2rem; cursor:pointer;" onclick="switchAppScreen('home-screen', 0)"></i>
@@ -282,7 +282,7 @@
                 <span onclick="openLegalModal('Privacy Policy', legalData.privacy)">Privacy Policy</span>
                 <span onclick="openLegalModal('Refund Policy', legalData.refund)">Refund Policy</span>
             </div>
-            <p style="margin:0;">&copy; <span id="current-year"></span>.AJ India Sarvices All rights reserved.</p>
+            <p style="margin:0; font-weight: bold;">&copy; <span id="current-year"></span> AJ INDIA SERVICES. All rights reserved.</p>
         </footer>
 
         <nav class="bottom-nav">
@@ -321,7 +321,6 @@
                 
                 <input type="text" id="auth-referral" placeholder="Got a Referral Code? (Optional)" style="border-color:var(--accent); margin-top: 15px;">
                 
-                <!-- NEW PROMO CODE SECTION FOR REGISTRATION -->
                 <div style="background:#f1f5f9; padding:10px; border-radius:8px; border:1px dashed var(--secondary-color); margin-top:10px;">
                     <label style="font-size:0.8rem; font-weight:bold; color:var(--text-dark); display:block; margin-bottom:5px;">Have a Promo Code for Discount?</label>
                     <div style="display:flex; gap:10px;">
@@ -338,7 +337,6 @@
         </div>
     </div>
 
-    <!-- UPDATED PRODUCT DETAILS MODAL -->
     <div id="product-details-modal" class="modal-overlay"><div class="modal-box" style="padding:0;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('product-details-modal')"></i><img id="pd-img" style="width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--bg-color); padding:0; border-radius: 20px 20px 0 0;"><div style="padding:20px;"><h2 id="pd-title"></h2><h3 id="pd-price" style="color:var(--primary-color);"></h3><p id="pd-desc" style="font-size:0.9rem;"></p><a id="pd-yt-link" href="#" target="_blank" style="display:none; align-items:center; gap:8px; color:#ef4444; font-weight:bold; margin-top:10px; text-decoration:none; background:#fee2e2; padding:8px 12px; border-radius:8px; width: fit-content;"><i class="fa-brands fa-youtube" style="font-size:1.2rem;"></i> Watch Video Tutorial</a><div style="display:flex; gap:10px; margin-top:20px;" id="pd-action-buttons"></div></div></div></div>
     <div id="application-form-modal" class="modal-overlay"><div class="modal-box" style="max-width: 900px;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('application-form-modal')"></i><div style="text-align: center; margin-bottom: 20px;"><img id="app-form-logo" src="" style="width: 80px; height: 80px; object-fit: contain; border-radius: 12px; background: var(--input-bg); padding: 5px; border: 1px solid var(--border-color); display: inline-block; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);"><h2 style="margin: 0 0 5px 0; font-weight: 900;">Fill Application Details</h2><p id="app-service-name" style="font-weight: 700; color: var(--primary-color); margin: 0; font-size: 1rem;"></p></div><div id="dynamic-custom-form-container" class="app-form-grid"></div><button class="btn" id="apply-proceed-btn" onclick="proceedToServiceCheckout()" style="background: var(--success);"><i class="fa-solid fa-wallet"></i> Proceed to Payment</button></div></div>
     <div id="checkout-modal" class="modal-overlay"><div class="modal-box" style="text-align:center;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('checkout-modal')"></i><h2>Checkout</h2><p id="checkout-item-price" style="font-size:1.5rem; font-weight:bold; color:var(--primary-color);"></p><button class="btn" onclick="payWithWallet()" id="wallet-pay-btn" style="background:var(--success); margin-bottom:15px;"><i class="fa-solid fa-wallet"></i> Pay from Wallet (Bal: ₹<span id="ck-wallet-bal">0</span>)</button><p>--- OR PAY VIA UPI ---</p><img id="upi-qr-img" style="width:180px; height:180px; object-fit:contain; margin:10px auto;"><br><b>ajsarvices@ptyes</b><input type="text" id="utr-number" placeholder="Enter 12-Digit UTR" maxlength="12"><button class="btn" id="checkout-final-btn" onclick="verifyAndPlaceOrder()">Submit Order</button><button class="btn btn-outline" onclick="backToFormFromCheckout()" style="margin-top:15px;"><i class="fa-solid fa-arrow-left"></i> Back to Edit Form</button></div></div>
@@ -356,6 +354,8 @@
         let appliedPromoDiscount = 0; let globalPromoCodes = {};
         let allHeadlinesData = {}; let legalData = {terms:"", privacy:"", refund:""};
         let currentSlide = 0; let totalSlides = 0; let slideInterval;
+        let defaultAllTitle = "All Online Services";
+        let globalAIToolsArray = [];
 
         const utrRegex = /^[a-zA-Z0-9]{12}$/;
         const IMGBB_API_KEY = "122cc16740d69ce4f60b53f0effed6c1";
@@ -366,10 +366,24 @@
         const db = userApp.database();
         const auth = userApp.auth(); 
 
+        // Resize Listener for dynamic grid limit refresh
+        window.addEventListener('resize', () => {
+            clearTimeout(window.resizeTimer);
+            window.resizeTimer = setTimeout(() => {
+                if(document.getElementById('home-screen').classList.contains('active')) {
+                    renderProducts();
+                    renderAITools();
+                }
+            }, 300);
+        });
+
+        const getGridLimit = () => window.innerWidth < 1024 ? 8 : 16;
+
         // --- 3. ON DOM LOAD / URL ROUTING ---
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             const sharedToolKey = urlParams.get('tool');
+            const refCode = urlParams.get('ref');
 
             if (sharedToolKey) {
                 document.getElementById('main-app-container').style.display = 'none';
@@ -387,12 +401,12 @@
                     document.body.innerHTML = '<h2 style="text-align:center; padding:50px; color:red;">Error Loading Tool!</h2>';
                 });
             } else {
-                initMainApp();
+                initMainApp(refCode);
             }
         };
 
         // --- 4. MAIN APP INITIALIZATION LOGIC ---
-        function initMainApp() {
+        function initMainApp(refCode) {
             document.getElementById('current-year').innerText = new Date().getFullYear();
 
             if(localStorage.getItem('ajTheme') === 'dark') { 
@@ -408,12 +422,16 @@
                     setupUserUI(user); 
                 } else { 
                     resetToGuestUI(); 
+                    if (refCode) {
+                        setTimeout(() => {
+                            openAuthModal(true); 
+                            document.getElementById('auth-referral').value = refCode;
+                        }, 800);
+                    }
                 } 
             });
 
             db.ref('legal_policies').on('value', s => { if(s.exists()) { legalData = s.val(); } });
-            
-            // PROMO CODES DATA LOAD
             db.ref('promocodes').on('value', s => { globalPromoCodes = s.val() || {}; });
 
             db.ref('app_settings').on('value', s => { 
@@ -423,7 +441,13 @@
                     
                     if(d.marquee && d.marquee.active){ document.getElementById('breaking-news').style.display='flex'; document.getElementById('marquee-text-display').innerText=d.marquee.text; } else { document.getElementById('breaking-news').style.display='none'; } 
                     if(d.refer_earn) { refBonusAmt=d.refer_earn.signupBonus||50; formCommAmt=d.refer_earn.formCommission||10; if(document.getElementById('ui-ref-bonus')) document.getElementById('ui-ref-bonus').innerText = "₹" + refBonusAmt; if(document.getElementById('ui-form-comm')) document.getElementById('ui-form-comm').innerText = "₹" + formCommAmt; } 
-                    if(d.section_titles) { if(document.getElementById('ui-title-aitools')) document.getElementById('ui-title-aitools').innerText = escapeHTML(d.section_titles.aitools) || "AI Tools & Links"; if(document.getElementById('ui-title-top')) document.getElementById('ui-title-top').innerText = escapeHTML(d.section_titles.top) || "Top Services"; if(document.getElementById('ui-title-all')) document.getElementById('ui-title-all').innerText = escapeHTML(d.section_titles.all) || "All Online Services"; }
+                    
+                    if(d.section_titles) { 
+                        if(document.getElementById('ui-title-aitools')) document.getElementById('ui-title-aitools').innerText = escapeHTML(d.section_titles.aitools) || "AI Tools & Links"; 
+                        if(document.getElementById('ui-title-top')) document.getElementById('ui-title-top').innerText = escapeHTML(d.section_titles.top) || "Top Services"; 
+                        defaultAllTitle = d.section_titles.all || "All Online Services";
+                        if(document.getElementById('ui-title-all')) document.getElementById('ui-title-all').innerText = escapeHTML(defaultAllTitle); 
+                    }
                     
                     if(d.main_logo) { 
                         appLogoUrl = d.main_logo; 
@@ -460,7 +484,6 @@
                 }); 
             });
 
-            // UPDATED SLIDER RENDER (Auto Slide & Links)
             db.ref('banners').on('value', s => { 
                 const slider = document.getElementById('slider'); 
                 slider.innerHTML = ''; 
@@ -476,7 +499,7 @@
                 currentSlide = 0;
                 updateSlide();
                 if(slideInterval) clearInterval(slideInterval);
-                slideInterval = setInterval(() => moveSlide(1), 3000); // 3 seconds auto-slide
+                slideInterval = setInterval(() => moveSlide(1), 3000);
             });
             
             db.ref('service_headlines').on('value', s => {
@@ -499,28 +522,36 @@
             });
 
             db.ref('ai_tools').on('value', s => { 
-                const grid = document.getElementById('dynamic-aitools-grid'); 
-                grid.innerHTML = ''; allAIToolsData = {}; 
+                globalAIToolsArray = [];
+                allAIToolsData = {}; 
                 if(s.exists()) { 
-                    document.getElementById('ai-tools-section').style.display = 'block'; 
-                    let toolsArray = [];
-                    s.forEach(c => { const t = c.val(); t.key = c.key; allAIToolsData[c.key] = t; toolsArray.push(t); }); 
-                    
-                    let limit = window.innerWidth < 640 ? 6 : 8;
-                    let displayTools = toolsArray.slice(0, limit);
-                    
-                    displayTools.forEach(t => {
-                        let imgUrl = t.imageUrl || appLogoUrl; 
-                        grid.innerHTML += `<div class="product-card" style="padding:15px; cursor:pointer;" onclick="handleAIToolClick('${t.key}')"><div class="product-image-box" style="height:90px; background:transparent;"><img src="${imgUrl}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';" style="object-fit:contain;"></div><div class="product-title" style="text-align:center; font-size:1.05rem;">${escapeHTML(t.title)}</div><p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:0;">${escapeHTML(t.description||'')}</p></div>`; 
-                    });
-                    
-                    if(toolsArray.length > limit) {
-                        grid.innerHTML += `<div style="grid-column: 1 / -1; text-align:center; margin-top:10px;"><button class="btn btn-outline" style="width:auto; padding:10px 30px;" onclick="openViewAll('aitools')">View All Tools</button></div>`;
-                    }
-                } else { 
-                    document.getElementById('ai-tools-section').style.display = 'none'; 
-                } 
+                    s.forEach(c => { const t = c.val(); t.key = c.key; allAIToolsData[c.key] = t; globalAIToolsArray.push(t); }); 
+                }
+                renderAITools();
             });
+        }
+
+        function renderAITools() {
+            const grid = document.getElementById('dynamic-aitools-grid'); 
+            if(!grid) return;
+            grid.innerHTML = ''; 
+            
+            if(globalAIToolsArray.length > 0) {
+                document.getElementById('ai-tools-section').style.display = 'block'; 
+                let limit = getGridLimit();
+                let displayTools = globalAIToolsArray.slice(0, limit);
+                
+                displayTools.forEach(t => {
+                    let imgUrl = t.imageUrl || appLogoUrl; 
+                    grid.innerHTML += `<div class="product-card" style="padding:15px; cursor:pointer;" onclick="handleAIToolClick('${t.key}')"><div class="product-image-box" style="height:90px; background:transparent;"><img src="${imgUrl}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';" style="object-fit:contain;"></div><div class="product-title" style="text-align:center; font-size:1.05rem;">${escapeHTML(t.title)}</div><p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:0;">${escapeHTML(t.description||'')}</p></div>`; 
+                });
+                
+                if(globalAIToolsArray.length > limit) {
+                    grid.innerHTML += `<div style="grid-column: 1 / -1; display:flex; justify-content:center; margin-top:10px;"><button class="btn btn-outline" style="width:auto; padding:10px 30px;" onclick="openViewAll('aitools')">View All Tools</button></div>`;
+                }
+            } else {
+                document.getElementById('ai-tools-section').style.display = 'none'; 
+            }
         }
 
         // --- SLIDER LOGIC ---
@@ -529,7 +560,6 @@
             if(currentSlide >= totalSlides) currentSlide = 0;
             if(currentSlide < 0) currentSlide = totalSlides - 1;
             updateSlide();
-            // Reset interval so manual click doesn't immediately slide again
             if(slideInterval) clearInterval(slideInterval);
             slideInterval = setInterval(() => moveSlide(1), 3000);
         }
@@ -554,9 +584,13 @@
             if (query) {
                 document.getElementById('trending-section').style.display = 'none';
                 document.getElementById('dynamic-headlines-container').style.display = 'none';
+                document.getElementById('ai-tools-section').style.display = 'none';
+                document.getElementById('ui-title-all').innerText = "Search Results";
             } else {
                 document.getElementById('trending-section').style.display = 'block';
                 document.getElementById('dynamic-headlines-container').style.display = 'block';
+                document.getElementById('ai-tools-section').style.display = globalAIToolsArray.length > 0 ? 'block' : 'none';
+                document.getElementById('ui-title-all').innerText = escapeHTML(defaultAllTitle);
             }
             
             const filtered = allProductsData.filter(p => p.title.toLowerCase().includes(query));
@@ -579,24 +613,32 @@
             if (categoryName !== 'All') {
                 document.getElementById('trending-section').style.display = 'none';
                 document.getElementById('dynamic-headlines-container').style.display = 'none';
+                document.getElementById('ai-tools-section').style.display = 'none';
+                document.getElementById('ui-title-all').innerText = escapeHTML(categoryName);
+
+                const filtered = allProductsData.filter(p => p.category === categoryName);
+                let limit = getGridLimit();
+                let displayItems = filtered.slice(0, limit);
+
+                displayItems.forEach(p => { 
+                    let price = p.priceRet || p.price || 0; 
+                    if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; 
+                    if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
+                    let pImg = p.imageUrl || appLogoUrl;
+                    grid.innerHTML+=`<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`; 
+                });
+
+                if(filtered.length > limit) {
+                     grid.innerHTML += `<div style="grid-column: 1 / -1; display:flex; justify-content:center; margin-top:10px;"><button class="btn btn-outline" style="width:auto; padding:10px 30px;" onclick="openViewAll('category', '${escapeHTML(categoryName)}')">View All ${escapeHTML(categoryName)}</button></div>`;
+                }
+
             } else {
+                document.getElementById('ui-title-all').innerText = escapeHTML(defaultAllTitle);
                 document.getElementById('trending-section').style.display = 'block';
                 document.getElementById('dynamic-headlines-container').style.display = 'block';
+                document.getElementById('ai-tools-section').style.display = globalAIToolsArray.length > 0 ? 'block' : 'none';
+                renderProducts(); 
             }
-
-            const filtered = (categoryName === 'All') 
-                ? allProductsData 
-                : allProductsData.filter(p => p.category === categoryName);
-
-            filtered.forEach(p => { 
-                let price = p.priceRet || p.price || 0; 
-                if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; 
-                if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
-                let pImg = p.imageUrl || appLogoUrl;
-                grid.innerHTML+=`<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`; 
-            });
-
-            if(categoryName === 'All') renderProducts(); 
         }
 
         // VIEW ALL PAGE RENDERER
@@ -607,16 +649,19 @@
 
             if(type === 'aitools') {
                 document.getElementById('view-all-title').innerText = "All AI Tools & Links";
-                dataToRender = Object.values(allAIToolsData).map(t => ({...t, isAI: true}));
+                dataToRender = globalAIToolsArray.map(t => ({...t, isAI: true}));
             } else if(type === 'trending') {
                 document.getElementById('view-all-title').innerText = "Top Services";
                 dataToRender = [...allProductsData].sort((a,b)=> (b.clicks||0)-(a.clicks||0));
             } else if(type === 'all') {
-                document.getElementById('view-all-title').innerText = "All Online Services";
+                document.getElementById('view-all-title').innerText = defaultAllTitle;
                 dataToRender = allProductsData;
             } else if(type === 'headline') {
                 document.getElementById('view-all-title').innerText = allHeadlinesData[headlineKey].title;
                 dataToRender = allProductsData.filter(p => p.headline === allHeadlinesData[headlineKey].title);
+            } else if(type === 'category') {
+                document.getElementById('view-all-title').innerText = headlineKey;
+                dataToRender = allProductsData.filter(p => p.category === headlineKey);
             }
 
             dataToRender.forEach(p => {
@@ -632,7 +677,7 @@
             switchAppScreen('view-all-screen', -1);
         }
 
-        // UPDATED RENDER PRODUCTS TO HANDLE GRID LIMITS AND "VIEW ALL"
+        // PERFECTED GRID RENDERER
         function renderProducts() {
             const mainGrid = document.getElementById('dynamic-products-grid'); 
             const trendingGrid = document.getElementById('trending-products-grid');
@@ -642,7 +687,7 @@
             
             Object.keys(allHeadlinesData).forEach(k => { const g = document.getElementById('grid-head-'+k); if(g) g.innerHTML = ''; });
             
-            let limit = window.innerWidth < 640 ? 6 : 8; // 6 items on mobile, 8 on laptop
+            let limit = getGridLimit();
 
             if(allProductsData && allProductsData.length > 0) {
                 // ALL SERVICES
@@ -654,7 +699,7 @@
                     if(mainGrid) mainGrid.innerHTML += cardHtml; 
                 });
                 if(allProductsData.length > limit && mainGrid) {
-                    mainGrid.innerHTML += `<div style="grid-column: 1 / -1; text-align:center; margin-top:10px;"><button class="btn btn-outline" style="width:auto; padding:10px 30px;" onclick="openViewAll('all')">View All Services</button></div>`;
+                    mainGrid.innerHTML += `<div style="grid-column: 1 / -1; display:flex; justify-content:center; margin-top:10px;"><button class="btn btn-outline" style="width:auto; padding:10px 30px;" onclick="openViewAll('all')">View All Services</button></div>`;
                 }
 
                 // CUSTOM HEADLINES
@@ -669,7 +714,7 @@
                             dynGrid.innerHTML += `<div class="product-card" onclick="openProductDetails('${p.key}')"><div class="product-image-box"><img src="${pImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';"></div><div class="product-title">${escapeHTML(p.title)}</div><div class="product-price">₹${price}</div></div>`;
                         });
                         if(catProducts.length > limit) {
-                            dynGrid.innerHTML += `<div style="grid-column: 1 / -1; text-align:center; margin-top:10px;"><button class="btn btn-outline" style="width:auto; padding:10px 30px;" onclick="openViewAll('headline', '${hKey}')">View All</button></div>`;
+                            dynGrid.innerHTML += `<div style="grid-column: 1 / -1; display:flex; justify-content:center; margin-top:10px;"><button class="btn btn-outline" style="width:auto; padding:10px 30px;" onclick="openViewAll('headline', '${hKey}')">View All</button></div>`;
                         }
                     }
                 });
@@ -685,7 +730,7 @@
                         if(trendingGrid) trendingGrid.innerHTML += cardHtml;
                     });
                     if(topProducts.length > limit && trendingGrid) {
-                        trendingGrid.innerHTML += `<div style="grid-column: 1 / -1; text-align:center; margin-top:10px;"><button class="btn btn-outline" style="width:auto; padding:10px 30px;" onclick="openViewAll('trending')">View All Top Services</button></div>`;
+                        trendingGrid.innerHTML += `<div style="grid-column: 1 / -1; display:flex; justify-content:center; margin-top:10px;"><button class="btn btn-outline" style="width:auto; padding:10px 30px;" onclick="openViewAll('trending')">View All Top Services</button></div>`;
                     }
                     document.getElementById('trending-section').style.display = 'block';
                 } else {
@@ -724,7 +769,6 @@
             document.getElementById('auth-reg-btn').innerText = `Pay ₹${finalPrice} & Register`;
         }
 
-        // NEW: APPLY PROMO CODE FUNCTION
         function applyRegPromo() {
             const code = document.getElementById('auth-promo').value.trim().toUpperCase();
             if(!code) return showToast("Enter promo code", false);
@@ -777,7 +821,6 @@
         
         function finalizeRegistration(){ 
             const utr=document.getElementById('reg-utr').value.trim(); 
-            // If fee is 0 due to discount, bypass UTR requirement or just check anyway. Let's say bypass if fee=0.
             if(tempRegData.fee > 0 && !utrRegex.test(utr)){ showToast("Valid 12-Digit UTR needed!", false); return; } 
             
             document.getElementById('reg-confirm-btn').innerText="Processing..."; document.getElementById('reg-confirm-btn').disabled=true; isRegisteringProcess = true; 
@@ -806,7 +849,7 @@
                     document.getElementById('profile-name').innerText=escapeHTML(uName); document.getElementById('header-user-name').innerText=escapeHTML(uName).split(' ')[0]; document.getElementById('wallet-balance').innerText="₹"+userWallet; document.getElementById('header-wallet-bal').innerText=userWallet; document.getElementById('ck-wallet-bal').innerText=userWallet; 
                     let em = d.email || u.email || ""; document.getElementById('profile-email').innerHTML=`${escapeHTML(em)}<br><span class="status-badge-profile">${escapeHTML(currentUserStatus)}</span>`; 
                     
-                    renderProducts(); // Update prices dynamically based on role
+                    renderProducts(); 
                 } else { document.getElementById('profile-name').innerText = escapeHTML(u.displayName) || "User"; document.getElementById('profile-email').innerHTML = `${escapeHTML(u.email)}<br><span class="status-badge-profile">Pending</span>`; }
             });
             loadMyOrders(); loadNotifications();
@@ -821,7 +864,15 @@
         
         function updateMyPromoCode(val) { val = val.trim().toUpperCase(); if(!val.startsWith("AJ-")) { val = "AJ-" + val.replace(/[^A-Z0-9]/g, ''); } document.getElementById('edit-my-promo').value = val; myGenReferCode = val; if(auth.currentUser) { db.ref('customers/'+auth.currentUser.uid).update({myCode: val}).then(()=>{ showToast("Promo Code Saved!", true); }); } }
         function copyReferral() { navigator.clipboard.writeText(myGenReferCode).then(()=>showToast("Code Copied!", true)); }
-        function shareReferral() { if (navigator.share) { navigator.share({ title: 'Join AJ INDIA SARVICES', text: `Use my referral code ${myGenReferCode} and get ₹${refBonusAmt} bonus!`, url: window.location.href }).catch(err => console.log('Share error:', err)); } else { copyReferral(); } }
+        function shareReferral() { 
+            let shareUrl = window.location.origin + window.location.pathname + '?ref=' + myGenReferCode;
+            if (navigator.share) { 
+                navigator.share({ title: 'Join AJ INDIA SERVICES', text: `Use my referral code ${myGenReferCode} and get ₹${refBonusAmt} bonus!`, url: shareUrl }).catch(err => console.log('Share error:', err)); 
+            } else { 
+                copyText(shareUrl); 
+            } 
+        }
+        function copyText(txt) { navigator.clipboard.writeText(txt).then(()=> showToast("Link Copied!", true)); }
 
         function requestWalletRecharge(){ const amt=document.getElementById('wallet-add-amt').value; const utr=document.getElementById('wallet-utr').value.trim(); if(amt>0 && utrRegex.test(utr)){ db.ref('wallet_requests').push({uid: auth.currentUser.uid, name: uName, amount: Number(amt), utr: utr, status: 'Pending', date: new Date().toLocaleDateString()}).then(()=>{ closeModal('add-money-modal'); showToast("Request Sent!", true); document.getElementById('wallet-add-amt').value=''; document.getElementById('wallet-utr').value=''; }); } else { showToast("Enter Valid Amount & 12-Digit UTR", false); } }
         function submitTicket(){ const msg=document.getElementById('ticket-msg').value; if(msg) db.ref('tickets').push({uid:auth.currentUser.uid, shop:uShopName, msg:msg, reply:"", date:new Date().toLocaleDateString(), status:"Open"}).then(()=>{ document.getElementById('ticket-msg').value=''; showToast("Ticket Created!", true); }); }
@@ -837,7 +888,9 @@
             let price = p.priceRet || p.price || 0; if(uRole === 'Distributor' && p.priceDist) price=p.priceDist; if(uRole === 'AJ Officer' && p.priceDM) price=p.priceDM; 
             selectedProductDetails.parsedPrice = price; 
             
-            document.getElementById('pd-img').src=p.imageUrl || appLogoUrl; document.getElementById('pd-title').innerText=escapeHTML(p.title); document.getElementById('pd-price').innerText="₹"+price; document.getElementById('pd-desc').innerText=escapeHTML(p.description); 
+            document.getElementById('pd-img').src=p.imageUrl || appLogoUrl; document.getElementById('pd-title').innerText=escapeHTML(p.title); 
+            document.getElementById('pd-price').innerHTML = (price == 0) ? `<span style="color:var(--success);">Free</span>` : "₹"+price; 
+            document.getElementById('pd-desc').innerText=escapeHTML(p.description); 
             
             const ytLinkBtn = document.getElementById('pd-yt-link');
             if(p.ytLink) { ytLinkBtn.href = p.ytLink; ytLinkBtn.style.display = 'inline-flex'; } else { ytLinkBtn.style.display = 'none'; }
@@ -869,36 +922,25 @@
 
         function uploadDynamicFile(inp,hid){ const f=inp.files[0]; const fd=new FormData(); fd.append('image',f); fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {method:'POST',body:fd}).then(r=>r.json()).then(d=>{ document.getElementById(hid).value=d.data.url; uploadedDocsArray.push(d.data.url); showToast("File Uploaded", true); }); }
 
-        // NEW FIX: STRICT FORM VALIDATION BEFORE PAYMENT
         function proceedToServiceCheckout(){ 
             let ex=""; 
             let isValid = true;
             document.querySelectorAll('.dyn-input').forEach(i=>{ 
                 if(i.classList.contains('doc-select')) return; 
-                // Check if empty
-                if(!i.value || i.value.trim() === "") {
-                    isValid = false;
-                } else {
-                    ex+=`<b>${escapeHTML(i.getAttribute('data-label'))}:</b> ${escapeHTML(i.value)}<br>`; 
-                }
+                if(!i.value || i.value.trim() === "") { isValid = false; } 
+                else { ex+=`<b>${escapeHTML(i.getAttribute('data-label'))}:</b> ${escapeHTML(i.value)}<br>`; }
             }); 
 
-            if(!isValid) {
-                return showToast("Please fill all required details!", false);
-            }
+            if(!isValid) { return showToast("Please fill all required details!", false); }
 
             currentCheckoutState={total:Number(selectedProductDetails.parsedPrice), title:selectedProductDetails.title, img:selectedProductDetails.imageUrl, docs:uploadedDocsArray, extra:ex}; 
             closeModal('application-form-modal'); 
-            document.getElementById('checkout-item-price').innerText="₹"+currentCheckoutState.total; 
+            document.getElementById('checkout-item-price').innerHTML = (currentCheckoutState.total == 0) ? `<span style="color:var(--success);">Free Application</span>` : "₹"+currentCheckoutState.total; 
             document.getElementById('upi-qr-img').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20INDIA%20SARVICES%26am=${currentCheckoutState.total}%26cu=INR&size=200`; 
             openModal('checkout-modal'); 
         }
 
-        // NEW FIX: BACK BUTTON TO RETURN TO EDIT FORM
-        function backToFormFromCheckout() {
-            closeModal('checkout-modal');
-            openModal('application-form-modal');
-        }
+        function backToFormFromCheckout() { closeModal('checkout-modal'); openModal('application-form-modal'); }
 
         function payWithWallet(){ 
             if(userWallet >= currentCheckoutState.total) { 
@@ -914,17 +956,17 @@
             } else { showToast("Insufficient Wallet Balance!", false); } 
         }
         
-        function verifyAndPlaceOrder(){ const utr=document.getElementById('utr-number').value.trim(); if(utrRegex.test(utr)) placeOrder(utr); else showToast("Enter Valid 12-Digit UTR", false); }
+        function verifyAndPlaceOrder(){ const utr=document.getElementById('utr-number').value.trim(); if(utrRegex.test(utr) || currentCheckoutState.total === 0) placeOrder(utr || 'FREE-ORDER'); else showToast("Enter Valid 12-Digit UTR", false); }
         
         function placeOrder(utr){ const btn=document.getElementById('checkout-final-btn'); if(btn){btn.innerText="Processing..."; btn.disabled=true;} db.ref('orders').push({ title:currentCheckoutState.title, price:currentCheckoutState.total, img:currentCheckoutState.img, utr:utr, userName:uShopName+" ("+uName+")", userId:auth.currentUser.uid, status:"Pending", date:new Date().toLocaleDateString(), uploadedDocs:currentCheckoutState.docs, extraDetails:currentCheckoutState.extra }).then(()=>{ if(uReferredBy){ db.ref('customers').orderByChild('myCode').equalTo(uReferredBy).once('value').then(s=>{ if(s.exists()){ const parentKey = Object.keys(s.val())[0]; let w=s.val()[parentKey].walletBalance||0; let c=s.val()[parentKey].commission||0; db.ref('customers/'+parentKey).update({walletBalance: w+refBonusAmt, commission: c+refBonusAmt}); db.ref('transactions').push({uid: parentKey, type: 'Commission', amount: formCommAmt, date: new Date().toLocaleDateString(), from: uName, service: currentCheckoutState.title}); } }); } closeModal('checkout-modal'); showToast("Applied Successfully!", true); switchAppScreen('orders-screen',1); if(btn){btn.innerText="Submit Order"; btn.disabled=false;} }); }
 
         function cancelMyOrder(key) { if(confirm("Are you sure you want to cancel this order?")) { db.ref('orders/'+key).update({status: 'Cancelled'}).then(() => { showToast("Order Cancelled Successfully", true); }); } }
 
-        function loadMyOrders(){ if(!auth.currentUser) return; db.ref('orders').orderByChild('userId').equalTo(auth.currentUser.uid).on('value', s=>{ const lst=document.getElementById('orders-list'); lst.innerHTML=''; myOrdersData={}; let seq=1; s.forEach(c=>{ const o=c.val(); o.key=c.key; o.sequentialId=seq++; myOrdersData[o.key]=o; let statCls=o.status==="Pending"?"var(--accent)":o.status==="Delivered"?"var(--success)":"var(--secondary-color)"; let btns=`<div style="display:flex; gap:10px; margin-top:10px;"><button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem; flex:1;" onclick="printReceipt('${c.key}')"><i class="fa-solid fa-print"></i> Print</button>`; if(o.status === "Delivered") { btns += `<button class="btn" style="padding:6px 12px; font-size:0.8rem; flex:1; background:#ef4444; color:#fff;" onclick="downloadPDFInvoice('${c.key}')"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>`; } if(o.status === "Pending") { btns += `<button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem; flex:1; color:var(--danger); border-color:var(--danger);" onclick="cancelMyOrder('${c.key}')"><i class="fa-solid fa-xmark"></i> Cancel</button>`; } btns += `</div>`; if(o.resultUrl) btns+=`<button class="btn" style="padding:6px 12px; font-size:0.8rem; margin-top:8px; width:100%; background:var(--success);" onclick="window.open('${escapeHTML(o.resultUrl)}','_blank')"><i class="fa-solid fa-download"></i> Result Doc</button>`; let oImg = o.img || appLogoUrl; lst.innerHTML+=`<div class="order-card"><div style="display:flex; align-items:center;"><img src="${oImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';" style="width:65px; height:65px; border-radius:12px; margin-right:15px; object-fit:cover; border:1px solid var(--border-color);"><div style="flex:1;"><p style="font-weight:800; font-size:1rem; margin-bottom:4px;">${escapeHTML(o.title)}</p><p style="font-size:0.85rem; color:var(--text-gray); margin:0;">Status: <span class="status-badge" style="background:${statCls}; color:#fff; padding:2px 8px; border-radius:12px; font-size:0.7rem;">${escapeHTML(o.status)}</span></p></div><div style="font-weight:900; font-size:1.2rem; color:var(--primary-color);">₹${o.price}</div></div><div>${btns}</div></div>`; }); }); }
+        function loadMyOrders(){ if(!auth.currentUser) return; db.ref('orders').orderByChild('userId').equalTo(auth.currentUser.uid).on('value', s=>{ const lst=document.getElementById('orders-list'); lst.innerHTML=''; myOrdersData={}; let seq=1; s.forEach(c=>{ const o=c.val(); o.key=c.key; o.sequentialId=seq++; myOrdersData[o.key]=o; let statCls=o.status==="Pending"?"var(--accent)":o.status==="Delivered"?"var(--success)":"var(--secondary-color)"; let btns=`<div style="display:flex; gap:10px; margin-top:10px;"><button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem; flex:1;" onclick="printReceipt('${c.key}')"><i class="fa-solid fa-print"></i> Print</button>`; if(o.status === "Delivered") { btns += `<button class="btn" style="padding:6px 12px; font-size:0.8rem; flex:1; background:#ef4444; color:#fff;" onclick="downloadPDFInvoice('${c.key}')"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>`; } if(o.status === "Pending") { btns += `<button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem; flex:1; color:var(--danger); border-color:var(--danger);" onclick="cancelMyOrder('${c.key}')"><i class="fa-solid fa-xmark"></i> Cancel</button>`; } btns += `</div>`; if(o.resultUrl) btns+=`<button class="btn" style="padding:6px 12px; font-size:0.8rem; margin-top:8px; width:100%; background:var(--success);" onclick="window.open('${escapeHTML(o.resultUrl)}','_blank')"><i class="fa-solid fa-download"></i> Result Doc</button>`; let oImg = o.img || appLogoUrl; lst.innerHTML+=`<div class="order-card"><div style="display:flex; align-items:center;"><img src="${oImg}" onerror="this.onerror=null; this.src=window.appLogoUrl || 'logoa.jpg';" style="width:65px; height:65px; border-radius:12px; margin-right:15px; object-fit:cover; border:1px solid var(--border-color);"><div style="flex:1;"><p style="font-weight:800; font-size:1rem; margin-bottom:4px;">${escapeHTML(o.title)}</p><p style="font-size:0.85rem; color:var(--text-gray); margin:0;">Status: <span class="status-badge" style="background:${statCls}; color:#fff; padding:2px 8px; border-radius:12px; font-size:0.7rem;">${escapeHTML(o.status)}</span></p></div><div style="font-weight:900; font-size:1.2rem; color:var(--primary-color);">${(o.price==0)?'<span style="color:var(--success)">Free</span>': '₹'+o.price}</div></div><div>${btns}</div></div>`; }); }); }
 
-        function printReceipt(key){ const o=myOrdersData[key]; const prt=window.open('','_blank'); prt.document.write(`<html><body style="font-family:sans-serif; text-align:center; padding:20px;"><h2>${escapeHTML(invSettings.name)}</h2><p>${escapeHTML(invSettings.address)}</p><hr><h3>Customer Receipt</h3><p><b>Order ID:</b> AJ-ORD-${o.sequentialId}</p><p><b>Service:</b> ${escapeHTML(o.title)}</p><p><b>Status:</b> ${escapeHTML(o.status)}</p><p><b>Amount:</b> ₹${o.price}</p><p><b>Date:</b> ${escapeHTML(o.date)}</p><hr><p>Shop: ${escapeHTML(o.userName)}</p><button onclick="window.print()" style="padding:10px 20px; background:#1e40af; color:#fff; border:none; border-radius:5px; cursor:pointer;">Print</button></body></html>`); prt.document.close(); }
+        function printReceipt(key){ const o=myOrdersData[key]; const prt=window.open('','_blank'); prt.document.write(`<html><body style="font-family:sans-serif; text-align:center; padding:20px;"><h2>${escapeHTML(invSettings.name)}</h2><p>${escapeHTML(invSettings.address)}</p><hr><h3>Customer Receipt</h3><p><b>Order ID:</b> AJ-ORD-${o.sequentialId}</p><p><b>Service:</b> ${escapeHTML(o.title)}</p><p><b>Status:</b> ${escapeHTML(o.status)}</p><p><b>Amount:</b> ${(o.price==0)?'Free':'₹'+o.price}</p><p><b>Date:</b> ${escapeHTML(o.date)}</p><hr><p>Shop: ${escapeHTML(o.userName)}</p><button onclick="window.print()" style="padding:10px 20px; background:#1e40af; color:#fff; border:none; border-radius:5px; cursor:pointer;">Print</button></body></html>`); prt.document.close(); }
 
-        function downloadPDFInvoice(key) { const o = myOrdersData[key]; const content = document.getElementById('hidden-invoice-content'); content.style.display = 'block'; content.innerHTML = `<div style="border:2px solid #000; padding:40px; border-radius:10px;"><h1 style="color:#1e40af; text-align:center; margin:0;">${escapeHTML(invSettings.name)}</h1><p style="text-align:center; margin-top:5px;">${escapeHTML(invSettings.address)}</p><hr style="border-top:2px solid #e2e8f0; margin:20px 0;"><h2 style="text-align:center; background:#1e40af; color:#fff; padding:10px;">TAX INVOICE</h2><table style="width:100%; text-align:left; margin-top:20px;"><tr><td style="padding:8px;"><b>Invoice No:</b> AJ-INV-${o.sequentialId}</td><td style="padding:8px; text-align:right;"><b>Date:</b> ${escapeHTML(o.date)}</td></tr><tr><td style="padding:8px;"><b>Billed To:</b><br>${escapeHTML(o.userName)}</td><td style="padding:8px; text-align:right;"><b>Status:</b> ${escapeHTML(o.status)}</td></tr></table><hr style="margin:20px 0;"><table style="width:100%; border-collapse:collapse; margin-top:20px;"><tr style="background:#f1f5f9; border-bottom:2px solid #000;"><th style="padding:12px; text-align:left;">Description</th><th style="padding:12px; text-align:right;">Amount (INR)</th></tr><tr><td style="padding:15px; border-bottom:1px solid #e2e8f0;">${escapeHTML(o.title)} (Application Fee)</td><td style="padding:15px; text-align:right; border-bottom:1px solid #e2e8f0;">₹${o.price}</td></tr><tr><td style="padding:15px; font-weight:bold; font-size:1.2rem; text-align:right;">Total Paid:</td><td style="padding:15px; font-weight:bold; font-size:1.2rem; text-align:right; color:#10b981;">₹${o.price}</td></tr></table><p style="text-align:center; margin-top:50px; font-style:italic; color:#64748b;">Thank you for your business!</p></div>`; showToast("Generating PDF Invoice...", true); let opt = { margin: 0.5, filename: `AJ_Invoice_${o.sequentialId}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } }; html2pdf().set(opt).from(content).save().then(() => { content.style.display = 'none'; }); }
+        function downloadPDFInvoice(key) { const o = myOrdersData[key]; const content = document.getElementById('hidden-invoice-content'); content.style.display = 'block'; content.innerHTML = `<div style="border:2px solid #000; padding:40px; border-radius:10px;"><h1 style="color:#1e40af; text-align:center; margin:0;">${escapeHTML(invSettings.name)}</h1><p style="text-align:center; margin-top:5px;">${escapeHTML(invSettings.address)}</p><hr style="border-top:2px solid #e2e8f0; margin:20px 0;"><h2 style="text-align:center; background:#1e40af; color:#fff; padding:10px;">TAX INVOICE</h2><table style="width:100%; text-align:left; margin-top:20px;"><tr><td style="padding:8px;"><b>Invoice No:</b> AJ-INV-${o.sequentialId}</td><td style="padding:8px; text-align:right;"><b>Date:</b> ${escapeHTML(o.date)}</td></tr><tr><td style="padding:8px;"><b>Billed To:</b><br>${escapeHTML(o.userName)}</td><td style="padding:8px; text-align:right;"><b>Status:</b> ${escapeHTML(o.status)}</td></tr></table><hr style="margin:20px 0;"><table style="width:100%; border-collapse:collapse; margin-top:20px;"><tr style="background:#f1f5f9; border-bottom:2px solid #000;"><th style="padding:12px; text-align:left;">Description</th><th style="padding:12px; text-align:right;">Amount (INR)</th></tr><tr><td style="padding:15px; border-bottom:1px solid #e2e8f0;">${escapeHTML(o.title)} (Application Fee)</td><td style="padding:15px; text-align:right; border-bottom:1px solid #e2e8f0;">${(o.price==0)?'Free':'₹'+o.price}</td></tr><tr><td style="padding:15px; font-weight:bold; font-size:1.2rem; text-align:right;">Total Paid:</td><td style="padding:15px; font-weight:bold; font-size:1.2rem; text-align:right; color:#10b981;">${(o.price==0)?'Free':'₹'+o.price}</td></tr></table><p style="text-align:center; margin-top:50px; font-style:italic; color:#64748b;">Thank you for your business!</p></div>`; showToast("Generating PDF Invoice...", true); let opt = { margin: 0.5, filename: `AJ_Invoice_${o.sequentialId}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } }; html2pdf().set(opt).from(content).save().then(() => { content.style.display = 'none'; }); }
 
         function loadEarningsData(){ if(!auth.currentUser) return; document.getElementById('total-earnings-display').innerText = uComm; db.ref('transactions').orderByChild('uid').equalTo(auth.currentUser.uid).once('value').then(s=>{ const lst=document.getElementById('transactions-list'); lst.innerHTML=''; let chartMap={}; s.forEach(c=>{ const t=c.val(); chartMap[t.date]=(chartMap[t.date]||0)+t.amount; lst.innerHTML+=`<div style="background:var(--card-bg); padding:12px; border-radius:12px; border:1px solid var(--border-color); margin-bottom:10px; display:flex; justify-content:space-between;"><div><b>${escapeHTML(t.type)}</b><br><small>${escapeHTML(t.from)} ${t.service?'- '+escapeHTML(t.service):''}</small></div><b style="color:var(--success);">+₹${t.amount}</b></div>`; }); try { if(typeof Chart==='undefined')return; const ctx=document.getElementById('earningsChart').getContext('2d'); if(earningsChartInstance){ earningsChartInstance.data.labels=Object.keys(chartMap); earningsChartInstance.data.datasets[0].data=Object.values(chartMap); earningsChartInstance.update(); return; } earningsChartInstance=new Chart(ctx, {type:'bar', data:{labels:Object.keys(chartMap), datasets:[{label:'Earnings (₹)', data:Object.values(chartMap), backgroundColor:'#10b981'}]}, options:{responsive:true, maintainAspectRatio:false}}); }catch(e){} }); }
 
