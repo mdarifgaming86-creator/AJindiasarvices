@@ -7,24 +7,24 @@
     <meta name="theme-color" content="#1e3a8a">
     
     <!-- SEO META TAGS START (For Google Search Fix) -->
-    <title>Aj India Sarvices - Md Arif</title>
-    <meta name="description" content="Aj India Sarvices provides premium online digital services, pan card apply, utility tools and business solutions in India.">
-    <meta name="keywords" content="Aj India Sarvices, aj india sarvices, online services portal, pan card apply india, aj services">
+    <title>AJ India Sarvices - Premium Digital Portal</title>
+    <meta name="description" content="AJ India Sarvices provides premium online digital services, pan card apply, utility tools and business solutions in India.">
+    <meta name="keywords" content="AJ India Sarvices, aj india sarvices, online services portal, pan card apply india, aj services">
     
-    <!-- Open Graph / Tells Google your real Site Name -->
-    <meta property="og:site_name" content="Aj India Sarvices">
-    <meta property="og:title" content="Aj India Sarvices -Md Arif">
+    <!-- Open Graph / Tells Google & Social Media your real Site Name -->
+    <meta property="og:site_name" content="AJ India Sarvices">
+    <meta property="og:title" content="AJ India Sarvices - Premium Digital Portal">
     <meta property="og:description" content="Premium portal for all online digital services.">
-    <meta property="og:url" content="https://ajindiasarvices.vercel.app/">
+    <meta property="og:url" content="https://ajindiasarvices.rf.gd/">
     <meta property="og:type" content="website">
 
-    <!-- Google Structured Data (Forces Google to replace 'Vercel' with your Brand Name) -->
+    <!-- Google Structured Data (Forces Google to use your Brand Name) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "Aj India Sarvices",
-      "url": "https://ajindiasarvices.vercel.app/"
+      "name": "AJ India Sarvices",
+      "url": "https://ajindiasarvices.rf.gd/"
     }
     </script>
     <!-- SEO META TAGS END -->
@@ -45,6 +45,8 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-color); padding-bottom: 75px; color: var(--text-dark); transition: 0.3s; display: flex; flex-direction: column; min-height: 100vh;}
         
+        .ad-container { width: 100%; display: flex; justify-content: center; align-items: center; margin: 10px 0; overflow: hidden; min-height: 50px; }
+
         #breaking-news { background: var(--danger); color: #fff; font-weight: 700; font-size: 0.85rem; padding: 8px 15px; display: none; align-items:center; gap:10px; overflow:hidden; border-bottom: 2px solid #b91c1c; white-space: nowrap;}
         .marquee-wrapper { display: inline-block; padding-left: 100%; animation: scroll-left 25s linear infinite; }
         @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
@@ -194,16 +196,19 @@
 
         <header>
             <div class="header-top">
-                <div class="logo"><img src="logoa.jpg" alt="Portal Logo" class="dynamic-app-logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/150x80?text=Aj+India+Sarvices'"></div>
+                <div class="logo"><img src="logoa.jpg" alt="Portal Logo" class="dynamic-app-logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/150x80?text=AJ+India+Sarvices'"></div>
                 <div class="header-icons">
                     <div id="header-wallet-pill" class="header-wallet-pill" onclick="document.querySelectorAll('.nav-item')[3].click()"><i class="fa-solid fa-wallet" style="margin-right: 5px;"></i> ₹<span id="header-wallet-bal">0</span></div>
                     <i class="fa-solid fa-moon theme-toggle" onclick="toggleTheme()"></i>
                     <div style="position:relative;" onclick="openNotifications()"><i class="fa-solid fa-bell"></i><span class="noti-badge" id="noti-count" style="display:none;">0</span></div>
-                    <div class="user-profile-header" onclick="document.querySelectorAll('.nav-item')[3].click()"><img id="header-user-pic" src="logoa.jpg" onerror="this.onerror=null; this.src='https://via.placeholder.com/150x80?text=Aj+India+Sarvices'"><span id="header-user-name">Login</span></div>
+                    <div class="user-profile-header" onclick="document.querySelectorAll('.nav-item')[3].click()"><img id="header-user-pic" src="logoa.jpg" onerror="this.onerror=null; this.src='https://via.placeholder.com/150x80?text=AJ+India+Sarvices'"><span id="header-user-name">Login</span></div>
                 </div>
             </div>
             <div class="search-box"><i class="fa-solid fa-magnifying-glass" style="color:#94a3b8"></i><input type="text" id="search-input" placeholder="Search Services..." oninput="liveSearch(this.value)"></div>
         </header>
+
+        <!-- TOP BANNER AD (BELOW HEADER) -->
+        <div id="ad-top-wrapper" class="ad-container"></div>
 
         <div id="home-screen" class="app-screen active">
             <div class="slider-container">
@@ -260,7 +265,7 @@
         <div id="profile-screen" class="app-screen">
             <div class="profile-header-premium">
                 <div style="display: flex; align-items: center; gap: 15px;">
-                    <div class="profile-avatar-wrapper" onclick="openEditProfile()"><img id="profile-pic" src="logoa.jpg" onerror="this.onerror=null; this.src='https://via.placeholder.com/150x80?text=Aj+India+Sarvices'"></div>
+                    <div class="profile-avatar-wrapper" onclick="openEditProfile()"><img id="profile-pic" src="logoa.jpg" onerror="this.onerror=null; this.src='https://via.placeholder.com/150x80?text=AJ+India+Sarvices'"></div>
                     <div>
                         <h2 id="profile-name" style="margin:0 0 5px 0; font-size:1.4rem; font-weight:800;">Guest User</h2>
                         <p id="profile-email" style="margin:0; font-size:0.85rem; font-weight:500;">Login to access portal</p>
@@ -299,13 +304,16 @@
             <button id="profile-logout-btn" class="btn-logout" onclick="logoutApp()" style="display:none; margin-bottom:20px;"><i class="fa-solid fa-power-off"></i> Secure Logout</button>
         </div>
 
+        <!-- BOTTOM BANNER AD (ABOVE FOOTER) -->
+        <div id="ad-bottom-wrapper" class="ad-container"></div>
+
         <footer class="app-footer">
             <div class="footer-links">
                 <span onclick="openLegalModal('Terms & Conditions', legalData.terms)">Terms & Conditions</span>
                 <span onclick="openLegalModal('Privacy Policy', legalData.privacy)">Privacy Policy</span>
                 <span onclick="openLegalModal('Refund Policy', legalData.refund)">Refund Policy</span>
             </div>
-            <p style="margin:0; font-weight: bold;">&copy; <span id="current-year"></span> Aj India Sarvices. All rights reserved.</p>
+            <p style="margin:0; font-weight: bold;">&copy; <span id="current-year"></span> AJ India Sarvices. All rights reserved.</p>
         </footer>
 
         <nav class="bottom-nav">
@@ -317,7 +325,7 @@
     </div> <!-- END MAIN APP CONTAINER -->
 
     <!-- ALL MODALS -->
-    <div id="add-money-modal" class="modal-overlay"><div class="modal-box" style="text-align:center;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('add-money-modal')"></i><h2 style="margin-bottom:15px;">Add Money</h2><img id="wallet-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=ajsarvices@ptyes%26pn=Aj%20India%20Sarvices%26am=0%26cu=INR" style="width:150px; height:150px; border:2px solid var(--border-color); padding:5px; border-radius:12px; object-fit:contain;"><br><b style="color:var(--secondary-color);">ajsarvices@ptyes</b><input type="number" id="wallet-add-amt" placeholder="Amount (₹)" style="margin-top:15px;" oninput="document.getElementById('wallet-qr').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=Aj%20India%20Sarvices%26am=${this.value}%26cu=INR&size=200`"><input type="text" id="wallet-utr" placeholder="12-Digit UTR Number"><button class="btn" onclick="requestWalletRecharge()">Submit Request</button></div></div>
+    <div id="add-money-modal" class="modal-overlay"><div class="modal-box" style="text-align:center;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('add-money-modal')"></i><h2 style="margin-bottom:15px;">Add Money</h2><img id="wallet-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20India%20Sarvices%26am=0%26cu=INR" style="width:150px; height:150px; border:2px solid var(--border-color); padding:5px; border-radius:12px; object-fit:contain;"><br><b style="color:var(--secondary-color);">ajsarvices@ptyes</b><input type="number" id="wallet-add-amt" placeholder="Amount (₹)" style="margin-top:15px;" oninput="document.getElementById('wallet-qr').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20India%20Sarvices%26am=${this.value}%26cu=INR&size=200`"><input type="text" id="wallet-utr" placeholder="12-Digit UTR Number"><button class="btn" onclick="requestWalletRecharge()">Submit Request</button></div></div>
     <div id="helpdesk-modal" class="modal-overlay"><div class="modal-box"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('helpdesk-modal')"></i><h2 style="margin-bottom:15px;">Helpdesk</h2><textarea id="ticket-msg" rows="3" placeholder="Describe issue..."></textarea><button class="btn" onclick="submitTicket()">Create Ticket</button><h4 style="margin-top:20px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">My Tickets</h4><div id="my-tickets" style="margin-top:10px; max-height:250px; overflow-y:auto;"></div></div></div>
     <div id="noti-modal" class="modal-overlay"><div class="modal-box"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('noti-modal')"></i><h2 style="margin-bottom:15px;">Notifications</h2><div id="noti-list" style="max-height:350px; overflow-y:auto;"></div></div></div>
 
@@ -329,7 +337,6 @@
             <div style="text-align:center;"><h2 id="auth-title" style="margin-bottom:15px;">Login</h2></div>
             <div id="login-fields-container"><input type="email" id="auth-email" placeholder="E-Mail Address"><input type="password" id="auth-password" placeholder="Password"><div style="text-align:right; margin-bottom:15px;"><span style="color:var(--secondary-color); font-size:0.8rem; font-weight:bold; cursor:pointer;" onclick="resetPasswordUI()">Forgot Password?</span></div><button class="btn" id="auth-login-btn" onclick="executeLogin()">Login Securely</button></div>
             
-            <!-- PASSWORD RESET SECTION WITH UPDATED JS FUNCTION -->
             <div id="reset-pass-container" style="display:none; text-align:center;">
                 <p style="font-size:0.9rem; color:var(--text-gray); margin-bottom:15px;">Enter your registered email to receive a password reset link.</p>
                 <input type="email" id="reset-email" placeholder="Registered E-Mail">
@@ -368,8 +375,39 @@
         </div>
     </div>
 
-    <div id="product-details-modal" class="modal-overlay"><div class="modal-box" style="padding:0;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('product-details-modal')"></i><img id="pd-img" style="width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--bg-color); padding:0; border-radius: 20px 20px 0 0;"><div style="padding:20px;"><h2 id="pd-title"></h2><h3 id="pd-price" style="color:var(--primary-color);"></h3><p id="pd-desc" style="font-size:0.9rem;"></p><a id="pd-yt-link" href="#" target="_blank" style="display:none; align-items:center; gap:8px; color:#ef4444; font-weight:bold; margin-top:10px; text-decoration:none; background:#fee2e2; padding:8px 12px; border-radius:8px; width: fit-content;"><i class="fa-brands fa-youtube" style="font-size:1.2rem;"></i> Watch Video Tutorial</a><div style="display:flex; gap:10px; margin-top:20px;" id="pd-action-buttons"></div></div></div></div>
-    <div id="application-form-modal" class="modal-overlay"><div class="modal-box" style="max-width: 900px;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('application-form-modal')"></i><div style="text-align: center; margin-bottom: 20px;"><img id="app-form-logo" src="" style="width: 80px; height: 80px; object-fit: contain; border-radius: 12px; background: var(--input-bg); padding: 5px; border: 1px solid var(--border-color); display: inline-block; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);"><h2 style="margin: 0 0 5px 0; font-weight: 900;">Fill Application Details</h2><p id="app-service-name" style="font-weight: 700; color: var(--primary-color); margin: 0; font-size: 1rem;"></p></div><div id="dynamic-custom-form-container" class="app-form-grid"></div><button class="btn" id="apply-proceed-btn" onclick="proceedToServiceCheckout()" style="background: var(--success);"><i class="fa-solid fa-wallet"></i> Proceed to Payment</button></div></div>
+    <!-- PRODUCT MODAL -->
+    <div id="product-details-modal" class="modal-overlay">
+        <div class="modal-box" style="padding:0;">
+            <i class="fa-solid fa-xmark close-btn" onclick="closeModal('product-details-modal')"></i>
+            <img id="pd-img" style="width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--bg-color); padding:0; border-radius: 20px 20px 0 0;">
+            <div style="padding:20px;">
+                <h2 id="pd-title"></h2>
+                <h3 id="pd-price" style="color:var(--primary-color);"></h3>
+                <p id="pd-desc" style="font-size:0.9rem;"></p>
+                <a id="pd-yt-link" href="#" target="_blank" style="display:none; align-items:center; gap:8px; color:#ef4444; font-weight:bold; margin-top:10px; text-decoration:none; background:#fee2e2; padding:8px 12px; border-radius:8px; width: fit-content;"><i class="fa-brands fa-youtube" style="font-size:1.2rem;"></i> Watch Video Tutorial</a>
+                <div style="display:flex; gap:10px; margin-top:20px;" id="pd-action-buttons"></div>
+                <!-- MODAL AD -->
+                <div class="ad-modal-wrapper ad-container" style="margin-top:20px; padding-top:15px; border-top:1px dashed var(--border-color);"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- APPLICATION FORM MODAL -->
+    <div id="application-form-modal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 900px;">
+            <i class="fa-solid fa-xmark close-btn" onclick="closeModal('application-form-modal')"></i>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img id="app-form-logo" src="" style="width: 80px; height: 80px; object-fit: contain; border-radius: 12px; background: var(--input-bg); padding: 5px; border: 1px solid var(--border-color); display: inline-block; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                <h2 style="margin: 0 0 5px 0; font-weight: 900;">Fill Application Details</h2>
+                <p id="app-service-name" style="font-weight: 700; color: var(--primary-color); margin: 0; font-size: 1rem;"></p>
+            </div>
+            <div id="dynamic-custom-form-container" class="app-form-grid"></div>
+            <button class="btn" id="apply-proceed-btn" onclick="proceedToServiceCheckout()" style="background: var(--success);"><i class="fa-solid fa-wallet"></i> Proceed to Payment</button>
+            <!-- MODAL AD -->
+            <div class="ad-modal-wrapper ad-container" style="margin-top:20px; padding-top:15px; border-top:1px dashed var(--border-color);"></div>
+        </div>
+    </div>
+
     <div id="checkout-modal" class="modal-overlay"><div class="modal-box" style="text-align:center;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('checkout-modal')"></i><h2>Checkout</h2><p id="checkout-item-price" style="font-size:1.5rem; font-weight:bold; color:var(--primary-color);"></p><button class="btn" onclick="payWithWallet()" id="wallet-pay-btn" style="background:var(--success); margin-bottom:15px;"><i class="fa-solid fa-wallet"></i> Pay from Wallet (Bal: ₹<span id="ck-wallet-bal">0</span>)</button><p>--- OR PAY VIA UPI ---</p><img id="upi-qr-img" style="width:180px; height:180px; object-fit:contain; margin:10px auto;"><br><b>ajsarvices@ptyes</b><input type="text" id="utr-number" placeholder="Enter 12-Digit UTR" maxlength="12"><button class="btn" id="checkout-final-btn" onclick="verifyAndPlaceOrder()">Submit Order</button><button class="btn btn-outline" onclick="backToFormFromCheckout()" style="margin-top:15px;"><i class="fa-solid fa-arrow-left"></i> Back to Edit Form</button></div></div>
     <div id="certificate-modal" class="modal-overlay"><div class="modal-box" style="text-align:center; background: #001b5e; border: 2px solid #4da6ff; padding:35px; max-width:800px;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('certificate-modal')" style="background:#ffffff; color:#001b5e;"></i><h3 style="color:#ffffff; margin-bottom:20px; font-size:1.5rem;"><i class="fa-solid fa-award" style="color:#f59e0b;"></i> Authorization Certificate</h3><img id="cert-view-img" style="width:100%; margin-bottom:20px; border-radius:8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);"><button class="btn" onclick="downloadCertificate()" style="background: #10b981; font-size:1.1rem;"><i class="fa-solid fa-download"></i> Download High-Res</button></div></div>
     <div id="edit-profile-modal" class="modal-overlay"><div class="modal-box" style="text-align:center;"><i class="fa-solid fa-xmark close-btn" onclick="closeModal('edit-profile-modal')"></i><h2 style="margin-bottom: 20px;">Edit Details</h2><div class="file-upload-box" style="margin-bottom:15px; text-align:left;"><label style="font-size:0.8rem; font-weight:bold; color:var(--text-gray); display:block; margin-bottom:8px;">Upload New Logo / Profile Pic</label><input type="file" id="ep-logo" onchange="uploadProfileLogo(this)" accept="image/*"></div><input type="text" id="ep-name" placeholder="Full Name"><input type="text" id="ep-shop" placeholder="Shop Name"><button class="btn" id="ep-save-btn" onclick="saveUserProfile()" style="background: var(--success); margin-top:15px;">Save Details</button></div></div>
@@ -377,7 +415,7 @@
     <script>
         // --- 1. GLOBAL VARIABLES ---
         let allProductsData = []; let selectedProductDetails = null; let currentCheckoutState = {}; let uploadedDocsArray = []; let tempRegData = {}; let isSignUpMode = false;
-        let currentUserStatus = "Pending", userWallet = 0, uShopName = "", uRole = "", uName = "", uJoined = "", uReferredBy = "", appLogoUrl="logoa.jpg", compCertUrl="", invSettings={name:"Aj India Sarvices", address:"India"};
+        let currentUserStatus = "Pending", userWallet = 0, uShopName = "", uRole = "", uName = "", uJoined = "", uReferredBy = "", appLogoUrl="logoa.jpg", compCertUrl="", invSettings={name:"AJ India Sarvices", address:"India"};
         let uProfilePic = "logoa.jpg"; let tempProfileLogoUrl = ""; 
         let earningsChartInstance = null; let myOrdersData={}; let isRegisteringProcess = false; let allAIToolsData = {};
         let refBonusAmt = 50; let formCommAmt = 10; let myGenReferCode = "";
@@ -408,6 +446,22 @@
         });
 
         const getGridLimit = () => window.innerWidth < 768 ? 6 : 16; 
+
+        // --- AD CODE INJECTOR FUNCTION ---
+        function injectAdCode(containerIdOrClass, adCode, isClass=false) {
+            const containers = isClass ? document.querySelectorAll('.'+containerIdOrClass) : [document.getElementById(containerIdOrClass)];
+            containers.forEach(container => {
+                if(!container) return;
+                container.innerHTML = adCode || '';
+                const scripts = container.getElementsByTagName('script');
+                for (let i = 0; i < scripts.length; i++) {
+                    const newScript = document.createElement('script');
+                    if (scripts[i].src) newScript.src = scripts[i].src;
+                    else newScript.innerHTML = scripts[i].innerHTML;
+                    scripts[i].parentNode.replaceChild(newScript, scripts[i]);
+                }
+            });
+        }
 
         // --- 3. ON DOM LOAD / URL ROUTING ---
         window.onload = function() {
@@ -472,6 +526,13 @@
                     if(d.marquee && d.marquee.active){ document.getElementById('breaking-news').style.display='flex'; document.getElementById('marquee-text-display').innerText=d.marquee.text; } else { document.getElementById('breaking-news').style.display='none'; } 
                     if(d.refer_earn) { refBonusAmt=d.refer_earn.signupBonus||50; formCommAmt=d.refer_earn.formCommission||10; if(document.getElementById('ui-ref-bonus')) document.getElementById('ui-ref-bonus').innerText = "₹" + refBonusAmt; if(document.getElementById('ui-form-comm')) document.getElementById('ui-form-comm').innerText = "₹" + formCommAmt; } 
                     
+                    // NEW: AD CODES INJECTION
+                    if(d.ad_codes) {
+                        injectAdCode('ad-top-wrapper', d.ad_codes.top);
+                        injectAdCode('ad-bottom-wrapper', d.ad_codes.bottom);
+                        injectAdCode('ad-modal-wrapper', d.ad_codes.modal, true);
+                    }
+
                     if(d.section_titles) { 
                         if(document.getElementById('ui-title-aitools')) document.getElementById('ui-title-aitools').innerText = escapeHTML(d.section_titles.aitools) || "AI Tools & Links"; 
                         if(document.getElementById('ui-title-top')) document.getElementById('ui-title-top').innerText = escapeHTML(d.section_titles.top) || "Top Services"; 
@@ -866,7 +927,7 @@
             if(finalRegFee < 0) finalRegFee = 0;
 
             tempRegData = { shopName: shop, name: name, email: e, pass: ps, role: selectedRegRole, fee: finalRegFee, referCode: document.getElementById('auth-referral').value.trim(), myReferralId: myGenReferCode }; 
-            document.getElementById('login-fields-container').style.display='none'; document.getElementById('reg-fields-container').style.display='none'; document.getElementById('reg-pay-amt').innerText=`₹${finalRegFee}`; document.getElementById('reg-upi-qr').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=Aj%20India%20Sarvices%26am=${finalRegFee}%26cu=INR&size=250`; document.getElementById('reg-payment-container').style.display='block'; document.getElementById('auth-toggle-text').style.display='none'; 
+            document.getElementById('login-fields-container').style.display='none'; document.getElementById('reg-fields-container').style.display='none'; document.getElementById('reg-pay-amt').innerText=`₹${finalRegFee}`; document.getElementById('reg-upi-qr').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20India%20Sarvices%26am=${finalRegFee}%26cu=INR&size=250`; document.getElementById('reg-payment-container').style.display='block'; document.getElementById('auth-toggle-text').style.display='none'; 
         }
 
         function backToRegForm(){ document.getElementById('reg-payment-container').style.display='none'; document.getElementById('reg-fields-container').style.display='block'; document.getElementById('auth-toggle-text').style.display='block'; }
@@ -925,7 +986,7 @@
         function shareReferral() { 
             let shareUrl = window.location.origin + window.location.pathname + '?ref=' + myGenReferCode;
             if (navigator.share) { 
-                navigator.share({ title: 'Join Aj India Sarvices', text: `Use my referral code ${myGenReferCode} and get ₹${refBonusAmt} bonus!`, url: shareUrl }).catch(err => console.log('Share error:', err)); 
+                navigator.share({ title: 'Join AJ India Sarvices', text: `Use my referral code ${myGenReferCode} and get ₹${refBonusAmt} bonus!`, url: shareUrl }).catch(err => console.log('Share error:', err)); 
             } else { 
                 copyText(shareUrl); 
             } 
@@ -994,7 +1055,7 @@
             currentCheckoutState={total:Number(selectedProductDetails.parsedPrice), title:selectedProductDetails.title, img:selectedProductDetails.imageUrl, docs:uploadedDocsArray, extra:ex}; 
             closeModal('application-form-modal'); 
             document.getElementById('checkout-item-price').innerHTML = (currentCheckoutState.total == 0) ? `<span style="color:var(--success);">Free Application</span>` : "₹"+currentCheckoutState.total; 
-            document.getElementById('upi-qr-img').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=Aj%20India%20Sarvices%26am=${currentCheckoutState.total}%26cu=INR&size=200`; 
+            document.getElementById('upi-qr-img').src=`https://quickchart.io/qr?text=upi://pay?pa=ajsarvices@ptyes%26pn=AJ%20India%20Sarvices%26am=${currentCheckoutState.total}%26cu=INR&size=200`; 
             openModal('checkout-modal'); 
         }
 
